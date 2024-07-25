@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mandalart/screens/home_screen.dart';
+import 'package:mandalart/screen/home_screen.dart';
 import 'package:mandalart/theme/theme.dart';
 
 class App extends StatelessWidget {
@@ -8,9 +8,8 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter',
       theme: ThemeClass.theme,
-      home: const HomeScreen(title: 'Flutter Demo Home Page'),
+      home: const HomeScreen(),
     );
   }
 }
