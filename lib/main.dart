@@ -10,7 +10,5 @@ void main() async {
 
   await IsarDB().init();
 
-  FlutterNativeSplash.remove();
-
   runApp(const App());
 }

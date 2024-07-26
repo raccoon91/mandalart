@@ -6,12 +6,9 @@ import 'package:mandalart/schema/project_schema.dart';
 class ProjectRepository {
   ProjectRepository();
 
-  Future<ProjectModel?> getProject(String name) async {
-    final projectSchema = await IsarDB.isar.projects
-        .where()
-        .filter()
-        .isDefaultEqualTo(true)
-        .findFirst();
+  Future<ProjectModel?> getProject() async {
+    final projectSchema =
+        await IsarDB.isar.projects.filter().isDefaultEqualTo(true).findFirst();
 
     if (projectSchema == null) return null;
 
@@ -24,6 +21,10 @@ class ProjectRepository {
     final projectSchema = Project()
       ..name = name
       ..isDefault = true;
+
+    await IsarDB.isar.writeTxn(() async {
+      await IsarDB.isar.projects.put(projectSchema);
+    });
 
     final project = ProjectModel.fromJson(projectSchema);
 

@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:mandalart/provider/home_provider.dart';
 import 'package:mandalart/screen/home_screen.dart';
 import 'package:mandalart/theme/theme.dart';
+import 'package:provider/provider.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeClass.theme,
-      home: const HomeScreen(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => HomeProvider()),
+      ],
+      child: MaterialApp(
+        theme: ThemeClass.theme,
+        home: const HomeScreen(),
+      ),
     );
   }
 }
