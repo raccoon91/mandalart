@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:mandalart/model/color_model.dart';
 import 'package:mandalart/theme/color.dart';
+import 'package:mandalart/widget/base/color_widget.dart';
 
-const List<Color> colorList = [
-  ColorClass.red,
-  ColorClass.green,
-  ColorClass.skyBlue,
-  ColorClass.orange,
-  ColorClass.white,
-  ColorClass.purple,
-  ColorClass.pink,
-  ColorClass.yellow,
-  ColorClass.mint,
-  ColorClass.blue,
+List<ColorModel> colorList = [
+  ColorMap.red,
+  ColorMap.blue,
+  ColorMap.orange,
+  ColorMap.green,
+  ColorMap.skyBlue,
+  ColorMap.purple,
+  ColorMap.pink,
+  ColorMap.yellow,
+  ColorMap.mint,
 ];
 
 class ColorPicker extends StatelessWidget {
@@ -24,9 +25,9 @@ class ColorPicker extends StatelessWidget {
     this.onTapped,
   });
 
-  colorTapped(Color color) {
+  colorTapped(ColorModel color) {
     return () {
-      if (onTapped != null) onTapped!(color);
+      if (onTapped != null) onTapped!(color.color);
     };
   }
 
@@ -34,51 +35,18 @@ class ColorPicker extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          children: List.generate(
-            5,
-            (index) => Flexible(
-              child: GestureDetector(
+        LayoutBuilder(
+          builder: (context, constraints) => Wrap(
+            spacing: 5,
+            runSpacing: 5,
+            children: List.generate(
+              colorList.length,
+              (index) => GestureDetector(
                 onTap: colorTapped(colorList[index]),
-                child: Container(
-                  width: double.infinity,
-                  height: 20,
-                  margin: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: colorList[index],
-                    border: Border.all(
-                      color: color == colorList[index]
-                          ? ColorClass.gray
-                          : colorList[index],
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-        Row(
-          children: List.generate(
-            5,
-            (index) => Flexible(
-              child: GestureDetector(
-                onTap: colorTapped(colorList[index + 5]),
-                child: Container(
-                  width: double.infinity,
-                  height: 20,
-                  margin: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: colorList[index + 5],
-                    border: Border.all(
-                      color: color == colorList[index + 5]
-                          ? ColorClass.gray
-                          : colorList[index + 5],
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.circular(2),
-                  ),
+                child: ColorWidget(
+                  selected: color == colorList[index].color,
+                  width: (constraints.maxWidth / 3) - (5 * 2),
+                  color: colorList[index],
                 ),
               ),
             ),

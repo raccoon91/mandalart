@@ -41,28 +41,25 @@ class _ProjectCreateState extends State<ProjectCreate> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ColorPicker(color: color, onTapped: colorTapped),
-          const SizedBox(height: 20),
-          Input(
-            autofocus: true,
-            controller: projectController,
-            onChanged: nameChanged,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ColorPicker(color: color, onTapped: colorTapped),
+        const SizedBox(height: 30),
+        Input(
+          autofocus: true,
+          controller: projectController,
+          onChanged: nameChanged,
+        ),
+        const SizedBox(height: 40),
+        SizedBox(
+          width: double.infinity,
+          child: Button(
+            text: "Create Project",
+            onPressed: enabled ? createTapped : null,
           ),
-          const SizedBox(height: 40),
-          SizedBox(
-            width: double.infinity,
-            child: Button(
-              text: "Create Project",
-              onPressed: enabled ? createTapped : null,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
