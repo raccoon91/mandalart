@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mandalart/provider/home_provider.dart';
 import 'package:mandalart/widget/home/mandalart.dart';
-import 'package:mandalart/widget/home/project_view.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,7 +21,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> getDefaultProject() async {
-    await Provider.of<HomeProvider>(context, listen: false).getProject();
+    bool isEmpty = await Provider.of<HomeProvider>(
+      context,
+      listen: false,
+    ).getProject();
+
+    if (mounted && isEmpty) {
+      context.go('/project');
+    }
 
     FlutterNativeSplash.remove();
   }
@@ -30,14 +37,15 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text("만다라트"),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 30),
         child: Consumer<HomeProvider>(
-          builder: (context, value, child) => value.isEmpty
-              ? const ProjectView()
-              : Mandalart(project: value.project),
+          builder: (context, value, child) {
+            return Mandalart(project: value.project);
+          },
         ),
       ),
     );

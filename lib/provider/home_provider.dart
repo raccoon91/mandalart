@@ -9,10 +9,17 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
   bool get isEmpty => _project == null;
   ProjectModel? get project => _project;
 
-  Future<void> getProject() async {
+  Future<bool> getProject() async {
+    bool isEmpty = true;
+
     try {
       _project = await ProjectRepository().getProject();
+
+      isEmpty = _project == null;
+
       notifyListeners();
+
+      return isEmpty;
     } catch (error) {
       rethrow;
     }
