@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mandalart/provider/home_provider.dart';
+import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/base/button.dart';
+import 'package:mandalart/widget/base/color_picker.dart';
 import 'package:mandalart/widget/base/input.dart';
 import 'package:provider/provider.dart';
 
@@ -13,14 +15,27 @@ class ProjectCreate extends StatefulWidget {
 
 class _ProjectCreateState extends State<ProjectCreate> {
   final projectController = TextEditingController();
+  Color color = ColorClass.red;
   bool enabled = false;
 
-  createProjectTapped() async {
-    Provider.of<HomeProvider>(
-      context,
-      listen: false,
-    ).createProject(
+  colorTapped(Color color) {
+    this.color = color;
+    setState(() {});
+  }
+
+  nameChanged(String data) {
+    if (data.isEmpty) {
+      enabled = false;
+    } else {
+      enabled = true;
+    }
+    setState(() {});
+  }
+
+  createTapped() async {
+    Provider.of<HomeProvider>(context, listen: false).createProject(
       projectController.text,
+      color,
     );
   }
 
@@ -31,23 +46,20 @@ class _ProjectCreateState extends State<ProjectCreate> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          ColorPicker(color: color, onTapped: colorTapped),
+          const SizedBox(height: 20),
           Input(
             autofocus: true,
             controller: projectController,
-            onChanged: (data) {
-              if (projectController.text.isEmpty) {
-                enabled = false;
-              } else {
-                enabled = true;
-              }
-
-              setState(() {});
-            },
+            onChanged: nameChanged,
           ),
-          const SizedBox(height: 20),
-          Button(
-            text: "Create Project",
-            onPressed: enabled ? createProjectTapped : null,
+          const SizedBox(height: 40),
+          SizedBox(
+            width: double.infinity,
+            child: Button(
+              text: "Create Project",
+              onPressed: enabled ? createTapped : null,
+            ),
           ),
         ],
       ),

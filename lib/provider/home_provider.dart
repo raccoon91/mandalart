@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:mandalart/model/project_model.dart';
 import 'package:mandalart/repository/project_repository.dart';
 
@@ -17,9 +18,9 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
-  Future<void> createProject(String name) async {
+  Future<void> createProject(String name, Color color) async {
     try {
-      _project = await ProjectRepository().createProject(name);
+      _project = await ProjectRepository().createProject(name, color);
       notifyListeners();
     } catch (error) {
       rethrow;

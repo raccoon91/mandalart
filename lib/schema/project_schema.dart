@@ -9,6 +9,8 @@ class Project {
 
   late String name;
 
+  int? color;
+
   bool isDefault = false;
 
   final mainTargets = IsarLinks<MainTarget>();

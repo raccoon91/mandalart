@@ -17,13 +17,18 @@ const ProjectSchema = CollectionSchema(
   name: r'Project',
   id: 3302999628838485849,
   properties: {
-    r'isDefault': PropertySchema(
+    r'color': PropertySchema(
       id: 0,
+      name: r'color',
+      type: IsarType.long,
+    ),
+    r'isDefault': PropertySchema(
+      id: 1,
       name: r'isDefault',
       type: IsarType.bool,
     ),
     r'name': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'name',
       type: IsarType.string,
     )
@@ -65,8 +70,9 @@ void _projectSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeBool(offsets[0], object.isDefault);
-  writer.writeString(offsets[1], object.name);
+  writer.writeLong(offsets[0], object.color);
+  writer.writeBool(offsets[1], object.isDefault);
+  writer.writeString(offsets[2], object.name);
 }
 
 Project _projectDeserialize(
@@ -76,9 +82,10 @@ Project _projectDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Project();
+  object.color = reader.readLongOrNull(offsets[0]);
   object.id = id;
-  object.isDefault = reader.readBool(offsets[0]);
-  object.name = reader.readString(offsets[1]);
+  object.isDefault = reader.readBool(offsets[1]);
+  object.name = reader.readString(offsets[2]);
   return object;
 }
 
@@ -90,8 +97,10 @@ P _projectDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readBool(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 1:
+      return (reader.readBool(offset)) as P;
+    case 2:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -189,6 +198,75 @@ extension ProjectQueryWhere on QueryBuilder<Project, Project, QWhereClause> {
 
 extension ProjectQueryFilter
     on QueryBuilder<Project, Project, QFilterCondition> {
+  QueryBuilder<Project, Project, QAfterFilterCondition> colorIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'color',
+      ));
+    });
+  }
+
+  QueryBuilder<Project, Project, QAfterFilterCondition> colorIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'color',
+      ));
+    });
+  }
+
+  QueryBuilder<Project, Project, QAfterFilterCondition> colorEqualTo(
+      int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'color',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Project, Project, QAfterFilterCondition> colorGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'color',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Project, Project, QAfterFilterCondition> colorLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'color',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Project, Project, QAfterFilterCondition> colorBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'color',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Project, Project, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -449,6 +527,18 @@ extension ProjectQueryLinks
 }
 
 extension ProjectQuerySortBy on QueryBuilder<Project, Project, QSortBy> {
+  QueryBuilder<Project, Project, QAfterSortBy> sortByColor() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'color', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Project, Project, QAfterSortBy> sortByColorDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'color', Sort.desc);
+    });
+  }
+
   QueryBuilder<Project, Project, QAfterSortBy> sortByIsDefault() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isDefault', Sort.asc);
@@ -476,6 +566,18 @@ extension ProjectQuerySortBy on QueryBuilder<Project, Project, QSortBy> {
 
 extension ProjectQuerySortThenBy
     on QueryBuilder<Project, Project, QSortThenBy> {
+  QueryBuilder<Project, Project, QAfterSortBy> thenByColor() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'color', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Project, Project, QAfterSortBy> thenByColorDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'color', Sort.desc);
+    });
+  }
+
   QueryBuilder<Project, Project, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -515,6 +617,12 @@ extension ProjectQuerySortThenBy
 
 extension ProjectQueryWhereDistinct
     on QueryBuilder<Project, Project, QDistinct> {
+  QueryBuilder<Project, Project, QDistinct> distinctByColor() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'color');
+    });
+  }
+
   QueryBuilder<Project, Project, QDistinct> distinctByIsDefault() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'isDefault');
@@ -534,6 +642,12 @@ extension ProjectQueryProperty
   QueryBuilder<Project, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<Project, int?, QQueryOperations> colorProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'color');
     });
   }
 

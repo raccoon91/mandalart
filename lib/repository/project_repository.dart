@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:mandalart/db/isar_db.dart';
 import 'package:mandalart/model/project_model.dart';
@@ -17,9 +18,14 @@ class ProjectRepository {
     return project;
   }
 
-  Future<ProjectModel> createProject(String name) async {
+  Future<ProjectModel> createProject(String name, Color color) async {
+    String colorString = color.toString();
+    String colorInteger = colorString.split('(0x')[1].split(')')[0];
+    int colorValue = int.parse(colorInteger, radix: 16);
+
     final projectSchema = Project()
       ..name = name
+      ..color = colorValue
       ..isDefault = true;
 
     await IsarDB.isar.writeTxn(() async {

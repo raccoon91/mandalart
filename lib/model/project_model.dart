@@ -1,17 +1,20 @@
+import 'package:flutter/material.dart';
 import 'package:mandalart/model/main_target_model.dart';
 import 'package:mandalart/schema/project_schema.dart';
 
 class ProjectModel {
   int id;
-  String? name;
+  String name;
+  Color? color;
   bool isDefault;
-  List<MainTargetModel>? mainTargets;
+  List<MainTargetModel> mainTargets;
 
   ProjectModel({
     required this.id,
-    this.name,
+    required this.name,
+    this.color,
     required this.isDefault,
-    this.mainTargets,
+    required this.mainTargets,
   });
 
   factory ProjectModel.fromJson(Project schema) {
@@ -20,6 +23,7 @@ class ProjectModel {
     return ProjectModel(
       id: schema.id,
       name: schema.name,
+      color: schema.color != null ? Color(schema.color!) : null,
       isDefault: schema.isDefault,
       mainTargets: mainTargets,
     );

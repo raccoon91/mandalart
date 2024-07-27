@@ -9,7 +9,7 @@ class ProjectStart extends StatelessWidget {
     required this.moveToCreate,
   });
 
-  startProjectTapped() {
+  startTapped() {
     moveToCreate();
   }
 
@@ -18,7 +18,7 @@ class ProjectStart extends StatelessWidget {
     return Center(
       child: Button(
         text: "Start Project",
-        onPressed: startProjectTapped,
+        onPressed: startTapped,
       ),
     );
   }

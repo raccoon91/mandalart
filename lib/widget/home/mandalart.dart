@@ -21,14 +21,24 @@ class Mandalart extends StatelessWidget {
             int index = (3 * rowIndex) + columnIndex;
             bool isEmpty = project == null ||
                 project?.mainTargets == null ||
-                project!.mainTargets!.isEmpty ||
-                project?.mainTargets?[index] == null;
+                project!.mainTargets.isEmpty ||
+                project?.mainTargets[index] == null;
 
-            if (index == 4) return ProjectWidget(project: project!);
+            if (project != null && index == 4) {
+              return ProjectWidget(
+                project: project!,
+                color: project!.color,
+              );
+            }
 
-            if (isEmpty) return const EmptyTargetWidget();
+            if (!isEmpty) {
+              return MainTargetWidget(
+                mainTarget: project!.mainTargets[index],
+                color: project!.mainTargets[index].color,
+              );
+            }
 
-            return MainTargetWidget(mainTarget: project!.mainTargets![index]);
+            return const EmptyTargetWidget();
           }),
         );
       }),

@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:mandalart/theme/color.dart';
 
 class EmptyTargetWidget extends StatelessWidget {
+  final Color? color;
+
   const EmptyTargetWidget({
     super.key,
+    this.color,
   });
 
   @override
@@ -15,6 +18,7 @@ class EmptyTargetWidget extends StatelessWidget {
           width: double.infinity,
           margin: const EdgeInsets.all(4),
           decoration: BoxDecoration(
+            color: color,
             border: Border.all(
               color: ColorClass.gray,
               width: 1,
@@ -24,7 +28,7 @@ class EmptyTargetWidget extends StatelessWidget {
           child: const Icon(
             Icons.add,
             size: 20,
-            color: ColorClass.gray,
+            color: ColorClass.black,
           ),
         ),
       ),

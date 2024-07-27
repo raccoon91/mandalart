@@ -3,10 +3,12 @@ import 'package:mandalart/model/main_target_model.dart';
 
 class MainTargetWidget extends StatelessWidget {
   final MainTargetModel mainTarget;
+  final Color? color;
 
   const MainTargetWidget({
     super.key,
     required this.mainTarget,
+    this.color,
   });
 
   @override
@@ -18,9 +20,10 @@ class MainTargetWidget extends StatelessWidget {
           width: double.infinity,
           margin: const EdgeInsets.all(4),
           decoration: BoxDecoration(
+            color: color,
             borderRadius: BorderRadius.circular(4),
           ),
-          child: Text(mainTarget.name ?? ""),
+          child: Text(mainTarget.name),
         ),
       ),
     );

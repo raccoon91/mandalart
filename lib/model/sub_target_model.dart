@@ -3,13 +3,13 @@ import 'package:mandalart/schema/sub_target_schema.dart';
 
 class SubTargetModel {
   int id;
-  String? name;
+  String name;
   Color? color;
 
   SubTargetModel({
     required this.id,
-    this.name,
-    required this.color,
+    required this.name,
+    this.color,
   });
 
   factory SubTargetModel.fromJson(SubTarget schema) {

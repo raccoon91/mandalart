@@ -48,12 +48,7 @@ int _subTargetEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
-  {
-    final value = object.name;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
+  bytesCount += 3 + object.name.length * 3;
   return bytesCount;
 }
 
@@ -76,7 +71,7 @@ SubTarget _subTargetDeserialize(
   final object = SubTarget();
   object.color = reader.readLongOrNull(offsets[0]);
   object.id = id;
-  object.name = reader.readStringOrNull(offsets[1]);
+  object.name = reader.readString(offsets[1]);
   return object;
 }
 
@@ -90,7 +85,7 @@ P _subTargetDeserializeProp<P>(
     case 0:
       return (reader.readLongOrNull(offset)) as P;
     case 1:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -309,24 +304,8 @@ extension SubTargetQueryFilter
     });
   }
 
-  QueryBuilder<SubTarget, SubTarget, QAfterFilterCondition> nameIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'name',
-      ));
-    });
-  }
-
-  QueryBuilder<SubTarget, SubTarget, QAfterFilterCondition> nameIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'name',
-      ));
-    });
-  }
-
   QueryBuilder<SubTarget, SubTarget, QAfterFilterCondition> nameEqualTo(
-    String? value, {
+    String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -339,7 +318,7 @@ extension SubTargetQueryFilter
   }
 
   QueryBuilder<SubTarget, SubTarget, QAfterFilterCondition> nameGreaterThan(
-    String? value, {
+    String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -354,7 +333,7 @@ extension SubTargetQueryFilter
   }
 
   QueryBuilder<SubTarget, SubTarget, QAfterFilterCondition> nameLessThan(
-    String? value, {
+    String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -369,8 +348,8 @@ extension SubTargetQueryFilter
   }
 
   QueryBuilder<SubTarget, SubTarget, QAfterFilterCondition> nameBetween(
-    String? lower,
-    String? upper, {
+    String lower,
+    String upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -557,7 +536,7 @@ extension SubTargetQueryProperty
     });
   }
 
-  QueryBuilder<SubTarget, String?, QQueryOperations> nameProperty() {
+  QueryBuilder<SubTarget, String, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
     });

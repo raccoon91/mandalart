@@ -4,15 +4,15 @@ import 'package:mandalart/schema/main_target_schema.dart';
 
 class MainTargetModel {
   int id;
-  String? name;
+  String name;
   Color? color;
-  List<SubTargetModel>? subTargets;
+  List<SubTargetModel> subTargets;
 
   MainTargetModel({
     required this.id,
-    this.name,
-    required this.color,
-    this.subTargets,
+    required this.name,
+    this.color,
+    required this.subTargets,
   });
 
   factory MainTargetModel.fromJson(MainTarget schema) {
