@@ -35,18 +35,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text("만다라트"),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 30),
-        child: Consumer<HomeProvider>(
-          builder: (context, value, child) {
-            return Mandalart(project: value.project);
-          },
-        ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+      child: Consumer<HomeProvider>(
+        builder: (context, value, child) {
+          return Mandalart(project: value.project);
+        },
       ),
     );
   }
