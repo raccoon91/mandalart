@@ -17,12 +17,13 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    Provider.of<HomeProvider>(
-      context,
-      listen: false,
-    ).getProject().then((_) {
-      FlutterNativeSplash.remove();
-    });
+    getDefaultProject();
+  }
+
+  Future<void> getDefaultProject() async {
+    await Provider.of<HomeProvider>(context, listen: false).getProject();
+
+    FlutterNativeSplash.remove();
   }
 
   @override
