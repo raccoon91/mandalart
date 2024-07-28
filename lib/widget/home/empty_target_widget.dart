@@ -23,11 +23,7 @@ class EmptyTargetWidget extends StatelessWidget {
             width: double.infinity,
             margin: const EdgeInsets.all(4),
             decoration: BoxDecoration(
-              color: color,
-              border: Border.all(
-                color: ColorClass.gray,
-                width: 1,
-              ),
+              color: color ?? ColorClass.under,
               borderRadius: BorderRadius.circular(4),
             ),
             child: const Icon(

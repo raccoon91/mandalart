@@ -24,7 +24,7 @@ class BottomNavigationPage extends StatelessWidget {
         showUnselectedLabels: false,
         selectedItemColor: ColorClass.blue,
         unselectedItemColor: ColorClass.gray,
-        backgroundColor: ColorClass.white,
+        backgroundColor: ColorClass.under,
         onTap: (index) {
           child.goBranch(
             index,
