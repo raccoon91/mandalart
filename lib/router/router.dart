@@ -76,6 +76,7 @@ final GoRouter router = GoRouter(
           path: 'create',
           pageBuilder: (BuildContext context, GoRouterState state) {
             return slideTransitionPage(
+              state: state,
               child: const ProjectCreateScreen(),
             );
           },
@@ -86,7 +87,11 @@ final GoRouter router = GoRouter(
       path: '/main-target/create',
       pageBuilder: (BuildContext context, GoRouterState state) {
         return slideTransitionPage(
-          child: const MainTargetCreateScreen(),
+          state: state,
+          child: MainTargetCreateScreen(
+            projectId: state.uri.queryParameters['projectId'],
+            mainTargetId: state.uri.queryParameters['mainTargetId'],
+          ),
         );
       },
     ),

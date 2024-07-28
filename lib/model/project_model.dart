@@ -1,31 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:mandalart/model/main_target_model.dart';
 import 'package:mandalart/schema/project_schema.dart';
 
 class ProjectModel {
   int id;
+  bool progress;
   String name;
   Color? color;
-  bool isDefault;
-  List<MainTargetModel> mainTargets;
+  bool delete;
 
   ProjectModel({
     required this.id,
+    required this.progress,
     required this.name,
     this.color,
-    required this.isDefault,
-    required this.mainTargets,
+    required this.delete,
   });
 
   factory ProjectModel.fromJson(Project schema) {
-    var mainTargets = schema.mainTargets.map(MainTargetModel.fromJson).toList();
+    Color? color = schema.color != null ? Color(schema.color!) : null;
 
     return ProjectModel(
       id: schema.id,
+      progress: schema.progress,
       name: schema.name,
-      color: schema.color != null ? Color(schema.color!) : null,
-      isDefault: schema.isDefault,
-      mainTargets: mainTargets,
+      color: color,
+      delete: schema.delete,
     );
   }
 }

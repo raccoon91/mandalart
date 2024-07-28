@@ -22,15 +22,20 @@ const ProjectSchema = CollectionSchema(
       name: r'color',
       type: IsarType.long,
     ),
-    r'isDefault': PropertySchema(
+    r'delete': PropertySchema(
       id: 1,
-      name: r'isDefault',
+      name: r'delete',
       type: IsarType.bool,
     ),
     r'name': PropertySchema(
       id: 2,
       name: r'name',
       type: IsarType.string,
+    ),
+    r'progress': PropertySchema(
+      id: 3,
+      name: r'progress',
+      type: IsarType.bool,
     )
   },
   estimateSize: _projectEstimateSize,
@@ -39,14 +44,7 @@ const ProjectSchema = CollectionSchema(
   deserializeProp: _projectDeserializeProp,
   idName: r'id',
   indexes: {},
-  links: {
-    r'mainTargets': LinkSchema(
-      id: -6021857250831559164,
-      name: r'mainTargets',
-      target: r'MainTarget',
-      single: false,
-    )
-  },
+  links: {},
   embeddedSchemas: {},
   getId: _projectGetId,
   getLinks: _projectGetLinks,
@@ -71,8 +69,9 @@ void _projectSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeLong(offsets[0], object.color);
-  writer.writeBool(offsets[1], object.isDefault);
+  writer.writeBool(offsets[1], object.delete);
   writer.writeString(offsets[2], object.name);
+  writer.writeBool(offsets[3], object.progress);
 }
 
 Project _projectDeserialize(
@@ -83,9 +82,10 @@ Project _projectDeserialize(
 ) {
   final object = Project();
   object.color = reader.readLongOrNull(offsets[0]);
+  object.delete = reader.readBool(offsets[1]);
   object.id = id;
-  object.isDefault = reader.readBool(offsets[1]);
   object.name = reader.readString(offsets[2]);
+  object.progress = reader.readBool(offsets[3]);
   return object;
 }
 
@@ -102,6 +102,8 @@ P _projectDeserializeProp<P>(
       return (reader.readBool(offset)) as P;
     case 2:
       return (reader.readString(offset)) as P;
+    case 3:
+      return (reader.readBool(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -112,13 +114,11 @@ Id _projectGetId(Project object) {
 }
 
 List<IsarLinkBase<dynamic>> _projectGetLinks(Project object) {
-  return [object.mainTargets];
+  return [];
 }
 
 void _projectAttach(IsarCollection<dynamic> col, Id id, Project object) {
   object.id = id;
-  object.mainTargets
-      .attach(col, col.isar.collection<MainTarget>(), r'mainTargets', id);
 }
 
 extension ProjectQueryWhereSort on QueryBuilder<Project, Project, QWhere> {
@@ -267,6 +267,16 @@ extension ProjectQueryFilter
     });
   }
 
+  QueryBuilder<Project, Project, QAfterFilterCondition> deleteEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'delete',
+        value: value,
+      ));
+    });
+  }
+
   QueryBuilder<Project, Project, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -315,16 +325,6 @@ extension ProjectQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<Project, Project, QAfterFilterCondition> isDefaultEqualTo(
-      bool value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'isDefault',
-        value: value,
       ));
     });
   }
@@ -458,73 +458,23 @@ extension ProjectQueryFilter
       ));
     });
   }
+
+  QueryBuilder<Project, Project, QAfterFilterCondition> progressEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'progress',
+        value: value,
+      ));
+    });
+  }
 }
 
 extension ProjectQueryObject
     on QueryBuilder<Project, Project, QFilterCondition> {}
 
 extension ProjectQueryLinks
-    on QueryBuilder<Project, Project, QFilterCondition> {
-  QueryBuilder<Project, Project, QAfterFilterCondition> mainTargets(
-      FilterQuery<MainTarget> q) {
-    return QueryBuilder.apply(this, (query) {
-      return query.link(q, r'mainTargets');
-    });
-  }
-
-  QueryBuilder<Project, Project, QAfterFilterCondition>
-      mainTargetsLengthEqualTo(int length) {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'mainTargets', length, true, length, true);
-    });
-  }
-
-  QueryBuilder<Project, Project, QAfterFilterCondition> mainTargetsIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'mainTargets', 0, true, 0, true);
-    });
-  }
-
-  QueryBuilder<Project, Project, QAfterFilterCondition>
-      mainTargetsIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'mainTargets', 0, false, 999999, true);
-    });
-  }
-
-  QueryBuilder<Project, Project, QAfterFilterCondition>
-      mainTargetsLengthLessThan(
-    int length, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'mainTargets', 0, true, length, include);
-    });
-  }
-
-  QueryBuilder<Project, Project, QAfterFilterCondition>
-      mainTargetsLengthGreaterThan(
-    int length, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'mainTargets', length, include, 999999, true);
-    });
-  }
-
-  QueryBuilder<Project, Project, QAfterFilterCondition>
-      mainTargetsLengthBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(
-          r'mainTargets', lower, includeLower, upper, includeUpper);
-    });
-  }
-}
+    on QueryBuilder<Project, Project, QFilterCondition> {}
 
 extension ProjectQuerySortBy on QueryBuilder<Project, Project, QSortBy> {
   QueryBuilder<Project, Project, QAfterSortBy> sortByColor() {
@@ -539,15 +489,15 @@ extension ProjectQuerySortBy on QueryBuilder<Project, Project, QSortBy> {
     });
   }
 
-  QueryBuilder<Project, Project, QAfterSortBy> sortByIsDefault() {
+  QueryBuilder<Project, Project, QAfterSortBy> sortByDelete() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isDefault', Sort.asc);
+      return query.addSortBy(r'delete', Sort.asc);
     });
   }
 
-  QueryBuilder<Project, Project, QAfterSortBy> sortByIsDefaultDesc() {
+  QueryBuilder<Project, Project, QAfterSortBy> sortByDeleteDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isDefault', Sort.desc);
+      return query.addSortBy(r'delete', Sort.desc);
     });
   }
 
@@ -560,6 +510,18 @@ extension ProjectQuerySortBy on QueryBuilder<Project, Project, QSortBy> {
   QueryBuilder<Project, Project, QAfterSortBy> sortByNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Project, Project, QAfterSortBy> sortByProgress() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'progress', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Project, Project, QAfterSortBy> sortByProgressDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'progress', Sort.desc);
     });
   }
 }
@@ -578,6 +540,18 @@ extension ProjectQuerySortThenBy
     });
   }
 
+  QueryBuilder<Project, Project, QAfterSortBy> thenByDelete() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'delete', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Project, Project, QAfterSortBy> thenByDeleteDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'delete', Sort.desc);
+    });
+  }
+
   QueryBuilder<Project, Project, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -587,18 +561,6 @@ extension ProjectQuerySortThenBy
   QueryBuilder<Project, Project, QAfterSortBy> thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Project, Project, QAfterSortBy> thenByIsDefault() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isDefault', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Project, Project, QAfterSortBy> thenByIsDefaultDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isDefault', Sort.desc);
     });
   }
 
@@ -613,6 +575,18 @@ extension ProjectQuerySortThenBy
       return query.addSortBy(r'name', Sort.desc);
     });
   }
+
+  QueryBuilder<Project, Project, QAfterSortBy> thenByProgress() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'progress', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Project, Project, QAfterSortBy> thenByProgressDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'progress', Sort.desc);
+    });
+  }
 }
 
 extension ProjectQueryWhereDistinct
@@ -623,9 +597,9 @@ extension ProjectQueryWhereDistinct
     });
   }
 
-  QueryBuilder<Project, Project, QDistinct> distinctByIsDefault() {
+  QueryBuilder<Project, Project, QDistinct> distinctByDelete() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'isDefault');
+      return query.addDistinctBy(r'delete');
     });
   }
 
@@ -633,6 +607,12 @@ extension ProjectQueryWhereDistinct
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Project, Project, QDistinct> distinctByProgress() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'progress');
     });
   }
 }
@@ -651,15 +631,21 @@ extension ProjectQueryProperty
     });
   }
 
-  QueryBuilder<Project, bool, QQueryOperations> isDefaultProperty() {
+  QueryBuilder<Project, bool, QQueryOperations> deleteProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'isDefault');
+      return query.addPropertyName(r'delete');
     });
   }
 
   QueryBuilder<Project, String, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
+    });
+  }
+
+  QueryBuilder<Project, bool, QQueryOperations> progressProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'progress');
     });
   }
 }

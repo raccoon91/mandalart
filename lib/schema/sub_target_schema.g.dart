@@ -22,8 +22,18 @@ const SubTargetSchema = CollectionSchema(
       name: r'color',
       type: IsarType.long,
     ),
-    r'name': PropertySchema(
+    r'delete': PropertySchema(
       id: 1,
+      name: r'delete',
+      type: IsarType.bool,
+    ),
+    r'mainTargetId': PropertySchema(
+      id: 2,
+      name: r'mainTargetId',
+      type: IsarType.long,
+    ),
+    r'name': PropertySchema(
+      id: 3,
       name: r'name',
       type: IsarType.string,
     )
@@ -48,7 +58,12 @@ int _subTargetEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
-  bytesCount += 3 + object.name.length * 3;
+  {
+    final value = object.name;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -59,7 +74,9 @@ void _subTargetSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeLong(offsets[0], object.color);
-  writer.writeString(offsets[1], object.name);
+  writer.writeBool(offsets[1], object.delete);
+  writer.writeLong(offsets[2], object.mainTargetId);
+  writer.writeString(offsets[3], object.name);
 }
 
 SubTarget _subTargetDeserialize(
@@ -70,8 +87,10 @@ SubTarget _subTargetDeserialize(
 ) {
   final object = SubTarget();
   object.color = reader.readLongOrNull(offsets[0]);
+  object.delete = reader.readBool(offsets[1]);
   object.id = id;
-  object.name = reader.readString(offsets[1]);
+  object.mainTargetId = reader.readLong(offsets[2]);
+  object.name = reader.readStringOrNull(offsets[3]);
   return object;
 }
 
@@ -85,7 +104,11 @@ P _subTargetDeserializeProp<P>(
     case 0:
       return (reader.readLongOrNull(offset)) as P;
     case 1:
-      return (reader.readString(offset)) as P;
+      return (reader.readBool(offset)) as P;
+    case 2:
+      return (reader.readLong(offset)) as P;
+    case 3:
+      return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -251,6 +274,16 @@ extension SubTargetQueryFilter
     });
   }
 
+  QueryBuilder<SubTarget, SubTarget, QAfterFilterCondition> deleteEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'delete',
+        value: value,
+      ));
+    });
+  }
+
   QueryBuilder<SubTarget, SubTarget, QAfterFilterCondition> idEqualTo(
       Id value) {
     return QueryBuilder.apply(this, (query) {
@@ -304,8 +337,79 @@ extension SubTargetQueryFilter
     });
   }
 
+  QueryBuilder<SubTarget, SubTarget, QAfterFilterCondition> mainTargetIdEqualTo(
+      int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'mainTargetId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<SubTarget, SubTarget, QAfterFilterCondition>
+      mainTargetIdGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'mainTargetId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<SubTarget, SubTarget, QAfterFilterCondition>
+      mainTargetIdLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'mainTargetId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<SubTarget, SubTarget, QAfterFilterCondition> mainTargetIdBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'mainTargetId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<SubTarget, SubTarget, QAfterFilterCondition> nameIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'name',
+      ));
+    });
+  }
+
+  QueryBuilder<SubTarget, SubTarget, QAfterFilterCondition> nameIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'name',
+      ));
+    });
+  }
+
   QueryBuilder<SubTarget, SubTarget, QAfterFilterCondition> nameEqualTo(
-    String value, {
+    String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -318,7 +422,7 @@ extension SubTargetQueryFilter
   }
 
   QueryBuilder<SubTarget, SubTarget, QAfterFilterCondition> nameGreaterThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -333,7 +437,7 @@ extension SubTargetQueryFilter
   }
 
   QueryBuilder<SubTarget, SubTarget, QAfterFilterCondition> nameLessThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -348,8 +452,8 @@ extension SubTargetQueryFilter
   }
 
   QueryBuilder<SubTarget, SubTarget, QAfterFilterCondition> nameBetween(
-    String lower,
-    String upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -454,6 +558,30 @@ extension SubTargetQuerySortBy on QueryBuilder<SubTarget, SubTarget, QSortBy> {
     });
   }
 
+  QueryBuilder<SubTarget, SubTarget, QAfterSortBy> sortByDelete() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'delete', Sort.asc);
+    });
+  }
+
+  QueryBuilder<SubTarget, SubTarget, QAfterSortBy> sortByDeleteDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'delete', Sort.desc);
+    });
+  }
+
+  QueryBuilder<SubTarget, SubTarget, QAfterSortBy> sortByMainTargetId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'mainTargetId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<SubTarget, SubTarget, QAfterSortBy> sortByMainTargetIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'mainTargetId', Sort.desc);
+    });
+  }
+
   QueryBuilder<SubTarget, SubTarget, QAfterSortBy> sortByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -481,6 +609,18 @@ extension SubTargetQuerySortThenBy
     });
   }
 
+  QueryBuilder<SubTarget, SubTarget, QAfterSortBy> thenByDelete() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'delete', Sort.asc);
+    });
+  }
+
+  QueryBuilder<SubTarget, SubTarget, QAfterSortBy> thenByDeleteDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'delete', Sort.desc);
+    });
+  }
+
   QueryBuilder<SubTarget, SubTarget, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -490,6 +630,18 @@ extension SubTargetQuerySortThenBy
   QueryBuilder<SubTarget, SubTarget, QAfterSortBy> thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
+    });
+  }
+
+  QueryBuilder<SubTarget, SubTarget, QAfterSortBy> thenByMainTargetId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'mainTargetId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<SubTarget, SubTarget, QAfterSortBy> thenByMainTargetIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'mainTargetId', Sort.desc);
     });
   }
 
@@ -511,6 +663,18 @@ extension SubTargetQueryWhereDistinct
   QueryBuilder<SubTarget, SubTarget, QDistinct> distinctByColor() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'color');
+    });
+  }
+
+  QueryBuilder<SubTarget, SubTarget, QDistinct> distinctByDelete() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'delete');
+    });
+  }
+
+  QueryBuilder<SubTarget, SubTarget, QDistinct> distinctByMainTargetId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'mainTargetId');
     });
   }
 
@@ -536,7 +700,19 @@ extension SubTargetQueryProperty
     });
   }
 
-  QueryBuilder<SubTarget, String, QQueryOperations> nameProperty() {
+  QueryBuilder<SubTarget, bool, QQueryOperations> deleteProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'delete');
+    });
+  }
+
+  QueryBuilder<SubTarget, int, QQueryOperations> mainTargetIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'mainTargetId');
+    });
+  }
+
+  QueryBuilder<SubTarget, String?, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
     });

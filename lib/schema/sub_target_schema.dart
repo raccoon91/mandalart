@@ -6,7 +6,11 @@ part 'sub_target_schema.g.dart';
 class SubTarget {
   Id id = Isar.autoIncrement;
 
-  late String name;
+  late int mainTargetId;
+
+  String? name;
 
   int? color;
+
+  bool delete = false;
 }

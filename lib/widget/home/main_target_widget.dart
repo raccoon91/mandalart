@@ -23,7 +23,7 @@ class MainTargetWidget extends StatelessWidget {
             color: color,
             borderRadius: BorderRadius.circular(4),
           ),
-          child: Text(mainTarget.name),
+          child: Text(mainTarget.name ?? ""),
         ),
       ),
     );

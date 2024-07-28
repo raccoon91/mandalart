@@ -5,6 +5,7 @@ class ColorWidget extends StatelessWidget {
   final bool? selected;
   final double? width;
   final double? height;
+  final double? margin;
   final ColorModel color;
 
   const ColorWidget({
@@ -12,6 +13,7 @@ class ColorWidget extends StatelessWidget {
     this.selected,
     this.width,
     this.height,
+    this.margin,
     required this.color,
   });
 
@@ -19,7 +21,8 @@ class ColorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: width ?? 60,
-      height: height ?? 24,
+      height: height ?? 30,
+      margin: EdgeInsets.all(margin ?? 0),
       decoration: BoxDecoration(
         color: color.color,
         borderRadius: BorderRadius.circular(2),

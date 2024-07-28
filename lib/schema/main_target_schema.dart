@@ -1,5 +1,4 @@
 import 'package:isar/isar.dart';
-import 'package:mandalart/schema/sub_target_schema.dart';
 
 part 'main_target_schema.g.dart';
 
@@ -7,9 +6,11 @@ part 'main_target_schema.g.dart';
 class MainTarget {
   Id id = Isar.autoIncrement;
 
-  late String name;
+  late int projectId;
+
+  String? name;
 
   int? color;
 
-  final subTargets = IsarLinks<SubTarget>();
+  bool delete = false;
 }

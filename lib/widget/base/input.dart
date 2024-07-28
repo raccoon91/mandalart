@@ -3,7 +3,7 @@ import 'package:mandalart/theme/color.dart';
 
 class Input extends StatelessWidget {
   final bool? autofocus;
-  final String hintText;
+  final String placeholder;
   final TextEditingController? controller;
   final void Function(String)? onChanged;
   final void Function(String)? onSubmitted;
@@ -11,7 +11,7 @@ class Input extends StatelessWidget {
   const Input({
     super.key,
     this.autofocus,
-    this.hintText = "텍스트를 입력해주세요",
+    this.placeholder = "텍스트를 입력해주세요",
     this.controller,
     this.onChanged,
     this.onSubmitted,
@@ -25,7 +25,7 @@ class Input extends StatelessWidget {
       onSubmitted: onSubmitted,
       autofocus: autofocus == true,
       decoration: InputDecoration(
-        hintText: hintText,
+        hintText: placeholder,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 8,

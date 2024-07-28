@@ -1,5 +1,4 @@
 import 'package:isar/isar.dart';
-import 'package:mandalart/schema/main_target_schema.dart';
 
 part 'project_schema.g.dart';
 
@@ -7,11 +6,11 @@ part 'project_schema.g.dart';
 class Project {
   Id id = Isar.autoIncrement;
 
+  bool progress = false;
+
   late String name;
 
   int? color;
 
-  bool isDefault = false;
-
-  final mainTargets = IsarLinks<MainTarget>();
+  bool delete = false;
 }

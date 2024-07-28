@@ -21,7 +21,7 @@ class _ProjectStartScreenState extends State<ProjectStartScreen> {
       title: "목표 설정",
       body: Center(
         child: Button(
-          text: "Start Project",
+          text: "시작하기",
           onPressed: startTapped,
         ),
       ),

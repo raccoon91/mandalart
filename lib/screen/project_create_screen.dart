@@ -35,7 +35,7 @@ class _ProjectCreateScreenState extends State<ProjectCreateScreen> {
   }
 
   createTapped() async {
-    await Provider.of<HomeProvider>(context, listen: false).createProject(
+    await Provider.of<HomeProvider>(context, listen: false).createMandal(
       projectController.text,
       color,
     );
@@ -58,6 +58,7 @@ class _ProjectCreateScreenState extends State<ProjectCreateScreen> {
             const SizedBox(height: 30),
             Input(
               autofocus: true,
+              placeholder: "목표를 입력하세요",
               controller: projectController,
               onChanged: nameChanged,
             ),
@@ -65,7 +66,7 @@ class _ProjectCreateScreenState extends State<ProjectCreateScreen> {
             SizedBox(
               width: double.infinity,
               child: Button(
-                text: "Create Project",
+                text: "목표 만들기",
                 onPressed: enabled ? createTapped : null,
               ),
             ),

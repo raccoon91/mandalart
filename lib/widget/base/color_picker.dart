@@ -37,15 +37,14 @@ class ColorPicker extends StatelessWidget {
       children: [
         LayoutBuilder(
           builder: (context, constraints) => Wrap(
-            spacing: 5,
-            runSpacing: 5,
             children: List.generate(
               colorList.length,
               (index) => GestureDetector(
                 onTap: colorTapped(colorList[index]),
                 child: ColorWidget(
                   selected: color == colorList[index].color,
-                  width: (constraints.maxWidth / 3) - (5 * 2),
+                  width: (constraints.maxWidth / 3) - (4 * 2),
+                  margin: 4,
                   color: colorList[index],
                 ),
               ),

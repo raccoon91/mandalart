@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mandalart/theme/color.dart';
 
 class EmptyTargetWidget extends StatelessWidget {
   final Color? color;
+  final void Function()? onTap;
 
   const EmptyTargetWidget({
     super.key,
     this.color,
+    this.onTap,
   });
 
   @override
@@ -16,9 +17,7 @@ class EmptyTargetWidget extends StatelessWidget {
       child: AspectRatio(
         aspectRatio: 1,
         child: GestureDetector(
-          onTap: () {
-            context.push("/main-target/create");
-          },
+          onTap: onTap,
           child: Container(
             width: double.infinity,
             margin: const EdgeInsets.all(4),
