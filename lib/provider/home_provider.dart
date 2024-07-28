@@ -41,6 +41,19 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
+  Future<void> updateMandal(int? planId, String? name, Color? color) async {
+    try {
+      await PlanRepository().updatePlan(planId, name, color);
+      List<PlanModel>? plans = await PlanRepository().getPlans(project?.id);
+
+      _plans = plans;
+
+      notifyListeners();
+    } catch (error) {
+      rethrow;
+    }
+  }
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
