@@ -4,7 +4,7 @@ import 'package:mandalart/model/color_model.dart';
 class ColorClass {
   static const black = Color(0xFF282828);
   static const white = Color(0xFFFFFFFF);
-  static const gray = Color(0xFFEEEEEE);
+  static const gray = Color(0xFFAEAEAE);
   static const red = Color(0xFFFFB3BA);
   static const orange = Color(0xFFFFDFBA);
   static const yellow = Color(0xFFFFFFBA);
