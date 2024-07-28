@@ -17,7 +17,7 @@ class EmptyTargetWidget extends StatelessWidget {
         aspectRatio: 1,
         child: GestureDetector(
           onTap: () {
-            context.push("/create-main-target");
+            context.push("/main-target/create");
           },
           child: Container(
             width: double.infinity,
