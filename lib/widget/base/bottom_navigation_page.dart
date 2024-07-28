@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mandalart/theme/color.dart';
+import 'package:mandalart/widget/base/layout.dart';
 
 class BottomNavigationPage extends StatelessWidget {
   final String? title;
@@ -14,15 +15,9 @@ class BottomNavigationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: title == null
-          ? null
-          : AppBar(
-              centerTitle: true,
-              title: Text(title ?? ""),
-            ),
+    return Layout(
+      title: title,
       body: SafeArea(child: child),
-      backgroundColor: ColorClass.white,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: child.currentIndex,
         showSelectedLabels: false,

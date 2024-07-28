@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mandalart/widget/base/button.dart';
+import 'package:mandalart/widget/base/layout.dart';
 
 class ProjectStartScreen extends StatefulWidget {
   const ProjectStartScreen({super.key});
@@ -16,11 +17,8 @@ class _ProjectStartScreenState extends State<ProjectStartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text("목표 설정"),
-      ),
+    return Layout(
+      title: "목표 설정",
       body: Center(
         child: Button(
           text: "Start Project",

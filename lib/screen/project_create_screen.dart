@@ -5,6 +5,7 @@ import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/base/button.dart';
 import 'package:mandalart/widget/base/color_picker.dart';
 import 'package:mandalart/widget/base/input.dart';
+import 'package:mandalart/widget/base/layout.dart';
 import 'package:provider/provider.dart';
 
 class ProjectCreateScreen extends StatefulWidget {
@@ -46,11 +47,8 @@ class _ProjectCreateScreenState extends State<ProjectCreateScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text("목표 생성"),
-      ),
+    return Layout(
+      title: "목표 생성",
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: Column(
