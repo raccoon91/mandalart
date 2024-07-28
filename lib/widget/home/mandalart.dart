@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mandalart/model/mandal_model.dart';
 import 'package:mandalart/model/plan_model.dart';
 import 'package:mandalart/model/project_model.dart';
 import 'package:mandalart/widget/home/mandal_widget.dart';
 
 class Mandalart extends StatefulWidget {
   final ProjectModel? project;
-  final List<PlanModel>? plans;
+  final List<PlanModel?>? plans;
 
   const Mandalart({
     super.key,
@@ -20,12 +19,12 @@ class Mandalart extends StatefulWidget {
 }
 
 class _MandalartState extends State<Mandalart> {
-  void Function() goToPlanCreateScreen(int? planId) {
+  goToPlanCreateScreen(int? planId) {
     return () {
-      if (widget.project?.id == null || planId == null) return;
+      if (widget.project?.id == null) return;
 
       context.push(
-        "/main-target/create?projectId=${widget.project?.id}&planId=$planId",
+        "/main-target/create?${widget.project?.id != null ? 'projectId=${widget.project?.id}' : ""}&${planId != null ? 'planId=$planId' : ""}",
       );
     };
   }
@@ -37,12 +36,10 @@ class _MandalartState extends State<Mandalart> {
         Row(
           children: List.generate(3, (index) {
             return MandalWidget(
-              mandal: MandalModel.fromJson(
-                "plan",
-                widget.plans?[index],
-              ),
+              type: "plan",
+              data: widget.plans?[index],
               onTapEmpty: goToPlanCreateScreen(
-                widget.plans?[index].id,
+                widget.plans?[index]?.id,
               ),
             );
           }),
@@ -50,30 +47,24 @@ class _MandalartState extends State<Mandalart> {
         Row(
           children: [
             MandalWidget(
-              mandal: MandalModel.fromJson(
-                "plan",
-                widget.plans?[3],
-              ),
+              type: "plan",
+              data: widget.plans?[3],
               onTapEmpty: goToPlanCreateScreen(
-                widget.plans?[3].id,
+                widget.plans?[3]?.id,
               ),
             ),
             MandalWidget(
-              mandal: MandalModel.fromJson(
-                "plan",
-                widget.project,
-              ),
+              type: "project",
+              data: widget.project,
               onTapEmpty: goToPlanCreateScreen(
                 widget.project?.id,
               ),
             ),
             MandalWidget(
-              mandal: MandalModel.fromJson(
-                "plan",
-                widget.plans?[4],
-              ),
+              type: "plan",
+              data: widget.plans?[4],
               onTapEmpty: goToPlanCreateScreen(
-                widget.plans?[4].id,
+                widget.plans?[4]?.id,
               ),
             ),
           ],
@@ -81,12 +72,10 @@ class _MandalartState extends State<Mandalart> {
         Row(
           children: List.generate(3, (index) {
             return MandalWidget(
-              mandal: MandalModel.fromJson(
-                "plan",
-                widget.plans?[index + 5],
-              ),
+              type: "plan",
+              data: widget.plans?[index + 5],
               onTapEmpty: goToPlanCreateScreen(
-                widget.plans?[index + 5].id,
+                widget.plans?[index + 5]?.id,
               ),
             );
           }),

@@ -35,7 +35,7 @@ class _ProjectCreateScreenState extends State<ProjectCreateScreen> {
   }
 
   createTapped() async {
-    await Provider.of<HomeProvider>(context, listen: false).createMandal(
+    await Provider.of<HomeProvider>(context, listen: false).createMandalProject(
       projectController.text,
       color,
     );

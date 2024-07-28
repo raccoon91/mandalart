@@ -17,14 +17,16 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    getProgressMandal();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getProgressMandal();
+    });
   }
 
   Future<void> getProgressMandal() async {
     bool isEmpty = await Provider.of<HomeProvider>(
       context,
       listen: false,
-    ).getMandal();
+    ).getMandalProject();
 
     if (mounted && isEmpty) {
       context.go('/project');
@@ -38,16 +40,16 @@ class _HomeScreenState extends State<HomeScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 30),
       child: Consumer<HomeProvider>(
-        builder: (context, value, child) {
-          if (value.isEmpty) {
+        builder: (context, state, child) {
+          if (state.isEmpty) {
             return const Center(
               child: Text("목표를 설정하세요"),
             );
           }
 
           return Mandalart(
-            project: value.project,
-            plans: value.plans,
+            project: state.project,
+            plans: state.plans,
           );
         },
       ),

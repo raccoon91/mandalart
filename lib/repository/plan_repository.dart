@@ -28,6 +28,38 @@ class PlanRepository {
     }
   }
 
+  Future<PlanModel?> createPlan(
+    int? projectId,
+    int? planId,
+    String? name,
+    Color? color,
+  ) async {
+    try {
+      if (projectId == null) return null;
+
+      String colorString = color.toString();
+      String colorInteger = colorString.split('(0x')[1].split(')')[0];
+      int colorValue = int.parse(colorInteger, radix: 16);
+
+      final planSchema = Plan()
+        ..projectId = projectId
+        ..name = name
+        ..color = colorValue;
+
+      await IsarDB.isar.writeTxn(() async {
+        planSchema.id = await IsarDB.isar.plans.put(
+          planSchema,
+        );
+      });
+
+      final plan = PlanModel.fromJson(planSchema);
+
+      return plan;
+    } catch (error) {
+      rethrow;
+    }
+  }
+
   Future<PlanModel?> updatePlan(
     int? planId,
     String? name,

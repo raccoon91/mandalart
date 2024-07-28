@@ -3,22 +3,24 @@ import 'package:mandalart/model/mandal_model.dart';
 import 'package:mandalart/widget/home/empty_target_widget.dart';
 
 class MandalWidget extends StatelessWidget {
-  final MandalModel? mandal;
+  final String type;
+  final dynamic data;
   final void Function()? onTapEmpty;
 
   const MandalWidget({
     super.key,
-    this.mandal,
+    required this.type,
+    this.data,
     this.onTapEmpty,
   });
 
   @override
   Widget build(BuildContext context) {
-    if (mandal == null || mandal?.name == null) {
-      return EmptyTargetWidget(
-        onTap:
-            (mandal?.type == "plan" && onTapEmpty != null) ? onTapEmpty : null,
-      );
+    MandalModel? mandal =
+        data == null ? null : MandalModel.fromJson(type, data);
+
+    if (mandal == null || mandal.name == null) {
+      return EmptyTargetWidget(onTap: onTapEmpty);
     }
 
     return Flexible(
@@ -28,12 +30,12 @@ class MandalWidget extends StatelessWidget {
           width: double.infinity,
           margin: const EdgeInsets.all(4),
           decoration: BoxDecoration(
-            color: mandal?.color,
+            color: mandal.color,
             borderRadius: BorderRadius.circular(4),
           ),
           child: Center(
             child: Text(
-              mandal?.name ?? "",
+              mandal.name ?? "",
               style: const TextStyle(fontWeight: FontWeight.w700),
             ),
           ),

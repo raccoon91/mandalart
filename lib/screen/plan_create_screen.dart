@@ -42,7 +42,8 @@ class _PlanCreateScreenState extends State<PlanCreateScreen> {
   }
 
   createTapped() async {
-    await Provider.of<HomeProvider>(context, listen: false).updateMandal(
+    await Provider.of<HomeProvider>(context, listen: false).upsertMandalPlan(
+      widget.projectId != null ? int.parse(widget.projectId!) : null,
       widget.planId != null ? int.parse(widget.planId!) : null,
       planController.text,
       color,

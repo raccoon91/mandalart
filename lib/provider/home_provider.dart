@@ -6,51 +6,98 @@ import 'package:mandalart/repository/plan_repository.dart';
 import 'package:mandalart/repository/project_repository.dart';
 
 class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
+  bool _isLoading = false;
   ProjectModel? _project;
-  List<PlanModel>? _plans;
+  List<PlanModel?>? _plans;
 
   bool get isEmpty => _project == null || _plans == null;
+  bool get isLoading => _isLoading;
   ProjectModel? get project => _project;
-  List<PlanModel>? get plans => _plans;
+  List<PlanModel?>? get plans => _plans;
 
-  Future<bool> getMandal() async {
+  Future<bool> getMandalProject() async {
     try {
+      _isLoading = true;
+
+      notifyListeners();
+
       ProjectModel? project = await ProjectRepository().getProject();
       List<PlanModel>? plans = await PlanRepository().getPlans(project?.id);
 
       _project = project;
-      _plans = plans;
+      _plans = List.generate(8, (index) {
+        if (plans == null || index >= plans.length) return null;
 
-      notifyListeners();
+        PlanModel? plan = plans[index];
+
+        return plan;
+      });
 
       return project == null || plans == null;
     } catch (error) {
       rethrow;
+    } finally {
+      _isLoading = false;
+
+      notifyListeners();
     }
   }
 
-  Future<void> createMandal(String name, Color color) async {
+  Future<void> createMandalProject(String name, Color color) async {
     try {
+      _isLoading = true;
+
+      notifyListeners();
+
       _project = await ProjectRepository().createProjectWithEmptyPlans(
         name,
         color,
       );
-      notifyListeners();
     } catch (error) {
       rethrow;
+    } finally {
+      _isLoading = false;
+
+      notifyListeners();
     }
   }
 
-  Future<void> updateMandal(int? planId, String? name, Color? color) async {
+  Future<void> upsertMandalPlan(
+    int? projectId,
+    int? planId,
+    String? name,
+    Color? color,
+  ) async {
     try {
-      await PlanRepository().updatePlan(planId, name, color);
-      List<PlanModel>? plans = await PlanRepository().getPlans(project?.id);
+      List<PlanModel>? plans;
 
-      _plans = plans;
+      _isLoading = true;
+
+      notifyListeners();
+
+      if (planId == null) {
+        await PlanRepository().createPlan(projectId, planId, name, color);
+        plans = await PlanRepository().getPlans(project?.id);
+      } else {
+        await PlanRepository().updatePlan(planId, name, color);
+        plans = await PlanRepository().getPlans(project?.id);
+      }
+
+      _plans = List.generate(8, (index) {
+        if (plans == null || index >= plans.length) return null;
+
+        PlanModel? plan = plans[index];
+
+        return plan;
+      });
 
       notifyListeners();
     } catch (error) {
       rethrow;
+    } finally {
+      _isLoading = false;
+
+      notifyListeners();
     }
   }
 
