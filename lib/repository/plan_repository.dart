@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:mandalart/db/isar_db.dart';
-import 'package:mandalart/model/main_target_model.dart';
-import 'package:mandalart/schema/main_target_schema.dart';
+import 'package:mandalart/model/plan_model.dart';
+import 'package:mandalart/schema/plan_schema.dart';
 import 'package:mandalart/schema/project_schema.dart';
 
-class MainTargetRepository {
-  Future<List<MainTargetModel>?> getMainTargets(int? projectId) async {
+class PlanRepository {
+  Future<List<PlanModel>?> getPlans(int? projectId) async {
     try {
       if (projectId == null) return null;
 
@@ -15,21 +15,20 @@ class MainTargetRepository {
 
       if (projectSchema == null) return null;
 
-      final mainTargetsSchema = await IsarDB.isar.mainTargets
+      final plansSchema = await IsarDB.isar.plans
           .filter()
           .projectIdEqualTo(projectId)
           .findAll();
 
-      List<MainTargetModel> mainTargets =
-          mainTargetsSchema.map(MainTargetModel.fromJson).toList();
+      List<PlanModel> plans = plansSchema.map(PlanModel.fromJson).toList();
 
-      return mainTargets;
+      return plans;
     } catch (error) {
       rethrow;
     }
   }
 
-  Future<MainTargetModel?> createMainTarget(
+  Future<PlanModel?> createPlan(
     int? projectId,
     String name,
     Color color,
@@ -46,19 +45,19 @@ class MainTargetRepository {
       String colorInteger = colorString.split('(0x')[1].split(')')[0];
       int colorValue = int.parse(colorInteger, radix: 16);
 
-      final mainTargetSchema = MainTarget()
+      final planSchema = Plan()
         ..name = name
         ..color = colorValue;
 
       await IsarDB.isar.writeTxn(() async {
-        mainTargetSchema.id = await IsarDB.isar.mainTargets.put(
-          mainTargetSchema,
+        planSchema.id = await IsarDB.isar.plans.put(
+          planSchema,
         );
       });
 
-      final mainTarget = MainTargetModel.fromJson(mainTargetSchema);
+      final plan = PlanModel.fromJson(planSchema);
 
-      return mainTarget;
+      return plan;
     } catch (error) {
       rethrow;
     }

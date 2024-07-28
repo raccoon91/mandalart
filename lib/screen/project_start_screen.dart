@@ -18,10 +18,9 @@ class _ProjectStartScreenState extends State<ProjectStartScreen> {
   @override
   Widget build(BuildContext context) {
     return Layout(
-      title: "목표 설정",
       body: Center(
         child: Button(
-          text: "시작하기",
+          text: "목표 설정하기",
           onPressed: startTapped,
         ),
       ),

@@ -8,22 +8,22 @@ import 'package:mandalart/widget/base/input.dart';
 import 'package:mandalart/widget/base/layout.dart';
 import 'package:provider/provider.dart';
 
-class MainTargetCreateScreen extends StatefulWidget {
+class PlanCreateScreen extends StatefulWidget {
   final String? projectId;
-  final String? mainTargetId;
+  final String? planId;
 
-  const MainTargetCreateScreen({
+  const PlanCreateScreen({
     super.key,
     required this.projectId,
-    required this.mainTargetId,
+    required this.planId,
   });
 
   @override
-  State<MainTargetCreateScreen> createState() => _MainTargetCreateScreenState();
+  State<PlanCreateScreen> createState() => _PlanCreateScreenState();
 }
 
-class _MainTargetCreateScreenState extends State<MainTargetCreateScreen> {
-  final mainTargetController = TextEditingController();
+class _PlanCreateScreenState extends State<PlanCreateScreen> {
+  final planController = TextEditingController();
   Color color = ColorClass.skyBlue;
   bool enabled = false;
 
@@ -43,7 +43,7 @@ class _MainTargetCreateScreenState extends State<MainTargetCreateScreen> {
 
   createTapped() async {
     await Provider.of<HomeProvider>(context, listen: false).createMandal(
-      mainTargetController.text,
+      planController.text,
       color,
     );
 
@@ -55,7 +55,7 @@ class _MainTargetCreateScreenState extends State<MainTargetCreateScreen> {
   @override
   Widget build(BuildContext context) {
     return Layout(
-      title: "계획 생성",
+      title: "계획",
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: Column(
@@ -66,7 +66,7 @@ class _MainTargetCreateScreenState extends State<MainTargetCreateScreen> {
             Input(
               autofocus: true,
               placeholder: "계획을 입력하세요",
-              controller: mainTargetController,
+              controller: planController,
               onChanged: nameChanged,
             ),
             const SizedBox(height: 40),

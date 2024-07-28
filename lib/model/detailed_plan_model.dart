@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:mandalart/schema/sub_target_schema.dart';
+import 'package:mandalart/schema/detailed_plan_schema.dart';
 
-class SubTargetModel {
+class DetailedPlanModel {
   int id;
   String? name;
   Color? color;
   bool delete;
 
-  SubTargetModel({
+  DetailedPlanModel({
     required this.id,
     this.name,
     this.color,
     required this.delete,
   });
 
-  factory SubTargetModel.fromJson(SubTarget schema) {
+  factory DetailedPlanModel.fromJson(DetailedPlan schema) {
     Color? color = schema.color != null ? Color(schema.color!) : null;
 
-    return SubTargetModel(
+    return DetailedPlanModel(
       id: schema.id,
       name: schema.name,
       color: color,

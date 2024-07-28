@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mandalart/router/get_page.dart';
 import 'package:mandalart/router/slide_transition_page.dart';
 import 'package:mandalart/screen/home_screen.dart';
-import 'package:mandalart/screen/main_target_create_screen.dart';
+import 'package:mandalart/screen/plan_create_screen.dart';
 import 'package:mandalart/screen/project_create_screen.dart';
 import 'package:mandalart/screen/project_start_screen.dart';
 import 'package:mandalart/screen/setting_screen.dart';
@@ -88,9 +88,9 @@ final GoRouter router = GoRouter(
       pageBuilder: (BuildContext context, GoRouterState state) {
         return slideTransitionPage(
           state: state,
-          child: MainTargetCreateScreen(
+          child: PlanCreateScreen(
             projectId: state.uri.queryParameters['projectId'],
-            mainTargetId: state.uri.queryParameters['mainTargetId'],
+            planId: state.uri.queryParameters['planId'],
           ),
         );
       },

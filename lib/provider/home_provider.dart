@@ -1,30 +1,29 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:mandalart/model/main_target_model.dart';
+import 'package:mandalart/model/plan_model.dart';
 import 'package:mandalart/model/project_model.dart';
-import 'package:mandalart/repository/main_target_repository.dart';
+import 'package:mandalart/repository/plan_repository.dart';
 import 'package:mandalart/repository/project_repository.dart';
 
 class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
   ProjectModel? _project;
-  List<MainTargetModel>? _mainTargets;
+  List<PlanModel>? _plans;
 
-  bool get isEmpty => _project == null || _mainTargets == null;
+  bool get isEmpty => _project == null || _plans == null;
   ProjectModel? get project => _project;
-  List<MainTargetModel>? get mainTargets => _mainTargets;
+  List<PlanModel>? get plans => _plans;
 
   Future<bool> getMandal() async {
     try {
       ProjectModel? project = await ProjectRepository().getProject();
-      List<MainTargetModel>? mainTargets =
-          await MainTargetRepository().getMainTargets(project?.id);
+      List<PlanModel>? plans = await PlanRepository().getPlans(project?.id);
 
       _project = project;
-      _mainTargets = mainTargets;
+      _plans = plans;
 
       notifyListeners();
 
-      return project == null || mainTargets == null;
+      return project == null || plans == null;
     } catch (error) {
       rethrow;
     }
@@ -32,7 +31,7 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
   Future<void> createMandal(String name, Color color) async {
     try {
-      _project = await ProjectRepository().createProjectWithEmptyMainTargets(
+      _project = await ProjectRepository().createProjectWithEmptyPlans(
         name,
         color,
       );

@@ -48,7 +48,7 @@ class _ProjectCreateScreenState extends State<ProjectCreateScreen> {
   @override
   Widget build(BuildContext context) {
     return Layout(
-      title: "목표 생성",
+      title: "목표",
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: Column(
@@ -66,7 +66,7 @@ class _ProjectCreateScreenState extends State<ProjectCreateScreen> {
             SizedBox(
               width: double.infinity,
               child: Button(
-                text: "목표 만들기",
+                text: "시작하기",
                 onPressed: enabled ? createTapped : null,
               ),
             ),

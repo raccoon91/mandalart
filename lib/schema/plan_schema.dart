@@ -1,9 +1,9 @@
 import 'package:isar/isar.dart';
 
-part 'main_target_schema.g.dart';
+part 'plan_schema.g.dart';
 
 @collection
-class MainTarget {
+class Plan {
   Id id = Isar.autoIncrement;
 
   late int projectId;

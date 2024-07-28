@@ -16,9 +16,8 @@ class MandalWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     if (mandal == null || mandal?.name == null) {
       return EmptyTargetWidget(
-        onTap: (mandal?.type == "mainTarget" && onTapEmpty != null)
-            ? onTapEmpty
-            : null,
+        onTap:
+            (mandal?.type == "plan" && onTapEmpty != null) ? onTapEmpty : null,
       );
     }
 
