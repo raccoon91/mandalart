@@ -19,15 +19,19 @@ class MandalWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     MandalModel? mandal = data == null
         ? null
-        : MandalModel.fromJson(
+        : MandalModel.fromSchema(
             type,
             data,
           );
 
     if (mandal == null || mandal.name == null) {
-      return EmptyPlanWidget(onTap: onTapEmpty);
+      return Flexible(
+        child: EmptyPlanWidget(onTap: onTapEmpty),
+      );
     }
 
-    return PlanWidget(mandal: mandal);
+    return Flexible(
+      child: PlanWidget(mandal: mandal),
+    );
   }
 }

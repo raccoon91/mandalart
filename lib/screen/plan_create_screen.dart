@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mandalart/model/mandal_model.dart';
 import 'package:mandalart/provider/home_provider.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/base/button.dart';
 import 'package:mandalart/widget/base/color_picker.dart';
 import 'package:mandalart/widget/base/input.dart';
 import 'package:mandalart/widget/base/layout.dart';
+import 'package:mandalart/widget/home/plan_widget.dart';
 import 'package:provider/provider.dart';
 
 class PlanCreateScreen extends StatefulWidget {
@@ -56,6 +58,15 @@ class _PlanCreateScreenState extends State<PlanCreateScreen> {
 
   @override
   Widget build(BuildContext context) {
+    MandalModel mandal = MandalModel.fromJson(
+      'plan',
+      {
+        "id": 0,
+        "name": planController.text,
+        "color": color,
+      },
+    );
+
     return Layout(
       title: "계획",
       body: Padding(
@@ -65,13 +76,33 @@ class _PlanCreateScreenState extends State<PlanCreateScreen> {
           children: [
             ColorPicker(color: color, onTapped: colorTapped),
             const SizedBox(height: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Flexible(
+                  flex: 1,
+                  child: SizedBox(),
+                ),
+                Flexible(
+                  flex: 1,
+                  child: PlanWidget(
+                    mandal: mandal,
+                  ),
+                ),
+                const Flexible(
+                  flex: 1,
+                  child: SizedBox(),
+                ),
+              ],
+            ),
+            const SizedBox(height: 30),
             Input(
               autofocus: true,
               placeholder: "계획을 입력하세요",
               controller: planController,
               onChanged: nameChanged,
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 50),
             SizedBox(
               width: double.infinity,
               child: Button(

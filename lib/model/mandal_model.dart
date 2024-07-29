@@ -13,12 +13,21 @@ class MandalModel {
     this.color,
   });
 
-  factory MandalModel.fromJson(String type, dynamic json) {
+  factory MandalModel.fromSchema(String type, dynamic schema) {
     return MandalModel(
-      id: json.id,
+      id: schema.id,
       type: type,
-      name: json.name,
-      color: json.color,
+      name: schema.name,
+      color: schema.color,
+    );
+  }
+
+  factory MandalModel.fromJson(String type, Map<String, dynamic> json) {
+    return MandalModel(
+      id: json['id'],
+      type: type,
+      name: json['name'],
+      color: json['color'],
     );
   }
 }
