@@ -18,29 +18,40 @@ class BottomNavigationLayout extends StatelessWidget {
     return Layout(
       title: title,
       body: SafeArea(child: child),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: child.currentIndex,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        selectedItemColor: ColorClass.blue,
-        unselectedItemColor: ColorClass.gray,
-        backgroundColor: ColorClass.under,
-        onTap: (index) {
-          child.goBranch(
-            index,
-            initialLocation: index == child.currentIndex,
-          );
-        },
-        items: const [
-          BottomNavigationBarItem(
-            label: 'Home',
-            icon: Icon(Icons.home_filled),
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.all(20),
+        height: 90,
+        child: ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(30)),
+          child: BottomNavigationBar(
+            currentIndex: child.currentIndex,
+            selectedFontSize: 0,
+            unselectedFontSize: 0,
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
+            backgroundColor: ColorClass.under,
+            selectedItemColor: ColorClass.blue,
+            unselectedItemColor: ColorClass.border,
+            onTap: (index) {
+              child.goBranch(
+                index,
+                initialLocation: index == child.currentIndex,
+              );
+            },
+            items: const [
+              BottomNavigationBarItem(
+                label: 'Home',
+                icon: SizedBox(
+                  child: Icon(Icons.home_filled),
+                ),
+              ),
+              BottomNavigationBarItem(
+                label: 'Setting',
+                icon: Icon(Icons.settings),
+              ),
+            ],
           ),
-          BottomNavigationBarItem(
-            label: 'Setting',
-            icon: Icon(Icons.settings),
-          ),
-        ],
+        ),
       ),
     );
   }

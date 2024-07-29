@@ -4,8 +4,9 @@ import 'package:mandalart/model/color_model.dart';
 class ColorClass {
   static const black = Color(0xFF282828);
   static const white = Color(0xFFFFFFFF);
-  static const under = Color(0xFFFAFAFA);
-  static const gray = Color(0xFFAEAEAE);
+  static const under = Color(0xFFF5F5F5);
+  static const border = Color(0xFFC5C5C5);
+  static const gray = Color(0xFFA5A5A5);
   static const red = Color(0xFFFFB3BA);
   static const orange = Color(0xFFFFDFBA);
   static const yellow = Color(0xFFFFFFBA);
@@ -28,7 +29,7 @@ class ColorMap {
   );
   static ColorModel gray = ColorModel(
     name: 'Gray',
-    color: const Color(0xFFEEEEEE),
+    color: const Color(0xFFA5A5A5),
   );
   static ColorModel red = ColorModel(
     name: 'Red',

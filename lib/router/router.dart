@@ -9,6 +9,10 @@ import 'package:mandalart/screen/project_start_screen.dart';
 import 'package:mandalart/screen/setting_screen.dart';
 import 'package:mandalart/widget/base/bottom_navigation_layout.dart';
 
+final screenTitleMap = {
+  '/': "만다라트",
+};
+
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _homeTabNavigatorKey = GlobalKey<NavigatorState>();
 final _settingTabNavigatorKey = GlobalKey<NavigatorState>();
@@ -53,6 +57,7 @@ final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
     return getPage(
       state: state,
       child: BottomNavigationLayout(
+        title: screenTitleMap[state.fullPath],
         child: navigationShell,
       ),
     );
