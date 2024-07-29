@@ -13,7 +13,7 @@ class ProjectRepository {
 
       if (projectSchema == null) return null;
 
-      final project = ProjectModel.fromJson(projectSchema);
+      final project = ProjectModel.fromSchema(projectSchema);
 
       return project;
     } catch (error) {
@@ -47,7 +47,7 @@ class ProjectRepository {
         }
       });
 
-      final project = ProjectModel.fromJson(projectSchema);
+      final project = ProjectModel.fromSchema(projectSchema);
 
       return project;
     } catch (error) {

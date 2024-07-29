@@ -16,7 +16,7 @@ class ProjectModel {
     required this.delete,
   });
 
-  factory ProjectModel.fromJson(Project schema) {
+  factory ProjectModel.fromSchema(Project schema) {
     Color? color = schema.color != null ? Color(schema.color!) : null;
 
     return ProjectModel(

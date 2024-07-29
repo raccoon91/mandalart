@@ -14,7 +14,7 @@ class DetailedPlanModel {
     required this.delete,
   });
 
-  factory DetailedPlanModel.fromJson(DetailedPlan schema) {
+  factory DetailedPlanModel.fromSchema(DetailedPlan schema) {
     Color? color = schema.color != null ? Color(schema.color!) : null;
 
     return DetailedPlanModel(

@@ -20,7 +20,7 @@ class PlanRepository {
           .projectIdEqualTo(projectId)
           .findAll();
 
-      List<PlanModel> plans = plansSchema.map(PlanModel.fromJson).toList();
+      List<PlanModel> plans = plansSchema.map(PlanModel.fromSchema).toList();
 
       return plans;
     } catch (error) {
@@ -52,7 +52,7 @@ class PlanRepository {
         );
       });
 
-      final plan = PlanModel.fromJson(planSchema);
+      final plan = PlanModel.fromSchema(planSchema);
 
       return plan;
     } catch (error) {
@@ -86,7 +86,7 @@ class PlanRepository {
         );
       });
 
-      final plan = PlanModel.fromJson(planSchema);
+      final plan = PlanModel.fromSchema(planSchema);
 
       return plan;
     } catch (error) {
