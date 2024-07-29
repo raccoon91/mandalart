@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mandalart/model/mandal_model.dart';
 import 'package:mandalart/widget/home/empty_plan_widget.dart';
+import 'package:mandalart/widget/home/plan_widget.dart';
 
 class MandalWidget extends StatelessWidget {
   final String type;
@@ -27,24 +28,6 @@ class MandalWidget extends StatelessWidget {
       return EmptyPlanWidget(onTap: onTapEmpty);
     }
 
-    return Flexible(
-      child: AspectRatio(
-        aspectRatio: 1,
-        child: Container(
-          width: double.infinity,
-          margin: const EdgeInsets.all(4),
-          decoration: BoxDecoration(
-            color: mandal.color,
-            borderRadius: BorderRadius.circular(4),
-          ),
-          child: Center(
-            child: Text(
-              mandal.name ?? "",
-              style: const TextStyle(fontWeight: FontWeight.w700),
-            ),
-          ),
-        ),
-      ),
-    );
+    return PlanWidget(mandal: mandal);
   }
 }
