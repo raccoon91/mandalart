@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mandalart/theme/color.dart';
 
-class EmptyTargetWidget extends StatelessWidget {
+class EmptyPlanWidget extends StatelessWidget {
   final Color? color;
   final void Function()? onTap;
 
-  const EmptyTargetWidget({
+  const EmptyPlanWidget({
     super.key,
     this.color,
     this.onTap,

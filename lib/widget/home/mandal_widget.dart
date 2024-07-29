@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mandalart/model/mandal_model.dart';
-import 'package:mandalart/widget/home/empty_target_widget.dart';
+import 'package:mandalart/widget/home/empty_plan_widget.dart';
 
 class MandalWidget extends StatelessWidget {
   final String type;
@@ -16,11 +16,15 @@ class MandalWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    MandalModel? mandal =
-        data == null ? null : MandalModel.fromJson(type, data);
+    MandalModel? mandal = data == null
+        ? null
+        : MandalModel.fromJson(
+            type,
+            data,
+          );
 
     if (mandal == null || mandal.name == null) {
-      return EmptyTargetWidget(onTap: onTapEmpty);
+      return EmptyPlanWidget(onTap: onTapEmpty);
     }
 
     return Flexible(
