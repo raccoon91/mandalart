@@ -34,7 +34,7 @@ class _PlanCreateScreenState extends State<PlanCreateScreen> {
     setState(() {});
   }
 
-  nameChanged(String data) {
+  planChanged(String data) {
     if (data.isEmpty) {
       enabled = false;
     } else {
@@ -69,49 +69,57 @@ class _PlanCreateScreenState extends State<PlanCreateScreen> {
 
     return Layout(
       title: "계획",
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ColorPicker(color: color, onTapped: colorTapped),
-            const SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Flexible(
-                  flex: 1,
-                  child: SizedBox(),
-                ),
-                Flexible(
-                  flex: 1,
-                  child: PlanWidget(
-                    mandal: mandal,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Flexible(
+                        flex: 1,
+                        child: SizedBox(),
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: PlanWidget(
+                          mandal: mandal,
+                        ),
+                      ),
+                      const Flexible(
+                        flex: 1,
+                        child: SizedBox(),
+                      ),
+                    ],
                   ),
-                ),
-                const Flexible(
-                  flex: 1,
-                  child: SizedBox(),
-                ),
-              ],
-            ),
-            const SizedBox(height: 30),
-            Input(
-              autofocus: true,
-              placeholder: "계획을 입력하세요",
-              controller: planController,
-              onChanged: nameChanged,
-            ),
-            const SizedBox(height: 50),
-            SizedBox(
-              width: double.infinity,
-              child: Button(
-                text: "계획 만들기",
-                onPressed: enabled ? createTapped : null,
+                  const SizedBox(height: 30),
+                  ColorPicker(color: color, onTapped: colorTapped),
+                  const SizedBox(height: 30),
+                  Input(
+                    autofocus: true,
+                    placeholder: "계획을 입력하세요",
+                    controller: planController,
+                    onChanged: planChanged,
+                  ),
+                  const SizedBox(height: 10),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 20),
+          SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: Button(
+              text: "계획 만들기",
+              onPressed: enabled ? createTapped : null,
+            ),
+          ),
+        ],
       ),
     );
   }

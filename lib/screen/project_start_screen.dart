@@ -19,9 +19,12 @@ class _ProjectStartScreenState extends State<ProjectStartScreen> {
   Widget build(BuildContext context) {
     return Layout(
       body: Center(
-        child: Button(
-          text: "목표 설정하기",
-          onPressed: startTapped,
+        child: SizedBox(
+          height: 50,
+          child: Button(
+            text: "목표 설정하기",
+            onPressed: startTapped,
+          ),
         ),
       ),
     );

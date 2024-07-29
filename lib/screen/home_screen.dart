@@ -37,8 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+    return SingleChildScrollView(
       child: Consumer<HomeProvider>(
         builder: (context, state, child) {
           if (state.isEmpty) {

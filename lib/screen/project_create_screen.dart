@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mandalart/model/mandal_model.dart';
 import 'package:mandalart/provider/home_provider.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/base/button.dart';
 import 'package:mandalart/widget/base/color_picker.dart';
 import 'package:mandalart/widget/base/input.dart';
 import 'package:mandalart/widget/base/layout.dart';
+import 'package:mandalart/widget/home/plan_widget.dart';
 import 'package:provider/provider.dart';
 
 class ProjectCreateScreen extends StatefulWidget {
@@ -25,7 +27,7 @@ class _ProjectCreateScreenState extends State<ProjectCreateScreen> {
     setState(() {});
   }
 
-  nameChanged(String data) {
+  projectChanged(String data) {
     if (data.isEmpty) {
       enabled = false;
     } else {
@@ -47,31 +49,67 @@ class _ProjectCreateScreenState extends State<ProjectCreateScreen> {
 
   @override
   Widget build(BuildContext context) {
+    MandalModel mandal = MandalModel.fromJson(
+      'plan',
+      {
+        "name": projectController.text,
+        "color": color,
+      },
+    );
+
     return Layout(
       title: "목표",
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ColorPicker(color: color, onTapped: colorTapped),
-            const SizedBox(height: 30),
-            Input(
-              autofocus: true,
-              placeholder: "목표를 입력하세요",
-              controller: projectController,
-              onChanged: nameChanged,
-            ),
-            const SizedBox(height: 40),
-            SizedBox(
-              width: double.infinity,
-              child: Button(
-                text: "시작하기",
-                onPressed: enabled ? createTapped : null,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Flexible(
+                        flex: 1,
+                        child: SizedBox(),
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: PlanWidget(
+                          mandal: mandal,
+                        ),
+                      ),
+                      const Flexible(
+                        flex: 1,
+                        child: SizedBox(),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 30),
+                  ColorPicker(color: color, onTapped: colorTapped),
+                  const SizedBox(height: 30),
+                  Input(
+                    autofocus: true,
+                    placeholder: "목표를 입력하세요",
+                    controller: projectController,
+                    onChanged: projectChanged,
+                  ),
+                  const SizedBox(height: 10),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 20),
+          SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: Button(
+              text: "시작하기",
+              onPressed: enabled ? createTapped : null,
+            ),
+          ),
+        ],
       ),
     );
   }

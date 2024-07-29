@@ -21,7 +21,7 @@ class ColorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: width ?? 60,
-      height: height ?? 30,
+      height: height ?? 40,
       margin: EdgeInsets.all(margin ?? 0),
       decoration: BoxDecoration(
         color: color.color,

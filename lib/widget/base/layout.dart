@@ -29,7 +29,12 @@ class Layout extends StatelessWidget {
               ),
             ),
       backgroundColor: ColorClass.white,
-      body: body,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+          child: body,
+        ),
+      ),
       bottomNavigationBar: bottomNavigationBar,
     );
   }
