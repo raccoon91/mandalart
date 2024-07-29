@@ -3,11 +3,11 @@ import 'package:go_router/go_router.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/base/layout.dart';
 
-class BottomNavigationPage extends StatelessWidget {
+class BottomNavigationLayout extends StatelessWidget {
   final String? title;
   final StatefulNavigationShell child;
 
-  const BottomNavigationPage({
+  const BottomNavigationLayout({
     super.key,
     this.title,
     required this.child,
