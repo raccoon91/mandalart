@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:mandalart/db/isar_db.dart';
 import 'package:mandalart/model/plan_model.dart';
+import 'package:mandalart/schema/detailed_plan_schema.dart';
 import 'package:mandalart/schema/plan_schema.dart';
 import 'package:mandalart/schema/project_schema.dart';
 
@@ -46,9 +47,23 @@ class PlanRepository {
         ..color = colorValue;
 
       await IsarDB.isar.writeTxn(() async {
-        planSchema.id = await IsarDB.isar.plans.put(
+        int planId = await IsarDB.isar.plans.put(
           planSchema,
         );
+
+        planSchema.id = planId;
+
+        for (int index = 0; index < 8; index++) {
+          final detailedPlanSchema = DetailedPlan()..planId = planId;
+
+          planSchema.detailedPlans.add(detailedPlanSchema);
+
+          await IsarDB.isar.detailedPlans.put(
+            detailedPlanSchema,
+          );
+        }
+
+        await planSchema.detailedPlans.save();
       });
 
       final plan = PlanModel.fromSchema(planSchema);

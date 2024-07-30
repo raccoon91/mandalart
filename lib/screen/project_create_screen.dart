@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mandalart/model/mandal_model.dart';
 import 'package:mandalart/provider/home_provider.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/base/button.dart';
 import 'package:mandalart/widget/base/color_picker.dart';
 import 'package:mandalart/widget/base/input.dart';
 import 'package:mandalart/widget/base/layout.dart';
-import 'package:mandalart/widget/home/plan_widget.dart';
+import 'package:mandalart/widget/home/card_widget.dart';
 import 'package:provider/provider.dart';
 
 class ProjectCreateScreen extends StatefulWidget {
@@ -49,14 +48,6 @@ class _ProjectCreateScreenState extends State<ProjectCreateScreen> {
 
   @override
   Widget build(BuildContext context) {
-    MandalModel mandal = MandalModel.fromJson(
-      'plan',
-      {
-        "name": projectController.text,
-        "color": color,
-      },
-    );
-
     return Layout(
       title: "목표",
       body: Column(
@@ -76,8 +67,9 @@ class _ProjectCreateScreenState extends State<ProjectCreateScreen> {
                       ),
                       Flexible(
                         flex: 1,
-                        child: PlanWidget(
-                          mandal: mandal,
+                        child: CardWidget(
+                          name: projectController.text,
+                          color: color,
                         ),
                       ),
                       const Flexible(

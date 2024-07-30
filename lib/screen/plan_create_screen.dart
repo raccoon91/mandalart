@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mandalart/model/mandal_model.dart';
 import 'package:mandalart/model/plan_model.dart';
 import 'package:mandalart/provider/home_provider.dart';
 import 'package:mandalart/theme/color.dart';
@@ -8,7 +7,7 @@ import 'package:mandalart/widget/base/button.dart';
 import 'package:mandalart/widget/base/color_picker.dart';
 import 'package:mandalart/widget/base/input.dart';
 import 'package:mandalart/widget/base/layout.dart';
-import 'package:mandalart/widget/home/plan_widget.dart';
+import 'package:mandalart/widget/home/card_widget.dart';
 import 'package:provider/provider.dart';
 
 class PlanCreateScreen extends StatefulWidget {
@@ -35,23 +34,6 @@ class _PlanCreateScreenState extends State<PlanCreateScreen> {
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      getNextMandal();
-    });
-  }
-
-  Future<void> getNextMandal() async {
-    nextPlan = await Provider.of<HomeProvider>(
-      context,
-      listen: false,
-    ).getEmptyMandal();
-
-    if (nextPlan == null) {
-      nextEnabled = false;
-    } else {
-      nextEnabled = true;
-    }
   }
 
   colorTapped(Color color) {
@@ -72,7 +54,6 @@ class _PlanCreateScreenState extends State<PlanCreateScreen> {
     if (widget.projectId == null) return;
 
     await Provider.of<HomeProvider>(context, listen: false).upsertMandalPlan(
-      widget.projectId!,
       widget.planId,
       planController.text,
       color,
@@ -83,35 +64,8 @@ class _PlanCreateScreenState extends State<PlanCreateScreen> {
     context.go("/");
   }
 
-  createAndGoNextTapped() async {
-    if (widget.projectId == null) return;
-
-    await Provider.of<HomeProvider>(context, listen: false).upsertMandalPlan(
-      widget.projectId!,
-      widget.planId,
-      planController.text,
-      color,
-    );
-
-    if (!mounted) return;
-
-    String? projectIdPathParam = 'projectId=${widget.projectId}';
-    String? planIdPathParam =
-        nextPlan?.id != null ? 'planId=${nextPlan!.id}' : "";
-
-    context.replace("/main-target/create?$projectIdPathParam&$planIdPathParam");
-  }
-
   @override
   Widget build(BuildContext context) {
-    MandalModel mandal = MandalModel.fromJson(
-      'plan',
-      {
-        "name": planController.text,
-        "color": color,
-      },
-    );
-
     return Layout(
       title: "계획",
       body: Column(
@@ -131,8 +85,9 @@ class _PlanCreateScreenState extends State<PlanCreateScreen> {
                       ),
                       Flexible(
                         flex: 1,
-                        child: PlanWidget(
-                          mandal: mandal,
+                        child: CardWidget(
+                          name: planController.text,
+                          color: color,
                         ),
                       ),
                       const Flexible(
@@ -156,32 +111,14 @@ class _PlanCreateScreenState extends State<PlanCreateScreen> {
             ),
           ),
           const SizedBox(height: 20),
-          Row(
-            children: [
-              Flexible(
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: Button(
-                    text: "만들기",
-                    onPressed: enabled ? createTapped : null,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              Flexible(
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: Button(
-                    text: "다음 계획",
-                    onPressed:
-                        (enabled && nextEnabled) ? createAndGoNextTapped : null,
-                  ),
-                ),
-              ),
-            ],
-          )
+          SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: Button(
+              text: "만들기",
+              onPressed: enabled ? createTapped : null,
+            ),
+          ),
         ],
       ),
     );

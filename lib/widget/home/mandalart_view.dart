@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mandalart/model/plan_model.dart';
 import 'package:mandalart/model/project_model.dart';
-import 'package:mandalart/widget/home/mandal_widget.dart';
+import 'package:mandalart/widget/home/card_widget.dart';
+import 'package:mandalart/widget/home/plan_widget.dart';
 
 class MandalartView extends StatefulWidget {
   final ProjectModel? project;
-  final List<PlanModel?>? plans;
 
   const MandalartView({
     super.key,
     this.project,
-    this.plans,
   });
 
   @override
@@ -39,37 +37,32 @@ class _MandalartViewState extends State<MandalartView> {
       children: [
         Row(
           children: List.generate(3, (index) {
-            return MandalWidget(
-              type: "plan",
-              project: widget.project,
-              data: widget.plans?[index],
+            return PlanWidget(
+              plan: widget.project?.plans?[index],
             );
           }),
         ),
         Row(
           children: [
-            MandalWidget(
-              type: "plan",
-              project: widget.project,
-              data: widget.plans?[3],
+            PlanWidget(
+              plan: widget.project?.plans?[3],
             ),
-            MandalWidget(
-              type: "project",
-              data: widget.project,
+            Flexible(
+              child: CardWidget(
+                size: double.infinity,
+                name: widget.project?.name,
+                color: widget.project?.color,
+              ),
             ),
-            MandalWidget(
-              type: "plan",
-              project: widget.project,
-              data: widget.plans?[4],
+            PlanWidget(
+              plan: widget.project?.plans?[4],
             ),
           ],
         ),
         Row(
           children: List.generate(3, (index) {
-            return MandalWidget(
-              type: "plan",
-              project: widget.project,
-              data: widget.plans?[index + 5],
+            return PlanWidget(
+              plan: widget.project?.plans?[index + 5],
             );
           }),
         ),

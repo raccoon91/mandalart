@@ -6,12 +6,14 @@ class DetailedPlanModel {
   String? name;
   Color? color;
   bool delete;
+  int planId;
 
   DetailedPlanModel({
     required this.id,
     this.name,
     this.color,
     required this.delete,
+    required this.planId,
   });
 
   factory DetailedPlanModel.fromSchema(DetailedPlan schema) {
@@ -22,6 +24,7 @@ class DetailedPlanModel {
       name: schema.name,
       color: color,
       delete: schema.delete,
+      planId: schema.planId,
     );
   }
 }

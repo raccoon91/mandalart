@@ -1,34 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:mandalart/model/mandal_model.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mandalart/model/plan_model.dart';
+import 'package:mandalart/widget/home/card_widget.dart';
+import 'package:mandalart/widget/home/empty_widget.dart';
 
-class PlanWidget extends StatelessWidget {
-  final MandalModel mandal;
-  final double? size;
+class PlanWidget extends StatefulWidget {
+  final PlanModel? plan;
 
   const PlanWidget({
     super.key,
-    required this.mandal,
-    this.size,
+    this.plan,
   });
 
   @override
+  State<PlanWidget> createState() => _PlanWidgetState();
+}
+
+class _PlanWidgetState extends State<PlanWidget> {
+  goToPlanCreateScreen() {
+    if (widget.plan?.projectId == null) return;
+
+    String? projectIdPathParam = 'projectId=${widget.plan?.projectId}';
+    String? planIdPathParam =
+        widget.plan?.id != null ? 'planId=${widget.plan!.id}' : "";
+
+    context.push("/main-target/create?$projectIdPathParam&$planIdPathParam");
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1,
-      child: Container(
-        width: size ?? double.infinity,
-        margin: const EdgeInsets.all(4),
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: mandal.color,
-          borderRadius: BorderRadius.circular(4),
-        ),
-        child: Center(
-          child: Text(
-            mandal.name ?? "",
-            style: const TextStyle(fontWeight: FontWeight.w700),
-          ),
-        ),
+    if (widget.plan == null || widget.plan?.name == null) {
+      return Flexible(
+        child: EmptyWidget(onTap: goToPlanCreateScreen),
+      );
+    }
+
+    return Flexible(
+      child: CardWidget(
+        name: widget.plan?.name,
+        color: widget.plan?.color,
       ),
     );
   }

@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
     bool isEmpty = await Provider.of<HomeProvider>(
       context,
       listen: false,
-    ).getMandalProject();
+    ).getProjectWithPlans();
 
     if (mounted && isEmpty) {
       context.go('/project');
@@ -46,10 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           }
 
-          return MandalartView(
-            project: state.project,
-            plans: state.plans,
-          );
+          return MandalartView(project: state.project);
         },
       ),
     );

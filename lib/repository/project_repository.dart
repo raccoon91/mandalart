@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:mandalart/db/isar_db.dart';
 import 'package:mandalart/model/project_model.dart';
+import 'package:mandalart/schema/detailed_plan_schema.dart';
 import 'package:mandalart/schema/plan_schema.dart';
 import 'package:mandalart/schema/project_schema.dart';
 
@@ -21,7 +22,7 @@ class ProjectRepository {
     }
   }
 
-  Future<ProjectModel> createProjectWithEmptyPlans(
+  Future<ProjectModel> createMandalProject(
     String name,
     Color color,
   ) async {
@@ -41,10 +42,26 @@ class ProjectRepository {
         for (int index = 0; index < 8; index++) {
           final planSchema = Plan()..projectId = projectId;
 
-          await IsarDB.isar.plans.put(
+          projectSchema.plans.add(planSchema);
+
+          int planId = await IsarDB.isar.plans.put(
             planSchema,
           );
+
+          for (int index = 0; index < 8; index++) {
+            final detailedPlanSchema = DetailedPlan()..planId = planId;
+
+            planSchema.detailedPlans.add(detailedPlanSchema);
+
+            await IsarDB.isar.detailedPlans.put(
+              detailedPlanSchema,
+            );
+          }
+
+          await planSchema.detailedPlans.save();
         }
+
+        await projectSchema.plans.save();
       });
 
       final project = ProjectModel.fromSchema(projectSchema);

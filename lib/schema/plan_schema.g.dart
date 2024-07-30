@@ -44,7 +44,14 @@ const PlanSchema = CollectionSchema(
   deserializeProp: _planDeserializeProp,
   idName: r'id',
   indexes: {},
-  links: {},
+  links: {
+    r'detailedPlans': LinkSchema(
+      id: -3086916405386534013,
+      name: r'detailedPlans',
+      target: r'DetailedPlan',
+      single: false,
+    )
+  },
   embeddedSchemas: {},
   getId: _planGetId,
   getLinks: _planGetLinks,
@@ -119,11 +126,13 @@ Id _planGetId(Plan object) {
 }
 
 List<IsarLinkBase<dynamic>> _planGetLinks(Plan object) {
-  return [];
+  return [object.detailedPlans];
 }
 
 void _planAttach(IsarCollection<dynamic> col, Id id, Plan object) {
   object.id = id;
+  object.detailedPlans
+      .attach(col, col.isar.collection<DetailedPlan>(), r'detailedPlans', id);
 }
 
 extension PlanQueryWhereSort on QueryBuilder<Plan, Plan, QWhere> {
@@ -530,7 +539,64 @@ extension PlanQueryFilter on QueryBuilder<Plan, Plan, QFilterCondition> {
 
 extension PlanQueryObject on QueryBuilder<Plan, Plan, QFilterCondition> {}
 
-extension PlanQueryLinks on QueryBuilder<Plan, Plan, QFilterCondition> {}
+extension PlanQueryLinks on QueryBuilder<Plan, Plan, QFilterCondition> {
+  QueryBuilder<Plan, Plan, QAfterFilterCondition> detailedPlans(
+      FilterQuery<DetailedPlan> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'detailedPlans');
+    });
+  }
+
+  QueryBuilder<Plan, Plan, QAfterFilterCondition> detailedPlansLengthEqualTo(
+      int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'detailedPlans', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<Plan, Plan, QAfterFilterCondition> detailedPlansIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'detailedPlans', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Plan, Plan, QAfterFilterCondition> detailedPlansIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'detailedPlans', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<Plan, Plan, QAfterFilterCondition> detailedPlansLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'detailedPlans', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<Plan, Plan, QAfterFilterCondition>
+      detailedPlansLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'detailedPlans', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<Plan, Plan, QAfterFilterCondition> detailedPlansLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+          r'detailedPlans', lower, includeLower, upper, includeUpper);
+    });
+  }
+}
 
 extension PlanQuerySortBy on QueryBuilder<Plan, Plan, QSortBy> {
   QueryBuilder<Plan, Plan, QAfterSortBy> sortByColor() {

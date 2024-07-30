@@ -1,4 +1,5 @@
 import 'package:isar/isar.dart';
+import 'package:mandalart/schema/plan_schema.dart';
 
 part 'project_schema.g.dart';
 
@@ -13,4 +14,6 @@ class Project {
   int? color;
 
   bool delete = false;
+
+  final plans = IsarLinks<Plan>();
 }
