@@ -18,7 +18,7 @@ class CardWidget extends StatelessWidget {
       aspectRatio: 1,
       child: Container(
         width: size,
-        margin: const EdgeInsets.all(4),
+        margin: const EdgeInsets.all(3),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: color,

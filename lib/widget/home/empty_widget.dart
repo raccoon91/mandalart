@@ -1,35 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mandalart/theme/color.dart';
 
-class EmptyWidget extends StatelessWidget {
-  final Color? color;
+class EmptyWidget extends StatefulWidget {
+  final int? projectId;
+  final int? planId;
   final double? size;
-  final void Function()? onTap;
 
   const EmptyWidget({
     super.key,
-    this.color,
+    this.projectId,
+    this.planId,
     this.size,
-    this.onTap,
   });
+
+  @override
+  State<EmptyWidget> createState() => _EmptyWidgetState();
+}
+
+class _EmptyWidgetState extends State<EmptyWidget> {
+  goToPlanCreateScreen() {
+    if (widget.projectId == null) return;
+
+    String? projectIdPathParam = 'projectId=${widget.projectId}';
+    String? planIdPathParam =
+        widget.planId != null ? 'planId=${widget.planId}' : "";
+
+    context.push("/main-target/create?$projectIdPathParam&$planIdPathParam");
+  }
 
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: 1,
       child: GestureDetector(
-        onTap: onTap,
+        onTap: goToPlanCreateScreen,
         child: Container(
-          width: size ?? double.infinity,
-          margin: const EdgeInsets.all(4),
+          width: widget.size ?? double.infinity,
+          margin: const EdgeInsets.all(3),
           decoration: BoxDecoration(
-            color: color ?? ColorClass.under,
+            color: ColorClass.under,
             borderRadius: BorderRadius.circular(4),
           ),
           child: const Icon(
             Icons.add,
             size: 20,
-            color: ColorClass.black,
+            color: ColorClass.gray,
           ),
         ),
       ),

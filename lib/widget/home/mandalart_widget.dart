@@ -1,36 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mandalart/model/project_model.dart';
 import 'package:mandalart/widget/home/card_widget.dart';
 import 'package:mandalart/widget/home/plan_widget.dart';
 
-class MandalartView extends StatefulWidget {
+class MandalartWidget extends StatefulWidget {
+  final String mode;
   final ProjectModel? project;
 
-  const MandalartView({
+  const MandalartWidget({
     super.key,
+    required this.mode,
     this.project,
   });
 
   @override
-  State<MandalartView> createState() => _MandalartViewState();
+  State<MandalartWidget> createState() => _MandalartWidgetState();
 }
 
-class _MandalartViewState extends State<MandalartView> {
-  goToPlanCreateScreen(int? planId) {
-    return () {
-      if (widget.project?.id == null) return;
-
-      String? projectIdPathParam =
-          widget.project?.id != null ? 'projectId=${widget.project?.id}' : "";
-      String? planIdPathParam = planId != null ? 'planId=$planId' : "";
-
-      context.push(
-        "/main-target/create?$projectIdPathParam&$planIdPathParam",
-      );
-    };
-  }
-
+class _MandalartWidgetState extends State<MandalartWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -38,6 +25,7 @@ class _MandalartViewState extends State<MandalartView> {
         Row(
           children: List.generate(3, (index) {
             return PlanWidget(
+              mode: widget.mode,
               plan: widget.project?.plans?[index],
             );
           }),
@@ -45,6 +33,7 @@ class _MandalartViewState extends State<MandalartView> {
         Row(
           children: [
             PlanWidget(
+              mode: widget.mode,
               plan: widget.project?.plans?[3],
             ),
             Flexible(
@@ -55,6 +44,7 @@ class _MandalartViewState extends State<MandalartView> {
               ),
             ),
             PlanWidget(
+              mode: widget.mode,
               plan: widget.project?.plans?[4],
             ),
           ],
@@ -62,6 +52,7 @@ class _MandalartViewState extends State<MandalartView> {
         Row(
           children: List.generate(3, (index) {
             return PlanWidget(
+              mode: widget.mode,
               plan: widget.project?.plans?[index + 5],
             );
           }),

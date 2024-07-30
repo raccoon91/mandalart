@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mandalart/provider/home_provider.dart';
 import 'package:mandalart/theme/color.dart';
+import 'package:provider/provider.dart';
 
-class Layout extends StatelessWidget {
+class Layout extends StatefulWidget {
   final String? title;
   final Widget body;
   final Widget? bottomNavigationBar;
@@ -14,28 +16,54 @@ class Layout extends StatelessWidget {
   });
 
   @override
+  State<Layout> createState() => _LayoutState();
+}
+
+class _LayoutState extends State<Layout> {
+  modeTapped() {
+    Provider.of<HomeProvider>(
+      context,
+      listen: false,
+    ).changeMode();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: title == null
+      appBar: widget.title == null
           ? null
           : AppBar(
               centerTitle: true,
               backgroundColor: ColorClass.white,
               title: Text(
-                title ?? "",
+                widget.title ?? "",
                 style: const TextStyle(
                   fontWeight: FontWeight.w700,
                 ),
               ),
             ),
       backgroundColor: ColorClass.white,
+      floatingActionButton: FloatingActionButton(
+        mini: true,
+        shape: const CircleBorder(),
+        backgroundColor: ColorClass.blue,
+        onPressed: modeTapped,
+        child: Consumer<HomeProvider>(
+          builder: (context, state, child) {
+            if (state.mode == "minimize") {
+              return const Icon(Icons.fullscreen_exit);
+            }
+            return const Icon(Icons.fullscreen);
+          },
+        ),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-          child: body,
+          child: widget.body,
         ),
       ),
-      bottomNavigationBar: bottomNavigationBar,
+      bottomNavigationBar: widget.bottomNavigationBar,
     );
   }
 }

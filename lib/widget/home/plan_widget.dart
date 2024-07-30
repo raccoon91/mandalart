@@ -1,44 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mandalart/model/plan_model.dart';
 import 'package:mandalart/widget/home/card_widget.dart';
+import 'package:mandalart/widget/home/detailed_mandalart_widget.dart';
 import 'package:mandalart/widget/home/empty_widget.dart';
 
-class PlanWidget extends StatefulWidget {
+class PlanWidget extends StatelessWidget {
+  final String mode;
   final PlanModel? plan;
 
   const PlanWidget({
     super.key,
+    required this.mode,
     this.plan,
   });
 
   @override
-  State<PlanWidget> createState() => _PlanWidgetState();
-}
-
-class _PlanWidgetState extends State<PlanWidget> {
-  goToPlanCreateScreen() {
-    if (widget.plan?.projectId == null) return;
-
-    String? projectIdPathParam = 'projectId=${widget.plan?.projectId}';
-    String? planIdPathParam =
-        widget.plan?.id != null ? 'planId=${widget.plan!.id}' : "";
-
-    context.push("/main-target/create?$projectIdPathParam&$planIdPathParam");
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (widget.plan == null || widget.plan?.name == null) {
+    if (mode == "maximize") {
       return Flexible(
-        child: EmptyWidget(onTap: goToPlanCreateScreen),
+        child: DetailedMandalartWidget(
+          plan: plan,
+        ),
+      );
+    }
+
+    if (plan == null || plan?.name == null) {
+      return Flexible(
+        child: EmptyWidget(
+          projectId: plan?.projectId,
+          planId: plan?.id,
+        ),
       );
     }
 
     return Flexible(
       child: CardWidget(
-        name: widget.plan?.name,
-        color: widget.plan?.color,
+        name: plan?.name,
+        color: plan?.color,
       ),
     );
   }

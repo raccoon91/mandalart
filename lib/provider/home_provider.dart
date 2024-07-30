@@ -8,10 +8,12 @@ import 'package:mandalart/repository/project_repository.dart';
 class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
   bool _isLoading = false;
   ProjectModel? _project;
+  String _mode = "minimize";
 
   bool get isEmpty => _project == null;
   bool get isLoading => _isLoading;
   ProjectModel? get project => _project;
+  String get mode => _mode;
 
   Future<bool> getProjectWithPlans() async {
     try {
@@ -91,6 +93,12 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
       notifyListeners();
     }
+  }
+
+  void changeMode() {
+    _mode = _mode == "minimize" ? "maximize" : "minimize";
+
+    notifyListeners();
   }
 
   @override

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mandalart/provider/home_provider.dart';
-import 'package:mandalart/widget/home/mandalart_view.dart';
+import 'package:mandalart/widget/home/mandalart_widget.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -46,7 +46,10 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           }
 
-          return MandalartView(project: state.project);
+          return MandalartWidget(
+            mode: state.mode,
+            project: state.project,
+          );
         },
       ),
     );
