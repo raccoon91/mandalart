@@ -30,7 +30,6 @@ class PlanRepository {
 
   Future<PlanModel?> createPlan(
     int? projectId,
-    int? planId,
     String? name,
     Color? color,
   ) async {

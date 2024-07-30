@@ -62,9 +62,35 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
+  Future<PlanModel?> getEmptyMandal() async {
+    try {
+      if (_plans == null || _plans!.isEmpty) return null;
+
+      PlanModel? result;
+
+      for (int index = 0; index < 8; index++) {
+        PlanModel? plan = _plans?[index];
+
+        if (plan == null) continue;
+
+        if (plan.name == null) {
+          result = plan;
+
+          break;
+        }
+      }
+
+      return result;
+    } catch (error) {
+      rethrow;
+    } finally {
+      notifyListeners();
+    }
+  }
+
   Future<void> upsertMandalPlan(
-    int? projectId,
-    int? planId,
+    String projectId,
+    String? planId,
     String? name,
     Color? color,
   ) async {
@@ -76,10 +102,10 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
       notifyListeners();
 
       if (planId == null) {
-        await PlanRepository().createPlan(projectId, planId, name, color);
+        await PlanRepository().createPlan(int.parse(projectId), name, color);
         plans = await PlanRepository().getPlans(project?.id);
       } else {
-        await PlanRepository().updatePlan(planId, name, color);
+        await PlanRepository().updatePlan(int.parse(planId), name, color);
         plans = await PlanRepository().getPlans(project?.id);
       }
 

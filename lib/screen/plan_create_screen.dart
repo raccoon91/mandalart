@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mandalart/model/mandal_model.dart';
+import 'package:mandalart/model/plan_model.dart';
 import 'package:mandalart/provider/home_provider.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/base/button.dart';
@@ -27,7 +28,31 @@ class PlanCreateScreen extends StatefulWidget {
 class _PlanCreateScreenState extends State<PlanCreateScreen> {
   final planController = TextEditingController();
   Color color = ColorClass.skyBlue;
+  PlanModel? nextPlan;
   bool enabled = false;
+  bool nextEnabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getNextMandal();
+    });
+  }
+
+  Future<void> getNextMandal() async {
+    nextPlan = await Provider.of<HomeProvider>(
+      context,
+      listen: false,
+    ).getEmptyMandal();
+
+    if (nextPlan == null) {
+      nextEnabled = false;
+    } else {
+      nextEnabled = true;
+    }
+  }
 
   colorTapped(Color color) {
     this.color = color;
@@ -44,9 +69,11 @@ class _PlanCreateScreenState extends State<PlanCreateScreen> {
   }
 
   createTapped() async {
+    if (widget.projectId == null) return;
+
     await Provider.of<HomeProvider>(context, listen: false).upsertMandalPlan(
-      widget.projectId != null ? int.parse(widget.projectId!) : null,
-      widget.planId != null ? int.parse(widget.planId!) : null,
+      widget.projectId!,
+      widget.planId,
       planController.text,
       color,
     );
@@ -56,12 +83,30 @@ class _PlanCreateScreenState extends State<PlanCreateScreen> {
     context.go("/");
   }
 
+  createAndGoNextTapped() async {
+    if (widget.projectId == null) return;
+
+    await Provider.of<HomeProvider>(context, listen: false).upsertMandalPlan(
+      widget.projectId!,
+      widget.planId,
+      planController.text,
+      color,
+    );
+
+    if (!mounted) return;
+
+    String? projectIdPathParam = 'projectId=${widget.projectId}';
+    String? planIdPathParam =
+        nextPlan?.id != null ? 'planId=${nextPlan!.id}' : "";
+
+    context.replace("/main-target/create?$projectIdPathParam&$planIdPathParam");
+  }
+
   @override
   Widget build(BuildContext context) {
     MandalModel mandal = MandalModel.fromJson(
       'plan',
       {
-        "id": 0,
         "name": planController.text,
         "color": color,
       },
@@ -111,14 +156,32 @@ class _PlanCreateScreenState extends State<PlanCreateScreen> {
             ),
           ),
           const SizedBox(height: 20),
-          SizedBox(
-            width: double.infinity,
-            height: 50,
-            child: Button(
-              text: "계획 만들기",
-              onPressed: enabled ? createTapped : null,
-            ),
-          ),
+          Row(
+            children: [
+              Flexible(
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: Button(
+                    text: "만들기",
+                    onPressed: enabled ? createTapped : null,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Flexible(
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: Button(
+                    text: "다음 계획",
+                    onPressed:
+                        (enabled && nextEnabled) ? createAndGoNextTapped : null,
+                  ),
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );
