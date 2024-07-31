@@ -5,11 +5,13 @@ import 'package:mandalart/widget/base/layout.dart';
 
 class BottomNavigationLayout extends StatelessWidget {
   final String? title;
+  final String? screenName;
   final StatefulNavigationShell child;
 
   const BottomNavigationLayout({
     super.key,
     this.title,
+    this.screenName,
     required this.child,
   });
 
@@ -18,6 +20,7 @@ class BottomNavigationLayout extends StatelessWidget {
     return Layout(
       title: title,
       body: SafeArea(child: child),
+      showFloatingAction: screenName == "home",
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(20),
         height: 90,

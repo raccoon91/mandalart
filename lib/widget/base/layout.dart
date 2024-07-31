@@ -5,13 +5,15 @@ import 'package:provider/provider.dart';
 
 class Layout extends StatefulWidget {
   final String? title;
-  final Widget body;
+  final bool showFloatingAction;
   final Widget? bottomNavigationBar;
+  final Widget body;
 
   const Layout({
     super.key,
     this.title,
     required this.body,
+    this.showFloatingAction = true,
     this.bottomNavigationBar,
   });
 
@@ -43,18 +45,26 @@ class _LayoutState extends State<Layout> {
               ),
             ),
       backgroundColor: ColorClass.white,
-      floatingActionButton: FloatingActionButton(
-        mini: true,
-        shape: const CircleBorder(),
-        backgroundColor: ColorClass.blue,
-        onPressed: modeTapped,
-        child: Consumer<HomeProvider>(
-          builder: (context, state, child) {
-            if (state.mode == "minimize") {
-              return const Icon(Icons.fullscreen_exit);
-            }
-            return const Icon(Icons.fullscreen);
-          },
+      floatingActionButton: AnimatedSlide(
+        duration: const Duration(milliseconds: 300),
+        offset: widget.showFloatingAction ? Offset.zero : const Offset(0, 3),
+        child: AnimatedOpacity(
+          duration: const Duration(milliseconds: 300),
+          opacity: widget.showFloatingAction ? 1 : 0,
+          child: FloatingActionButton(
+            mini: true,
+            shape: const CircleBorder(),
+            backgroundColor: ColorClass.blue,
+            onPressed: modeTapped,
+            child: Consumer<HomeProvider>(
+              builder: (context, state, child) {
+                if (state.mode == "minimize") {
+                  return const Icon(Icons.fullscreen_exit);
+                }
+                return const Icon(Icons.fullscreen);
+              },
+            ),
+          ),
         ),
       ),
       body: SafeArea(
