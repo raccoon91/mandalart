@@ -19,16 +19,14 @@ class DetailedMandalartWidget extends StatelessWidget {
         Row(
           children: List.generate(3, (index) {
             return DetailedPlanWidget(
-              name: plan?.detailedPlans?[index]?.name,
-              color: plan?.detailedPlans?[index]?.color,
+              detailedPlan: plan?.detailedPlans?[index],
             );
           }),
         ),
         Row(
           children: [
             DetailedPlanWidget(
-              name: plan?.detailedPlans?[3]?.name,
-              color: plan?.detailedPlans?[3]?.color,
+              detailedPlan: plan?.detailedPlans?[3],
             ),
             plan?.name == null
                 ? const Flexible(
@@ -41,16 +39,14 @@ class DetailedMandalartWidget extends StatelessWidget {
                     ),
                   ),
             DetailedPlanWidget(
-              name: plan?.detailedPlans?[4]?.name,
-              color: plan?.detailedPlans?[4]?.color,
+              detailedPlan: plan?.detailedPlans?[4],
             ),
           ],
         ),
         Row(
           children: List.generate(3, (index) {
             return DetailedPlanWidget(
-              name: plan?.detailedPlans?[index + 5]?.name,
-              color: plan?.detailedPlans?[index + 5]?.color,
+              detailedPlan: plan?.detailedPlans?[index + 5],
             );
           }),
         ),

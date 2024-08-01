@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:mandalart/model/detailed_plan_model.dart';
 import 'package:mandalart/theme/color.dart';
+import 'package:mandalart/widget/base/plan_bottom_sheet.dart';
 
 class DetailedEmptyWidget extends StatelessWidget {
   final String? type;
+  final DetailedPlanModel? detailedPlan;
   final double? size;
 
   const DetailedEmptyWidget({
     super.key,
     this.type,
+    this.detailedPlan,
     this.size,
   });
 
@@ -16,6 +20,20 @@ class DetailedEmptyWidget extends StatelessWidget {
     return AspectRatio(
       aspectRatio: 1,
       child: GestureDetector(
+        onTap: () {
+          showModalBottomSheet<void>(
+            context: context,
+            useRootNavigator: true,
+            backgroundColor: ColorClass.white,
+            builder: (BuildContext context) {
+              return PlanBottomSheet(
+                type: 'detailedPlan',
+                planId: detailedPlan?.planId,
+                detailedPlanId: detailedPlan?.id,
+              );
+            },
+          );
+        },
         child: Container(
           width: size ?? double.infinity,
           margin: const EdgeInsets.all(3),

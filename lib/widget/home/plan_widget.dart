@@ -26,10 +26,7 @@ class PlanWidget extends StatelessWidget {
 
     if (plan == null || plan?.name == null) {
       return Flexible(
-        child: EmptyWidget(
-          projectId: plan?.projectId,
-          planId: plan?.id,
-        ),
+        child: EmptyWidget(planId: plan?.id),
       );
     }
 

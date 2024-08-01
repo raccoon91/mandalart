@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:mandalart/model/detailed_plan_model.dart';
 import 'package:mandalart/model/plan_model.dart';
 import 'package:mandalart/model/project_model.dart';
+import 'package:mandalart/repository/detailed_plan_repository.dart';
 import 'package:mandalart/repository/plan_repository.dart';
 import 'package:mandalart/repository/project_repository.dart';
 
@@ -55,7 +57,7 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
   }
 
   Future<void> upsertMandalPlan(
-    String? planId,
+    int? planId,
     String? name,
     Color? color,
   ) async {
@@ -76,15 +78,79 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
         );
       } else {
         newPlan = await PlanRepository().updatePlan(
-          int.parse(planId),
+          planId,
           name,
           color,
         );
       }
 
+      if (_project?.plans == null) return;
+
       _project!.plans = _project!.plans
               ?.map((plan) => plan?.id == newPlan?.id ? newPlan : plan)
               .toList() ??
+          [];
+    } catch (error) {
+      rethrow;
+    } finally {
+      _isLoading = false;
+
+      notifyListeners();
+    }
+  }
+
+  Future<void> upsertMandalDetailedPlan(
+    int? planId,
+    int? detailedPlanId,
+    String? name,
+    Color? color,
+  ) async {
+    try {
+      if (_project == null || planId == null) return;
+
+      DetailedPlanModel? newDetailedPlan;
+
+      _isLoading = true;
+
+      notifyListeners();
+
+      if (detailedPlanId == null) {
+        newDetailedPlan = await DetailedPlanRepository().createDetailedPlan(
+          planId,
+          name,
+          color,
+        );
+      } else {
+        newDetailedPlan = await DetailedPlanRepository().updateDetailedPlan(
+          detailedPlanId,
+          name,
+          color,
+        );
+      }
+
+      if (_project?.plans == null) return;
+
+      _project!.plans = _project!.plans?.map(
+            (plan) {
+              if (plan == null) return null;
+
+              if (plan.id != planId) return plan;
+
+              if (plan.detailedPlans == null) return plan;
+
+              plan.detailedPlans = plan.detailedPlans
+                      ?.map(
+                        (detailedPlan) =>
+                            detailedPlan?.id == newDetailedPlan?.id
+                                ? newDetailedPlan
+                                : detailedPlan,
+                      )
+                      .toList() ??
+                  [];
+
+              return plan;
+            },
+          ).toList() ??
           [];
     } catch (error) {
       rethrow;

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mandalart/model/color_model.dart';
 
 class ColorWidget extends StatelessWidget {
   final bool? selected;
   final double? width;
   final double? height;
   final double? margin;
-  final ColorModel color;
+  final Color color;
 
   const ColorWidget({
     super.key,
@@ -20,40 +19,21 @@ class ColorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width ?? 60,
+      width: width ?? 40,
       height: height ?? 40,
       margin: EdgeInsets.all(margin ?? 0),
       decoration: BoxDecoration(
-        color: color.color,
-        borderRadius: BorderRadius.circular(2),
+        color: color,
+        borderRadius: BorderRadius.circular(20),
       ),
-      child: selected == true
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(
-                  size: 12,
-                  Icons.check,
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  color.name,
-                  style: const TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ],
-            )
-          : Center(
-              child: Text(
-                color.name,
-                style: const TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
+      child: Center(
+        child: selected == true
+            ? const Icon(
+                size: 16,
+                Icons.check,
+              )
+            : null,
+      ),
     );
   }
 }
