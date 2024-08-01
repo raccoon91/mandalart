@@ -36,6 +36,8 @@ class BottomNavigationLayout extends StatelessWidget {
             selectedItemColor: ColorClass.blue,
             unselectedItemColor: ColorClass.border,
             onTap: (index) {
+              if (index != 0) return;
+
               child.goBranch(
                 index,
                 initialLocation: index == child.currentIndex,
@@ -47,6 +49,10 @@ class BottomNavigationLayout extends StatelessWidget {
                 icon: SizedBox(
                   child: Icon(Icons.home_filled),
                 ),
+              ),
+              BottomNavigationBarItem(
+                label: 'Setting',
+                icon: Icon(Icons.event_available),
               ),
               BottomNavigationBarItem(
                 label: 'Setting',
