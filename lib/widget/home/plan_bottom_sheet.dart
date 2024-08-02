@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:mandalart/provider/home_provider.dart';
-import 'package:mandalart/provider/plan_provider.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/base/button.dart';
 import 'package:mandalart/widget/base/color_picker.dart';
 import 'package:mandalart/widget/base/input.dart';
 import 'package:mandalart/widget/home/card_widget.dart';
-import 'package:provider/provider.dart';
 
 class PlanBottomSheet extends StatefulWidget {
   final String type;
   final int? planId;
   final int? detailedPlanId;
+  final Future<void> Function(String name, Color color)? create;
 
   const PlanBottomSheet({
     super.key,
     required this.type,
     this.planId,
     this.detailedPlanId,
+    this.create,
   });
 
   @override
@@ -43,29 +42,12 @@ class _PlanBottomSheetState extends State<PlanBottomSheet> {
     setState(() {});
   }
 
-  createPlan() async {
-    await Provider.of<HomeProvider>(context, listen: false).upsertMandalPlan(
-      widget.planId,
-      nameController.text,
-      color,
-    );
-  }
-
-  createDetailedPlan() async {
-    await Provider.of<PlanProvider>(context, listen: false)
-        .upsertMandalDetailedPlan(
-      widget.planId,
-      widget.detailedPlanId,
-      nameController.text,
-      color,
-    );
-  }
-
   createTapped() async {
-    if (widget.type == 'plan') {
-      await createPlan();
-    } else if (widget.type == 'detailedPlan') {
-      await createDetailedPlan();
+    if (widget.create != null) {
+      await widget.create!(
+        nameController.text,
+        color,
+      );
     }
 
     if (!mounted) return;

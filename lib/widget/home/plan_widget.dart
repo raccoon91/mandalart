@@ -20,6 +20,7 @@ class PlanWidget extends StatelessWidget {
     if (plan == null || plan?.name == null) {
       return Flexible(
         child: EmptyWidget(
+          mode: mode,
           planId: plan?.id,
         ),
       );
@@ -28,6 +29,7 @@ class PlanWidget extends StatelessWidget {
     if (mode == 'maximize') {
       return Flexible(
         child: DetailedMandalartWidget(
+          mode: mode,
           type: 'detailedPlan',
           plan: plan,
         ),

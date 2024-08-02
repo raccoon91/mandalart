@@ -4,11 +4,13 @@ import 'package:mandalart/widget/home/card_widget.dart';
 import 'package:mandalart/widget/home/detailed_empty_widget.dart';
 
 class DetailedPlanWidget extends StatelessWidget {
+  final String? mode;
   final String type;
   final DetailedPlanModel? detailedPlan;
 
   const DetailedPlanWidget({
     super.key,
+    this.mode,
     required this.type,
     this.detailedPlan,
   });
@@ -18,6 +20,7 @@ class DetailedPlanWidget extends StatelessWidget {
     if (detailedPlan == null || detailedPlan?.name == null) {
       return Flexible(
         child: DetailedEmptyWidget(
+          mode: mode,
           type: type,
           detailedPlan: detailedPlan,
         ),

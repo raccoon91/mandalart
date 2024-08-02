@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:mandalart/provider/home_provider.dart';
 import 'package:mandalart/theme/color.dart';
-import 'package:mandalart/widget/base/plan_bottom_sheet.dart';
+import 'package:mandalart/widget/home/plan_bottom_sheet.dart';
+import 'package:provider/provider.dart';
 
 class EmptyWidget extends StatelessWidget {
+  final String? mode;
   final int? planId;
   final double? size;
 
   const EmptyWidget({
     super.key,
+    this.mode,
     this.planId,
     this.size,
   });
@@ -26,6 +30,14 @@ class EmptyWidget extends StatelessWidget {
               return PlanBottomSheet(
                 type: 'plan',
                 planId: planId,
+                create: (String name, Color color) async {
+                  await Provider.of<HomeProvider>(context, listen: false)
+                      .upsertMandalPlan(
+                    planId,
+                    name,
+                    color,
+                  );
+                },
               );
             },
           );
