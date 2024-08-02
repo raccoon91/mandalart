@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mandalart/provider/home_provider.dart';
+import 'package:mandalart/provider/plan_provider.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/base/button.dart';
 import 'package:mandalart/widget/base/color_picker.dart';
@@ -52,7 +52,7 @@ class _PlanBottomSheetState extends State<PlanBottomSheet> {
   }
 
   createDetailedPlan() async {
-    await Provider.of<HomeProvider>(context, listen: false)
+    await Provider.of<PlanProvider>(context, listen: false)
         .upsertMandalDetailedPlan(
       widget.planId,
       widget.detailedPlanId,
@@ -70,7 +70,7 @@ class _PlanBottomSheetState extends State<PlanBottomSheet> {
 
     if (!mounted) return;
 
-    context.pop();
+    Navigator.of(context, rootNavigator: false).pop();
   }
 
   @override

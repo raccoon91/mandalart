@@ -21,7 +21,7 @@ class DetailedEmptyWidget extends StatelessWidget {
       aspectRatio: 1,
       child: GestureDetector(
         onTap: () {
-          showModalBottomSheet<void>(
+          showModalBottomSheet(
             context: context,
             useRootNavigator: true,
             backgroundColor: ColorClass.white,
@@ -46,9 +46,9 @@ class DetailedEmptyWidget extends StatelessWidget {
                   border: Border.all(color: ColorClass.under),
                   borderRadius: BorderRadius.circular(4),
                 ),
-          child: const Icon(
+          child: Icon(
             Icons.add,
-            size: 10,
+            size: type == "plan" ? 20 : 10,
             color: ColorClass.gray,
           ),
         ),

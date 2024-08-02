@@ -7,6 +7,23 @@ import 'package:mandalart/schema/plan_schema.dart';
 import 'package:mandalart/schema/project_schema.dart';
 
 class PlanRepository {
+  Future<PlanModel?> getPlan(int? planId) async {
+    try {
+      if (planId == null) return null;
+
+      final planSchema =
+          await IsarDB.isar.plans.filter().idEqualTo(planId).findFirst();
+
+      if (planSchema == null) return null;
+
+      PlanModel plan = PlanModel.fromSchema(planSchema);
+
+      return plan;
+    } catch (error) {
+      rethrow;
+    }
+  }
+
   Future<List<PlanModel>?> getPlans(int? projectId) async {
     try {
       if (projectId == null) return null;

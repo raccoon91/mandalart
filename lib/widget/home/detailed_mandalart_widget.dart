@@ -5,10 +5,12 @@ import 'package:mandalart/widget/home/detailed_empty_widget.dart';
 import 'package:mandalart/widget/home/detailed_plan_widget.dart';
 
 class DetailedMandalartWidget extends StatelessWidget {
+  final String type;
   final PlanModel? plan;
 
   const DetailedMandalartWidget({
     super.key,
+    required this.type,
     this.plan,
   });
 
@@ -19,6 +21,7 @@ class DetailedMandalartWidget extends StatelessWidget {
         Row(
           children: List.generate(3, (index) {
             return DetailedPlanWidget(
+              type: type,
               detailedPlan: plan?.detailedPlans?[index],
             );
           }),
@@ -26,19 +29,24 @@ class DetailedMandalartWidget extends StatelessWidget {
         Row(
           children: [
             DetailedPlanWidget(
+              type: type,
               detailedPlan: plan?.detailedPlans?[3],
             ),
             plan?.name == null
-                ? const Flexible(
-                    child: DetailedEmptyWidget(type: "plan"),
+                ? Flexible(
+                    child: DetailedEmptyWidget(
+                      type: type,
+                    ),
                   )
                 : Flexible(
                     child: CardWidget(
-                      size: double.infinity,
+                      name: type == 'plan' ? plan?.name : null,
                       color: plan?.color,
+                      size: double.infinity,
                     ),
                   ),
             DetailedPlanWidget(
+              type: type,
               detailedPlan: plan?.detailedPlans?[4],
             ),
           ],
@@ -46,6 +54,7 @@ class DetailedMandalartWidget extends StatelessWidget {
         Row(
           children: List.generate(3, (index) {
             return DetailedPlanWidget(
+              type: type,
               detailedPlan: plan?.detailedPlans?[index + 5],
             );
           }),

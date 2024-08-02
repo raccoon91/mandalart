@@ -8,8 +8,8 @@ import 'package:mandalart/repository/plan_repository.dart';
 import 'package:mandalart/repository/project_repository.dart';
 
 class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
-  bool _isLoading = false;
   bool _isEmpty = true;
+  bool _isLoading = false;
   ProjectModel? _project;
   String _mode = "minimize";
 
