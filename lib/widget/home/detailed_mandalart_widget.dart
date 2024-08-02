@@ -48,7 +48,7 @@ class DetailedMandalartWidget extends StatelessWidget {
                       name: type == 'plan' ? plan?.name : null,
                       color: plan?.color,
                       onTap: () {
-                        if (plan?.id == null) return;
+                        if (type == 'plan' || plan?.id == null) return;
 
                         context.push('/${plan?.id}');
                       },
