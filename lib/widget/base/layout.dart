@@ -13,7 +13,7 @@ class Layout extends StatefulWidget {
     super.key,
     this.title,
     required this.body,
-    this.showFloatingAction = true,
+    this.showFloatingAction = false,
     this.bottomNavigationBar,
   });
 
