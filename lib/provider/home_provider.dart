@@ -9,10 +9,11 @@ import 'package:mandalart/repository/project_repository.dart';
 
 class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
   bool _isLoading = false;
+  bool _isEmpty = true;
   ProjectModel? _project;
   String _mode = "minimize";
 
-  bool get isEmpty => _project == null;
+  bool get isEmpty => _isEmpty;
   bool get isLoading => _isLoading;
   ProjectModel? get project => _project;
   String get mode => _mode;
@@ -26,6 +27,9 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
       ProjectModel? project = await ProjectRepository().getProject();
 
       _project = project;
+
+      _isEmpty =
+          project == null || project.plans == null || project.plans!.isEmpty;
 
       return project == null;
     } catch (error) {
