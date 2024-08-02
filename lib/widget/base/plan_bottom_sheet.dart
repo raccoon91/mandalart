@@ -112,7 +112,7 @@ class _PlanBottomSheetState extends State<PlanBottomSheet> {
                     const SizedBox(height: 30),
                     Input(
                       autofocus: true,
-                      placeholder: "계획을 입력하세요",
+                      placeholder: '계획을 입력하세요',
                       controller: nameController,
                       onChanged: nameChanged,
                     ),
@@ -126,7 +126,7 @@ class _PlanBottomSheetState extends State<PlanBottomSheet> {
               width: double.infinity,
               height: 50,
               child: Button(
-                text: "만들기",
+                text: '만들기',
                 onPressed: enabled ? createTapped : null,
               ),
             ),

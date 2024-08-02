@@ -11,7 +11,7 @@ class Input extends StatelessWidget {
   const Input({
     super.key,
     this.autofocus,
-    this.placeholder = "텍스트를 입력해주세요",
+    this.placeholder = '텍스트를 입력해주세요',
     this.controller,
     this.onChanged,
     this.onSubmitted,

@@ -10,9 +10,9 @@ import 'package:mandalart/screen/setting_screen.dart';
 import 'package:mandalart/widget/base/bottom_navigation_layout.dart';
 
 final screenIndexMap = {
-  0: "home",
-  1: "calendar",
-  2: "setting",
+  0: 'home',
+  1: 'calendar',
+  2: 'setting',
 };
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();

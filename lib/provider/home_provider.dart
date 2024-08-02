@@ -11,7 +11,7 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
   bool _isEmpty = true;
   bool _isLoading = false;
   ProjectModel? _project;
-  String _mode = "minimize";
+  String _mode = 'minimize';
 
   bool get isEmpty => _isEmpty;
   bool get isLoading => _isLoading;
@@ -166,7 +166,7 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
   }
 
   void changeMode() {
-    _mode = _mode == "minimize" ? "maximize" : "minimize";
+    _mode = _mode == 'minimize' ? 'maximize' : 'minimize';
 
     notifyListeners();
   }

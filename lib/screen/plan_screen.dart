@@ -39,12 +39,12 @@ class _PlanScreenState extends State<PlanScreen> {
         builder: (context, state, child) {
           if (state.isEmpty) {
             return const Center(
-              child: Text("계획을 설정하세요"),
+              child: Text('계획을 설정하세요'),
             );
           }
 
           return DetailedMandalartWidget(
-            type: "plan",
+            type: 'plan',
             plan: state.plan,
           );
         },

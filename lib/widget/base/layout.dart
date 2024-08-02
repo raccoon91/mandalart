@@ -38,7 +38,7 @@ class _LayoutState extends State<Layout> {
               centerTitle: true,
               backgroundColor: ColorClass.white,
               title: Text(
-                widget.title ?? "",
+                widget.title ?? '',
                 style: const TextStyle(
                   fontWeight: FontWeight.w700,
                 ),
@@ -58,7 +58,7 @@ class _LayoutState extends State<Layout> {
             onPressed: modeTapped,
             child: Consumer<HomeProvider>(
               builder: (context, state, child) {
-                if (state.mode == "minimize") {
+                if (state.mode == 'minimize') {
                   return const Icon(Icons.fullscreen_exit);
                 }
                 return const Icon(Icons.fullscreen);

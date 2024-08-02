@@ -12,7 +12,7 @@ class ProjectStartScreen extends StatefulWidget {
 
 class _ProjectStartScreenState extends State<ProjectStartScreen> {
   startTapped() {
-    context.push("/project/create");
+    context.push('/project/create');
   }
 
   @override
@@ -22,7 +22,7 @@ class _ProjectStartScreenState extends State<ProjectStartScreen> {
         child: SizedBox(
           height: 50,
           child: Button(
-            text: "목표 설정하기",
+            text: '목표 설정하기',
             onPressed: startTapped,
           ),
         ),

@@ -20,7 +20,7 @@ class BottomNavigationLayout extends StatelessWidget {
     return Layout(
       title: title,
       body: SafeArea(child: child),
-      showFloatingAction: screenName == "home",
+      showFloatingAction: screenName == 'home',
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(20),
         height: 90,

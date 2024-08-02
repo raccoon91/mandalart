@@ -43,13 +43,13 @@ class _ProjectCreateScreenState extends State<ProjectCreateScreen> {
 
     if (!mounted) return;
 
-    context.go("/");
+    context.go('/');
   }
 
   @override
   Widget build(BuildContext context) {
     return Layout(
-      title: "목표",
+      title: '목표',
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -83,7 +83,7 @@ class _ProjectCreateScreenState extends State<ProjectCreateScreen> {
                   const SizedBox(height: 30),
                   Input(
                     autofocus: true,
-                    placeholder: "목표를 입력하세요",
+                    placeholder: '목표를 입력하세요',
                     controller: projectController,
                     onChanged: projectChanged,
                   ),
@@ -97,7 +97,7 @@ class _ProjectCreateScreenState extends State<ProjectCreateScreen> {
             width: double.infinity,
             height: 50,
             child: Button(
-              text: "시작하기",
+              text: '시작하기',
               onPressed: enabled ? createTapped : null,
             ),
           ),

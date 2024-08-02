@@ -25,10 +25,10 @@ class PlanWidget extends StatelessWidget {
       );
     }
 
-    if (mode == "maximize") {
+    if (mode == 'maximize') {
       return Flexible(
         child: DetailedMandalartWidget(
-          type: "detailedPlan",
+          type: 'detailedPlan',
           plan: plan,
         ),
       );

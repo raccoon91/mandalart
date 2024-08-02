@@ -37,7 +37,7 @@ class DetailedEmptyWidget extends StatelessWidget {
         child: Container(
           width: size ?? double.infinity,
           margin: const EdgeInsets.all(3),
-          decoration: type == "plan"
+          decoration: type == 'plan'
               ? BoxDecoration(
                   color: ColorClass.under,
                   borderRadius: BorderRadius.circular(4),
@@ -48,7 +48,7 @@ class DetailedEmptyWidget extends StatelessWidget {
                 ),
           child: Icon(
             Icons.add,
-            size: type == "plan" ? 20 : 10,
+            size: type == 'plan' ? 20 : 10,
             color: ColorClass.gray,
           ),
         ),
