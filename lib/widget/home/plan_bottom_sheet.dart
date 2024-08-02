@@ -58,7 +58,7 @@ class _PlanBottomSheetState extends State<PlanBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 500,
+      height: 450,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
         child: Column(

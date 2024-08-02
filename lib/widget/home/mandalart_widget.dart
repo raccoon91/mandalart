@@ -38,7 +38,6 @@ class _MandalartWidgetState extends State<MandalartWidget> {
             ),
             Flexible(
               child: CardWidget(
-                size: double.infinity,
                 name: widget.project?.name,
                 color: widget.project?.color,
               ),

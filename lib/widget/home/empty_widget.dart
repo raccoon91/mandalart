@@ -25,6 +25,7 @@ class EmptyWidget extends StatelessWidget {
           showModalBottomSheet<void>(
             context: context,
             useRootNavigator: true,
+            isScrollControlled: true,
             backgroundColor: ColorClass.white,
             builder: (BuildContext context) {
               return PlanBottomSheet(

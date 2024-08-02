@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mandalart/model/plan_model.dart';
 import 'package:mandalart/widget/home/card_widget.dart';
 import 'package:mandalart/widget/home/detailed_empty_widget.dart';
@@ -46,7 +47,11 @@ class DetailedMandalartWidget extends StatelessWidget {
                     child: CardWidget(
                       name: type == 'plan' ? plan?.name : null,
                       color: plan?.color,
-                      size: double.infinity,
+                      onTap: () {
+                        if (plan?.id == null) return;
+
+                        context.push('/${plan?.id}');
+                      },
                     ),
                   ),
             DetailedPlanWidget(

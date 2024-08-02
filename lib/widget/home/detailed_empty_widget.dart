@@ -29,6 +29,7 @@ class DetailedEmptyWidget extends StatelessWidget {
           showModalBottomSheet(
             context: context,
             useRootNavigator: true,
+            isScrollControlled: true,
             backgroundColor: ColorClass.white,
             builder: (BuildContext context) {
               return PlanBottomSheet(
