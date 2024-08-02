@@ -9,10 +9,10 @@ import 'package:mandalart/screen/project_start_screen.dart';
 import 'package:mandalart/screen/setting_screen.dart';
 import 'package:mandalart/widget/base/bottom_navigation_layout.dart';
 
-final screenIndexMap = {
-  0: 'home',
-  1: 'calendar',
-  2: 'setting',
+final screenPathMap = {
+  '/': 'home',
+  '/calendar': 'calendar',
+  '/setting': 'setting',
 };
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -68,7 +68,7 @@ final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
     GoRouterState state,
     StatefulNavigationShell navigationShell,
   ) {
-    String? screenName = screenIndexMap[navigationShell.currentIndex];
+    String? screenName = screenPathMap[state.fullPath];
 
     return getPage(
       state: state,
