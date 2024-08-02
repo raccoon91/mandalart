@@ -16,17 +16,17 @@ class PlanWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (plan == null || plan?.name == null) {
+      return Flexible(
+        child: EmptyWidget(planId: plan?.id),
+      );
+    }
+
     if (mode == "maximize") {
       return Flexible(
         child: DetailedMandalartWidget(
           plan: plan,
         ),
-      );
-    }
-
-    if (plan == null || plan?.name == null) {
-      return Flexible(
-        child: EmptyWidget(planId: plan?.id),
       );
     }
 
