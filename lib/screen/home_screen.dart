@@ -46,9 +46,25 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           }
 
-          return MandalartWidget(
-            mode: state.mode,
-            project: state.project,
+          return Column(
+            children: [
+              Row(
+                children: [
+                  Text(
+                    '${state.project?.name}',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              MandalartWidget(
+                mode: state.mode,
+                project: state.project,
+              )
+            ],
           );
         },
       ),

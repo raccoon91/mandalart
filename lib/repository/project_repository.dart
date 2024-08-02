@@ -7,6 +7,19 @@ import 'package:mandalart/schema/plan_schema.dart';
 import 'package:mandalart/schema/project_schema.dart';
 
 class ProjectRepository {
+  Future<String?> getProjectName() async {
+    try {
+      final projectSchema =
+          await IsarDB.isar.projects.filter().progressEqualTo(true).findFirst();
+
+      if (projectSchema == null) return null;
+
+      return projectSchema.name;
+    } catch (error) {
+      rethrow;
+    }
+  }
+
   Future<ProjectModel?> getProject() async {
     try {
       final projectSchema =

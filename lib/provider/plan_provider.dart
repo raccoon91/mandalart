@@ -4,19 +4,24 @@ import 'package:mandalart/model/detailed_plan_model.dart';
 import 'package:mandalart/model/plan_model.dart';
 import 'package:mandalart/repository/detailed_plan_repository.dart';
 import 'package:mandalart/repository/plan_repository.dart';
+import 'package:mandalart/repository/project_repository.dart';
 
 class PlanProvider with ChangeNotifier, DiagnosticableTreeMixin {
   bool _isEmpty = true;
   bool _isLoading = false;
+  String? _proejctName;
   PlanModel? _plan;
 
   bool get isEmpty => _isEmpty;
   bool get isLoading => _isLoading;
+  String? get proejctName => _proejctName;
   PlanModel? get plan => _plan;
 
   Future<bool> getPlanWithDetailedPlans(String? planId) async {
     try {
       if (planId == null) return false;
+
+      _proejctName = await ProjectRepository().getProjectName();
 
       _isLoading = true;
 

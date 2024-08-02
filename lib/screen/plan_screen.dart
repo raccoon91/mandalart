@@ -43,9 +43,33 @@ class _PlanScreenState extends State<PlanScreen> {
             );
           }
 
-          return DetailedMandalartWidget(
-            type: 'plan',
-            plan: state.plan,
+          return Column(
+            children: [
+              Row(
+                children: [
+                  Text(
+                    '${state.proejctName}',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const Icon(Icons.chevron_right),
+                  Text(
+                    '${state.plan?.name}',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              DetailedMandalartWidget(
+                type: 'plan',
+                plan: state.plan,
+              ),
+            ],
           );
         },
       ),
