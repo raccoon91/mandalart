@@ -7,7 +7,7 @@ import 'package:mandalart/screen/plan_screen.dart';
 import 'package:mandalart/screen/project_create_screen.dart';
 import 'package:mandalart/screen/project_start_screen.dart';
 import 'package:mandalart/screen/setting_screen.dart';
-import 'package:mandalart/widget/base/bottom_navigation_layout.dart';
+import 'package:mandalart/widget/layout/bottom_navigation_layout.dart';
 
 final screenPathMap = {
   '/': 'home',

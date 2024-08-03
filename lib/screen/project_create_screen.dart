@@ -5,8 +5,8 @@ import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/base/button.dart';
 import 'package:mandalart/widget/base/color_picker.dart';
 import 'package:mandalart/widget/base/input.dart';
-import 'package:mandalart/widget/base/layout.dart';
 import 'package:mandalart/widget/home/card_widget.dart';
+import 'package:mandalart/widget/layout/screen_layout.dart';
 import 'package:provider/provider.dart';
 
 class ProjectCreateScreen extends StatefulWidget {
@@ -48,7 +48,7 @@ class _ProjectCreateScreenState extends State<ProjectCreateScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Layout(
+    return ScreenLayout(
       title: '목표',
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,

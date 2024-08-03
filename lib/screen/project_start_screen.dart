@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mandalart/widget/base/button.dart';
-import 'package:mandalart/widget/base/layout.dart';
+import 'package:mandalart/widget/layout/screen_layout.dart';
 
 class ProjectStartScreen extends StatefulWidget {
   const ProjectStartScreen({super.key});
@@ -17,7 +17,7 @@ class _ProjectStartScreenState extends State<ProjectStartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Layout(
+    return ScreenLayout(
       body: Center(
         child: SizedBox(
           height: 50,

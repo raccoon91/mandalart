@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mandalart/theme/color.dart';
-import 'package:mandalart/widget/base/layout.dart';
+import 'package:mandalart/widget/layout/screen_layout.dart';
 
 class BottomNavigationLayout extends StatelessWidget {
   final String? title;
@@ -15,11 +15,20 @@ class BottomNavigationLayout extends StatelessWidget {
     required this.child,
   });
 
+  bottomItemTapped(index) {
+    if (index != 0) return;
+
+    child.goBranch(
+      index,
+      initialLocation: index == child.currentIndex,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Layout(
+    return ScreenLayout(
       title: title,
-      body: SafeArea(child: child),
+      body: child,
       showFloatingAction: screenName == 'home',
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(20),
@@ -35,14 +44,7 @@ class BottomNavigationLayout extends StatelessWidget {
             backgroundColor: ColorClass.under,
             selectedItemColor: ColorClass.blue,
             unselectedItemColor: ColorClass.border,
-            onTap: (index) {
-              if (index != 0) return;
-
-              child.goBranch(
-                index,
-                initialLocation: index == child.currentIndex,
-              );
-            },
+            onTap: bottomItemTapped,
             items: const [
               BottomNavigationBarItem(
                 label: 'Home',
