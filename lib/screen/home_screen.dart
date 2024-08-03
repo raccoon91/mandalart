@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mandalart/provider/home_provider.dart';
 import 'package:mandalart/widget/home/mandalart_widget.dart';
@@ -42,16 +43,19 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context, state, child) => MandalLayout(
         isEmpty: state.isEmpty,
         emptyMessage: '목표를 설정하세요',
-        title: Row(
-          children: [
-            Text(
-              '${state.project?.name}',
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
+        title: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10.w),
+          child: Row(
+            children: [
+              Text(
+                '${state.project?.name}',
+                style: TextStyle(
+                  fontSize: 24.sp,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         body: MandalartWidget(
           mode: state.mode,

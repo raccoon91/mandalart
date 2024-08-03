@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mandalart/theme/color.dart';
 
 class Input extends StatelessWidget {
@@ -26,19 +27,19 @@ class Input extends StatelessWidget {
       autofocus: autofocus == true,
       decoration: InputDecoration(
         hintText: placeholder,
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 8,
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 20.w,
+          vertical: 10.h,
         ),
-        border: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(8)),
-          borderSide: BorderSide(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(8.r)),
+          borderSide: const BorderSide(
             color: ColorClass.gray,
           ),
         ),
-        focusedBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(8)),
-          borderSide: BorderSide(
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(8.r)),
+          borderSide: const BorderSide(
             color: ColorClass.blue,
           ),
         ),

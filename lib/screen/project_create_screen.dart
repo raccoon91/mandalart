@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mandalart/provider/home_provider.dart';
 import 'package:mandalart/theme/color.dart';
@@ -43,65 +44,68 @@ class _ProjectCreateScreenState extends State<ProjectCreateScreen> {
 
     if (!mounted) return;
 
-    context.go('/');
+    context.go('/home');
   }
 
   @override
   Widget build(BuildContext context) {
     return ScreenLayout(
       title: '목표',
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Flexible(
-                        flex: 1,
-                        child: SizedBox(),
-                      ),
-                      Flexible(
-                        flex: 1,
-                        child: CardWidget(
-                          name: projectController.text,
-                          color: color,
+      body: Padding(
+        padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(height: 10.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Flexible(
+                          flex: 1,
+                          child: SizedBox(),
                         ),
-                      ),
-                      const Flexible(
-                        flex: 1,
-                        child: SizedBox(),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 30),
-                  ColorPicker(color: color, onTapped: colorTapped),
-                  const SizedBox(height: 30),
-                  Input(
-                    autofocus: true,
-                    placeholder: '목표를 입력하세요',
-                    controller: projectController,
-                    onChanged: projectChanged,
-                  ),
-                  const SizedBox(height: 10),
-                ],
+                        Flexible(
+                          flex: 1,
+                          child: CardWidget(
+                            name: projectController.text,
+                            color: color,
+                          ),
+                        ),
+                        const Flexible(
+                          flex: 1,
+                          child: SizedBox(),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 40.h),
+                    ColorPicker(color: color, onTapped: colorTapped),
+                    SizedBox(height: 40.h),
+                    Input(
+                      autofocus: true,
+                      placeholder: '목표를 입력하세요',
+                      controller: projectController,
+                      onChanged: projectChanged,
+                    ),
+                    SizedBox(height: 10.h),
+                  ],
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 20),
-          SizedBox(
-            width: double.infinity,
-            height: 50,
-            child: Button(
-              text: '시작하기',
-              onPressed: enabled ? createTapped : null,
+            SizedBox(height: 20.h),
+            SizedBox(
+              width: double.infinity,
+              height: 60.h,
+              child: Button(
+                text: '시작하기',
+                onPressed: enabled ? createTapped : null,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

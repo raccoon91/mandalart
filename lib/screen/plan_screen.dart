@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mandalart/provider/plan_provider.dart';
 import 'package:mandalart/widget/home/detailed_mandalart_widget.dart';
 import 'package:mandalart/widget/layout/mandal_layout.dart';
@@ -37,31 +38,32 @@ class _PlanScreenState extends State<PlanScreen> {
   Widget build(BuildContext context) {
     return Consumer<PlanProvider>(
       builder: (context, state, child) => MandalLayout(
-          isEmpty: state.isEmpty,
-          emptyMessage: '계획을 설정하세요',
-          title: Row(
-            children: [
-              Text(
-                '${state.proejctName}',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                ),
+        isEmpty: state.isEmpty,
+        emptyMessage: '계획을 설정하세요',
+        title: Row(
+          children: [
+            Text(
+              '${state.proejctName}',
+              style: TextStyle(
+                fontSize: 24.sp,
+                fontWeight: FontWeight.w700,
               ),
-              const Icon(Icons.chevron_right),
-              Text(
-                '${state.plan?.name}',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                ),
+            ),
+            const Icon(Icons.chevron_right),
+            Text(
+              '${state.plan?.name}',
+              style: TextStyle(
+                fontSize: 24.sp,
+                fontWeight: FontWeight.w700,
               ),
-            ],
-          ),
-          body: DetailedMandalartWidget(
-            type: 'plan',
-            plan: state.plan,
-          )),
+            ),
+          ],
+        ),
+        body: DetailedMandalartWidget(
+          type: 'plan',
+          plan: state.plan,
+        ),
+      ),
     );
   }
 }

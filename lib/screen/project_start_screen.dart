@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mandalart/widget/base/button.dart';
 import 'package:mandalart/widget/layout/screen_layout.dart';
@@ -20,7 +21,7 @@ class _ProjectStartScreenState extends State<ProjectStartScreen> {
     return ScreenLayout(
       body: Center(
         child: SizedBox(
-          height: 50,
+          height: 60.h,
           child: Button(
             text: '목표 설정하기',
             onPressed: startTapped,

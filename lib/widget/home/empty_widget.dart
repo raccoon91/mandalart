@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mandalart/provider/home_provider.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/home/plan_bottom_sheet.dart';
@@ -45,14 +46,14 @@ class EmptyWidget extends StatelessWidget {
         },
         child: Container(
           width: size ?? double.infinity,
-          margin: const EdgeInsets.all(3),
+          margin: EdgeInsets.all(3.w),
           decoration: BoxDecoration(
             color: ColorClass.under,
-            borderRadius: BorderRadius.circular(4),
+            borderRadius: BorderRadius.circular(4.r),
           ),
-          child: const Icon(
+          child: Icon(
             Icons.add,
-            size: 20,
+            size: 30.sp,
             color: ColorClass.gray,
           ),
         ),

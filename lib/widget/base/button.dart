@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mandalart/theme/color.dart';
 
 class Button extends StatelessWidget {
@@ -20,13 +21,16 @@ class Button extends StatelessWidget {
         disabledForegroundColor: ColorClass.black,
         disabledBackgroundColor: ColorClass.under,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(8.r),
         ),
       ),
       onPressed: onPressed,
       child: Text(
         text,
-        style: const TextStyle(fontWeight: FontWeight.w700),
+        style: TextStyle(
+          fontSize: 20.sp,
+          fontWeight: FontWeight.w700,
+        ),
       ),
     );
   }

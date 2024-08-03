@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mandalart/widget/base/banner_ad.dart';
 
 class MandalLayout extends StatelessWidget {
@@ -21,25 +22,27 @@ class MandalLayout extends StatelessWidget {
       return Center(
         child: Text(
           emptyMessage ?? "",
-          style: const TextStyle(fontSize: 18),
+          style: TextStyle(
+            fontSize: 24.sp,
+          ),
         ),
       );
     }
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+      padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
       child: Column(
         children: [
           const BannerAD(),
-          const SizedBox(height: 10),
+          SizedBox(height: 10.h),
           SingleChildScrollView(
             child: Column(
               children: [
-                const SizedBox(height: 10),
+                SizedBox(height: 10.h),
                 title ?? Container(),
-                const SizedBox(height: 20),
+                SizedBox(height: 10.h),
                 body,
-                const SizedBox(height: 10),
+                SizedBox(height: 10.h),
               ],
             ),
           )

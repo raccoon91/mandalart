@@ -10,7 +10,7 @@ import 'package:mandalart/screen/setting_screen.dart';
 import 'package:mandalart/widget/layout/bottom_navigation_layout.dart';
 
 final screenPathMap = {
-  '/': 'home',
+  '/home': 'home',
   '/calendar': 'calendar',
   '/setting': 'setting',
 };
@@ -26,26 +26,27 @@ final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
       navigatorKey: _homeTabNavigatorKey,
       routes: [
         GoRoute(
-            path: '/',
-            pageBuilder: (BuildContext context, GoRouterState state) {
-              return getPage(
-                state: state,
-                child: const HomeScreen(),
-              );
-            },
-            routes: [
-              GoRoute(
-                path: ':planId',
-                pageBuilder: (BuildContext context, GoRouterState state) {
-                  return getPage(
-                    state: state,
-                    child: PlanScreen(
-                      planId: state.pathParameters['planId'],
-                    ),
-                  );
-                },
-              ),
-            ]),
+          path: '/home',
+          pageBuilder: (BuildContext context, GoRouterState state) {
+            return getPage(
+              state: state,
+              child: const HomeScreen(),
+            );
+          },
+          routes: [
+            GoRoute(
+              path: ':planId',
+              pageBuilder: (BuildContext context, GoRouterState state) {
+                return getPage(
+                  state: state,
+                  child: PlanScreen(
+                    planId: state.pathParameters['planId'],
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ],
     ),
     StatefulShellBranch(
@@ -81,6 +82,7 @@ final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
 );
 
 final GoRouter router = GoRouter(
+  initialLocation: "/home",
   navigatorKey: _rootNavigatorKey,
   routes: <RouteBase>[
     bottomNavigationRoutes,

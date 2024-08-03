@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/base/button.dart';
 import 'package:mandalart/widget/base/color_picker.dart';
@@ -58,9 +59,9 @@ class _PlanBottomSheetState extends State<PlanBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 450,
+      height: 560.h,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+        padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -68,7 +69,7 @@ class _PlanBottomSheetState extends State<PlanBottomSheet> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -89,24 +90,24 @@ class _PlanBottomSheetState extends State<PlanBottomSheet> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 30),
+                    SizedBox(height: 30.h),
                     ColorPicker(color: color, onTapped: colorTapped),
-                    const SizedBox(height: 30),
+                    SizedBox(height: 30.h),
                     Input(
                       autofocus: true,
                       placeholder: '계획을 입력하세요',
                       controller: nameController,
                       onChanged: nameChanged,
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10.h),
                   ],
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
             SizedBox(
               width: double.infinity,
-              height: 50,
+              height: 60.h,
               child: Button(
                 text: '만들기',
                 onPressed: enabled ? createTapped : null,

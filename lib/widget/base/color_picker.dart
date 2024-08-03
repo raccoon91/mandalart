@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/base/color_widget.dart';
 
@@ -44,7 +45,7 @@ class ColorPicker extends StatelessWidget {
               (index) => GestureDetector(
                 onTap: colorTapped(colorList[index]),
                 child: ColorWidget(
-                  margin: 4,
+                  margin: 6.w,
                   color: colorList[index],
                   selected: color == colorList[index],
                 ),

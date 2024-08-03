@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CardWidget extends StatelessWidget {
   final String? name;
   final Color? color;
   final void Function()? onTap;
-  final double size;
+  final double? size;
 
   const CardWidget({
     super.key,
     this.name,
     this.color,
     this.onTap,
-    this.size = 50,
+    this.size,
   });
 
   @override
@@ -22,16 +23,18 @@ class CardWidget extends StatelessWidget {
         onTap: onTap,
         child: Container(
           width: size,
-          margin: const EdgeInsets.all(3),
-          padding: const EdgeInsets.all(12),
+          margin: EdgeInsets.all(3.w),
+          padding: EdgeInsets.all(10.w),
           decoration: BoxDecoration(
             color: color,
-            borderRadius: BorderRadius.circular(4),
+            borderRadius: BorderRadius.circular(4.r),
           ),
           child: Center(
             child: Text(
               name ?? '',
-              style: const TextStyle(fontWeight: FontWeight.w700),
+              style: const TextStyle(
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
         ),

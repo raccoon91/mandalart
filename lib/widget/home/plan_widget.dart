@@ -43,7 +43,7 @@ class PlanWidget extends StatelessWidget {
         onTap: () {
           if (plan?.id == null) return;
 
-          context.push('/${plan?.id}');
+          context.push('/home/${plan?.id}');
         },
       ),
     );

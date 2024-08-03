@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class BannerAD extends StatefulWidget {
@@ -47,7 +48,7 @@ class _BannerADState extends State<BannerAD> {
   Widget build(BuildContext context) {
     if (isBannerADAdReady) {
       return Padding(
-        padding: const EdgeInsets.all(4),
+        padding: EdgeInsets.all(2.w),
         child: Align(
           alignment: Alignment.bottomCenter,
           child: SizedBox(

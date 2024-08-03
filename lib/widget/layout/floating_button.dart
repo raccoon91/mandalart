@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mandalart/provider/home_provider.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +18,7 @@ class FloatingButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedSlide(
       duration: const Duration(milliseconds: 300),
-      offset: show ? Offset.zero : const Offset(0, 3),
+      offset: show ? Offset.zero : Offset(0, 3.h),
       child: AnimatedOpacity(
         duration: const Duration(milliseconds: 300),
         opacity: show ? 1 : 0,

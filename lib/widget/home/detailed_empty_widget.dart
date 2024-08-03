@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mandalart/model/detailed_plan_model.dart';
 import 'package:mandalart/provider/home_provider.dart';
 import 'package:mandalart/provider/plan_provider.dart';
@@ -61,19 +62,19 @@ class DetailedEmptyWidget extends StatelessWidget {
         },
         child: Container(
           width: size ?? double.infinity,
-          margin: const EdgeInsets.all(3),
+          margin: EdgeInsets.all(3.w),
           decoration: type == 'plan'
               ? BoxDecoration(
                   color: ColorClass.under,
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(4.r),
                 )
               : BoxDecoration(
                   border: Border.all(color: ColorClass.under),
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(4.r),
                 ),
           child: Icon(
             Icons.add,
-            size: type == 'plan' ? 20 : 10,
+            size: type == 'plan' ? 30.sp : 16.sp,
             color: ColorClass.gray,
           ),
         ),

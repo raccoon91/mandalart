@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/layout/screen_layout.dart';
@@ -31,10 +32,10 @@ class BottomNavigationLayout extends StatelessWidget {
       body: child,
       showFloatingAction: screenName == 'home',
       bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(20),
-        height: 90,
+        padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
+        height: 100.h,
         child: ClipRRect(
-          borderRadius: const BorderRadius.all(Radius.circular(30)),
+          borderRadius: BorderRadius.all(Radius.circular(50.r)),
           child: BottomNavigationBar(
             currentIndex: child.currentIndex,
             selectedFontSize: 0,
@@ -53,7 +54,7 @@ class BottomNavigationLayout extends StatelessWidget {
                 ),
               ),
               BottomNavigationBarItem(
-                label: 'Setting',
+                label: 'Calendar',
                 icon: Icon(Icons.event_available),
               ),
               BottomNavigationBarItem(

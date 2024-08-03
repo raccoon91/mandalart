@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ColorWidget extends StatelessWidget {
   final bool? selected;
@@ -19,17 +20,17 @@ class ColorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width ?? 40,
-      height: height ?? 40,
+      width: width ?? 60.w,
+      height: height ?? 60.w,
       margin: EdgeInsets.all(margin ?? 0),
       decoration: BoxDecoration(
         color: color,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(30.r),
       ),
       child: Center(
         child: selected == true
-            ? const Icon(
-                size: 16,
+            ? Icon(
+                size: 30.sp,
                 Icons.check,
               )
             : null,
