@@ -11,7 +11,7 @@
       "toolArgs": [
         "--dart-define-from-file=./.env.json",
         "-d",
-        "emulator-5554"
+        "emulator-5555"
       ],
     },
     {
@@ -22,7 +22,7 @@
       "toolArgs": [
         "--dart-define-from-file=./.env.json",
         "-d",
-        "emulator-5554"
+        "emulator-5555"
       ]
     }
   ]
