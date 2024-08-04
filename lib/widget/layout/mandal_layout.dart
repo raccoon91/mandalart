@@ -30,17 +30,21 @@ class MandalLayout extends StatelessWidget {
     }
 
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
+      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
       child: Column(
         children: [
           const BannerAD(),
-          SizedBox(height: 10.h),
+          SizedBox(height: 20.h),
           SingleChildScrollView(
             child: Column(
               children: [
                 SizedBox(height: 10.h),
-                title ?? Container(),
-                SizedBox(height: 10.h),
+                ...(title != null
+                    ? [
+                        title!,
+                        SizedBox(height: 20.h),
+                      ]
+                    : []),
                 body,
                 SizedBox(height: 10.h),
               ],
