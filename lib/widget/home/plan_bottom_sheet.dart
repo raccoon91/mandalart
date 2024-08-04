@@ -44,12 +44,19 @@ class _PlanBottomSheetState extends State<PlanBottomSheet> {
   }
 
   createTapped() async {
-    if (widget.create != null) {
-      await widget.create!(
-        nameController.text,
-        color,
-      );
-    }
+    if (widget.create == null || nameController.text.isEmpty) return;
+
+    await widget.create!(nameController.text, color);
+
+    if (!mounted) return;
+
+    Navigator.of(context, rootNavigator: false).pop();
+  }
+
+  submitted(String name) async {
+    if (widget.create == null || name.isEmpty) return;
+
+    await widget.create!(name, color);
 
     if (!mounted) return;
 
@@ -59,9 +66,14 @@ class _PlanBottomSheetState extends State<PlanBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 560.h,
+      height: MediaQuery.of(context).viewInsets.bottom + 500.h,
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
+        padding: EdgeInsets.only(
+          top: 20.h,
+          right: 20.w,
+          left: 20.w,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 20.h,
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -97,7 +109,11 @@ class _PlanBottomSheetState extends State<PlanBottomSheet> {
                       autofocus: true,
                       placeholder: '계획을 입력하세요',
                       controller: nameController,
+                      maxLines: null,
+                      keyboardType: TextInputType.multiline,
+                      textInputAction: TextInputAction.done,
                       onChanged: nameChanged,
+                      onSubmitted: enabled ? submitted : null,
                     ),
                     SizedBox(height: 10.h),
                   ],

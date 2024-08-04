@@ -37,8 +37,23 @@ class _ProjectCreateScreenState extends State<ProjectCreateScreen> {
   }
 
   createTapped() async {
+    if (projectController.text.isEmpty) return;
+
     await Provider.of<HomeProvider>(context, listen: false).createMandalProject(
       projectController.text,
+      color,
+    );
+
+    if (!mounted) return;
+
+    context.go('/home');
+  }
+
+  submitted(String name) async {
+    if (name.isEmpty) return;
+
+    await Provider.of<HomeProvider>(context, listen: false).createMandalProject(
+      name,
       color,
     );
 
@@ -88,7 +103,11 @@ class _ProjectCreateScreenState extends State<ProjectCreateScreen> {
                       autofocus: true,
                       placeholder: '목표를 입력하세요',
                       controller: projectController,
+                      maxLines: null,
+                      keyboardType: TextInputType.multiline,
+                      textInputAction: TextInputAction.done,
                       onChanged: projectChanged,
+                      onSubmitted: enabled ? submitted : null,
                     ),
                     SizedBox(height: 10.h),
                   ],

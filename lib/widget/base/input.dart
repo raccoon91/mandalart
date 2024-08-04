@@ -8,12 +8,18 @@ class Input extends StatelessWidget {
   final TextEditingController? controller;
   final void Function(String)? onChanged;
   final void Function(String)? onSubmitted;
+  final int? maxLines;
+  final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
 
   const Input({
     super.key,
     this.autofocus,
     this.placeholder = '텍스트를 입력해주세요',
     this.controller,
+    this.keyboardType,
+    this.textInputAction,
+    this.maxLines,
     this.onChanged,
     this.onSubmitted,
   });
@@ -25,6 +31,9 @@ class Input extends StatelessWidget {
       onChanged: onChanged,
       onSubmitted: onSubmitted,
       autofocus: autofocus == true,
+      maxLines: maxLines,
+      keyboardType: keyboardType,
+      textInputAction: textInputAction,
       decoration: InputDecoration(
         hintText: placeholder,
         contentPadding: EdgeInsets.symmetric(
