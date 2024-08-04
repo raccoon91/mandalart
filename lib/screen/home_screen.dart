@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Row(
             children: [
               Text(
-                '${state.project?.name}',
+                '${state.project?.name.split('\n')[0]}',
                 style: TextStyle(
                   fontSize: 24.sp,
                   fontWeight: FontWeight.w700,

@@ -43,7 +43,7 @@ class _PlanScreenState extends State<PlanScreen> {
         title: Row(
           children: [
             Text(
-              '${state.proejctName}',
+              '${state.proejctName?.split('\n')[0]}',
               style: TextStyle(
                 fontSize: 24.sp,
                 fontWeight: FontWeight.w700,
@@ -51,7 +51,7 @@ class _PlanScreenState extends State<PlanScreen> {
             ),
             const Icon(Icons.chevron_right),
             Text(
-              '${state.plan?.name}',
+              '${state.plan?.name?.split('\n')[0]}',
               style: TextStyle(
                 fontSize: 24.sp,
                 fontWeight: FontWeight.w700,
