@@ -75,6 +75,7 @@ final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
       state: state,
       child: BottomNavigationLayout(
         screenName: screenName,
+        branchIndex: navigationShell.currentIndex,
         child: navigationShell,
       ),
     );

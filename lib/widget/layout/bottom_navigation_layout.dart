@@ -6,19 +6,19 @@ import 'package:mandalart/widget/layout/screen_layout.dart';
 
 class BottomNavigationLayout extends StatelessWidget {
   final String? title;
+  final int? branchIndex;
   final String? screenName;
   final StatefulNavigationShell child;
 
   const BottomNavigationLayout({
     super.key,
     this.title,
+    this.branchIndex,
     this.screenName,
     required this.child,
   });
 
   bottomItemTapped(index) {
-    if (index != 0) return;
-
     child.goBranch(
       index,
       initialLocation: index == child.currentIndex,
@@ -32,10 +32,16 @@ class BottomNavigationLayout extends StatelessWidget {
       body: child,
       showFloatingAction: screenName == 'home',
       bottomNavigationBar: Container(
-        padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
-        height: 100.h,
+        padding: branchIndex == 0
+            ? EdgeInsets.only(right: 20.w, bottom: 20.h, left: 20.w)
+            : const EdgeInsets.all(0),
+        height: branchIndex == 0 ? 80.h : 60.h,
         child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(50.r)),
+          borderRadius: BorderRadius.all(
+            branchIndex == 0
+                ? Radius.circular(50.r)
+                : const Radius.circular(0),
+          ),
           child: BottomNavigationBar(
             currentIndex: child.currentIndex,
             selectedFontSize: 0,
@@ -53,10 +59,10 @@ class BottomNavigationLayout extends StatelessWidget {
                   child: Icon(Icons.home_filled),
                 ),
               ),
-              BottomNavigationBarItem(
-                label: 'Calendar',
-                icon: Icon(Icons.event_available),
-              ),
+              // BottomNavigationBarItem(
+              //   label: 'Calendar',
+              //   icon: Icon(Icons.event_available),
+              // ),
               BottomNavigationBarItem(
                 label: 'Setting',
                 icon: Icon(Icons.settings),
