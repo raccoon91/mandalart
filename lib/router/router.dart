@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mandalart/router/get_page.dart';
 import 'package:mandalart/router/slide_transition_page.dart';
-import 'package:mandalart/screen/home_screen.dart';
-import 'package:mandalart/screen/plan_screen.dart';
-import 'package:mandalart/screen/project_create_screen.dart';
-import 'package:mandalart/screen/project_start_screen.dart';
-import 'package:mandalart/screen/setting_screen.dart';
-import 'package:mandalart/screen/setting_storage_screen.dart';
+import 'package:mandalart/screen/home/home_screen.dart';
+import 'package:mandalart/screen/home/plan_screen.dart';
+import 'package:mandalart/screen/project/project_create_screen.dart';
+import 'package:mandalart/screen/project/project_start_screen.dart';
+import 'package:mandalart/screen/setting/setting_screen.dart';
+import 'package:mandalart/screen/setting/setting_storage_screen.dart';
 import 'package:mandalart/widget/layout/bottom_navigation_layout.dart';
 
 final screenPathMap = {
