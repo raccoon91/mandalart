@@ -43,6 +43,7 @@ dependencies:
   go_router: ^14.2.1
   google_mobile_ads: ^5.1.0
   flutter_screenutil: ^5.9.3
+  syncfusion_flutter_calendar: ^26.2.7
 
 dev_dependencies:
   flutter_test:

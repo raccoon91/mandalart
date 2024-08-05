@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mandalart/router/get_page.dart';
 import 'package:mandalart/router/slide_transition_page.dart';
+import 'package:mandalart/screen/calendar/calendar_screen.dart';
 import 'package:mandalart/screen/home/home_screen.dart';
 import 'package:mandalart/screen/home/plan_screen.dart';
 import 'package:mandalart/screen/project/project_create_screen.dart';
@@ -18,6 +19,7 @@ final screenPathMap = {
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _homeTabNavigatorKey = GlobalKey<NavigatorState>();
+final _calendarTabNavigatorKey = GlobalKey<NavigatorState>();
 final _settingTabNavigatorKey = GlobalKey<NavigatorState>();
 
 final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
@@ -47,6 +49,20 @@ final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
               },
             ),
           ],
+        ),
+      ],
+    ),
+    StatefulShellBranch(
+      navigatorKey: _calendarTabNavigatorKey,
+      routes: [
+        GoRoute(
+          path: '/calendar',
+          pageBuilder: (BuildContext context, GoRouterState state) {
+            return getPage(
+              state: state,
+              child: const CalendarScreen(),
+            );
+          },
         ),
       ],
     ),
