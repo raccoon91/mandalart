@@ -84,4 +84,40 @@ class ProjectRepository {
       rethrow;
     }
   }
+
+  Future<bool> deleteProject() async {
+    try {
+      final projectSchema =
+          await IsarDB.isar.projects.filter().progressEqualTo(true).findFirst();
+
+      if (projectSchema == null) return false;
+
+      int proejctId = projectSchema.id;
+      List<int> planIds = projectSchema.plans
+          .map(
+            (planShcema) => planShcema.id,
+          )
+          .toList();
+      List<int> detailedPlanIds = projectSchema.plans.fold(
+        [],
+        (acc, planShcema) {
+          for (var detailedPlanSchema in planShcema.detailedPlans) {
+            acc.add(detailedPlanSchema.id);
+          }
+
+          return acc;
+        },
+      );
+
+      await IsarDB.isar.writeTxn(() async {
+        await IsarDB.isar.detailedPlans.deleteAll(detailedPlanIds);
+        await IsarDB.isar.plans.deleteAll(planIds);
+        await IsarDB.isar.projects.delete(proejctId);
+      });
+
+      return true;
+    } catch (error) {
+      rethrow;
+    }
+  }
 }

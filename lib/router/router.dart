@@ -7,6 +7,7 @@ import 'package:mandalart/screen/plan_screen.dart';
 import 'package:mandalart/screen/project_create_screen.dart';
 import 'package:mandalart/screen/project_start_screen.dart';
 import 'package:mandalart/screen/setting_screen.dart';
+import 'package:mandalart/screen/setting_storage_screen.dart';
 import 'package:mandalart/widget/layout/bottom_navigation_layout.dart';
 
 final screenPathMap = {
@@ -106,6 +107,15 @@ final GoRouter router = GoRouter(
           },
         ),
       ],
+    ),
+    GoRoute(
+      path: '/setting/storage',
+      pageBuilder: (BuildContext context, GoRouterState state) {
+        return slideTransitionPage(
+          state: state,
+          child: const SettingStorageScreen(),
+        );
+      },
     ),
   ],
 );
