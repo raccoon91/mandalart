@@ -38,6 +38,7 @@ class _ScreenLayoutState extends State<ScreenLayout> {
           : AppBar(
               centerTitle: true,
               backgroundColor: ColorClass.white,
+              surfaceTintColor: ColorClass.white,
               title: Text(
                 widget.title ?? "",
                 style: const TextStyle(
