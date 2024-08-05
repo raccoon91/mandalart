@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mandalart/provider/home_provider.dart';
 import 'package:mandalart/provider/plan_provider.dart';
-import 'package:mandalart/provider/setting_provider.dart';
 import 'package:mandalart/router/router.dart';
 import 'package:mandalart/theme/theme.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +15,6 @@ class App extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => HomeProvider()),
         ChangeNotifierProvider(create: (_) => PlanProvider()),
-        ChangeNotifierProvider(create: (_) => SettingProvider()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(480, 800),

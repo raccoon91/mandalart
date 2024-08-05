@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mandalart/provider/setting_provider.dart';
+import 'package:mandalart/provider/home_provider.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/layout/screen_layout.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +15,7 @@ class SettingStorageScreen extends StatefulWidget {
 
 class _SettingStorageScreenState extends State<SettingStorageScreen> {
   onTapClean() async {
-    bool success = await Provider.of<SettingProvider>(
+    bool success = await Provider.of<HomeProvider>(
       context,
       listen: false,
     ).deleteMandalProject();

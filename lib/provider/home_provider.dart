@@ -171,6 +171,29 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
     notifyListeners();
   }
 
+  Future<bool> deleteMandalProject() async {
+    try {
+      _isLoading = true;
+
+      notifyListeners();
+
+      bool success = await ProjectRepository().deleteProject();
+
+      if (success) {
+        _project = null;
+        _isEmpty = true;
+      }
+
+      return success;
+    } catch (error) {
+      rethrow;
+    } finally {
+      _isLoading = false;
+
+      notifyListeners();
+    }
+  }
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
