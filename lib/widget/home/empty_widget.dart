@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mandalart/provider/calendar_provider.dart';
 import 'package:mandalart/provider/home_provider.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/home/plan_bottom_sheet.dart';
@@ -39,6 +40,11 @@ class EmptyWidget extends StatelessWidget {
                     name,
                     color,
                   );
+
+                  if (!context.mounted) return;
+
+                  Provider.of<CalendarProvider>(context, listen: false)
+                      .getPlans();
                 },
               );
             },
