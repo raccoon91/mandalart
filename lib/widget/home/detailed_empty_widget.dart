@@ -55,6 +55,11 @@ class DetailedEmptyWidget extends StatelessWidget {
                       name,
                       color,
                     );
+
+                    if (context.mounted) {
+                      await Provider.of<HomeProvider>(context, listen: false)
+                          .getProjectWithPlans();
+                    }
                   }
 
                   if (!context.mounted) return;
