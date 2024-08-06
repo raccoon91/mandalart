@@ -9,7 +9,9 @@ class IsarDB {
 
   Future<Isar> init() async {
     final dir = await getApplicationDocumentsDirectory();
+
     isar = await Isar.open(
+      name: "mandalart",
       [ProjectSchema, PlanSchema, DetailedPlanSchema],
       directory: dir.path,
     );
