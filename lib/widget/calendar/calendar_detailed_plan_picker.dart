@@ -4,13 +4,13 @@ import 'package:mandalart/provider/calendar_provider.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:provider/provider.dart';
 
-class CalendarPlanPicker extends StatelessWidget {
-  final int? selectedPlanId;
-  final void Function(int planId)? onChanged;
+class CalendarDetailedPlanPicker extends StatelessWidget {
+  final int? selectedDetailedPlanId;
+  final void Function(int detailedPlanId)? onChanged;
 
-  const CalendarPlanPicker({
+  const CalendarDetailedPlanPicker({
     super.key,
-    this.selectedPlanId,
+    this.selectedDetailedPlanId,
     this.onChanged,
   });
 
@@ -21,37 +21,39 @@ class CalendarPlanPicker extends StatelessWidget {
         vertical: 10.h,
         horizontal: 20.w,
       ),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Row(
-              children: [
-                const Icon(Icons.playlist_add),
-                SizedBox(width: 10.w),
-                Text(
-                  "계획",
-                  style: TextStyle(fontSize: 18.sp),
-                )
-              ],
-            ),
-            SizedBox(height: 10.h),
-            Consumer<CalendarProvider>(
-              builder: (context, state, child) => state.isEmpty
-                  ? const Text("계획을 설정하세요")
-                  : LayoutBuilder(
-                      builder: (context, constraints) => Wrap(
+      child: Column(
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.playlist_add_check),
+              SizedBox(width: 10.w),
+              Text(
+                "상세 계획",
+                style: TextStyle(fontSize: 18.sp),
+              )
+            ],
+          ),
+          SizedBox(height: 10.h),
+          Consumer<CalendarProvider>(
+            builder: (context, state, child) => state.detailedPlans == null ||
+                    state.detailedPlans!.isEmpty
+                ? const Text("계획을 설정하세요")
+                : LayoutBuilder(
+                    builder: (context, constraints) => SizedBox(
+                      width: constraints.maxWidth,
+                      child: Wrap(
                         spacing: 8.w,
                         runSpacing: 8.w,
-                        children: state.plans
+                        children: state.detailedPlans
                                 ?.map(
-                                  (plan) => GestureDetector(
+                                  (detailedPlan) => GestureDetector(
                                     onTap: () {
-                                      if (plan?.id == null ||
+                                      if (detailedPlan?.id == null ||
                                           onChanged == null) {
                                         return;
                                       }
 
-                                      onChanged!(plan!.id);
+                                      onChanged!(detailedPlan!.id);
                                     },
                                     child: Container(
                                       width: (constraints.maxWidth - 18.w) / 2,
@@ -60,12 +62,15 @@ class CalendarPlanPicker extends StatelessWidget {
                                         horizontal: 16.w,
                                       ),
                                       decoration: BoxDecoration(
-                                        color: selectedPlanId == plan?.id
-                                            ? plan?.color
+                                        color: selectedDetailedPlanId ==
+                                                detailedPlan?.id
+                                            ? detailedPlan?.color
                                             : ColorClass.white,
                                         border: Border.all(
-                                          color: selectedPlanId == plan?.id
-                                              ? plan?.color ?? ColorClass.gray
+                                          color: selectedDetailedPlanId ==
+                                                  detailedPlan?.id
+                                              ? detailedPlan?.color ??
+                                                  ColorClass.gray
                                               : ColorClass.gray,
                                         ),
                                         borderRadius: BorderRadius.all(
@@ -73,9 +78,10 @@ class CalendarPlanPicker extends StatelessWidget {
                                         ),
                                       ),
                                       child: Text(
-                                        plan?.name ?? "",
+                                        detailedPlan?.name ?? "",
                                         style: TextStyle(
-                                          color: selectedPlanId == plan?.id
+                                          color: selectedDetailedPlanId ==
+                                                  detailedPlan?.id
                                               ? ColorClass.black
                                               : ColorClass.gray,
                                         ),
@@ -87,9 +93,9 @@ class CalendarPlanPicker extends StatelessWidget {
                             [],
                       ),
                     ),
-            )
-          ],
-        ),
+                  ),
+          )
+        ],
       ),
     );
   }
