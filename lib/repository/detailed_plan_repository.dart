@@ -29,9 +29,7 @@ class DetailedPlanRepository {
     try {
       if (planId == null) return;
 
-      String colorString = color.toString();
-      String colorInteger = colorString.split('(0x')[1].split(')')[0];
-      int colorValue = int.parse(colorInteger, radix: 16);
+      int? colorValue = color?.value;
 
       isar.writeTxnSync(() {
         final detailedPlanSchema = DetailedPlan()
@@ -61,9 +59,7 @@ class DetailedPlanRepository {
 
       if (detailedPlanSchema == null) return false;
 
-      String colorString = color.toString();
-      String colorInteger = colorString.split('(0x')[1].split(')')[0];
-      int colorValue = int.parse(colorInteger, radix: 16);
+      int? colorValue = color?.value;
 
       isar.writeTxnSync(() {
         detailedPlanSchema.name = name;

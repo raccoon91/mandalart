@@ -73,9 +73,7 @@ class PlanRepository {
     try {
       if (projectId == null) return;
 
-      String colorString = color.toString();
-      String colorInteger = colorString.split('(0x')[1].split(')')[0];
-      int colorValue = int.parse(colorInteger, radix: 16);
+      int? colorValue = color?.value;
 
       isar.writeTxnSync(() {
         final planSchema = Plan()
@@ -110,9 +108,7 @@ class PlanRepository {
 
       if (planSchema == null) return;
 
-      String colorString = color.toString();
-      String colorInteger = colorString.split('(0x')[1].split(')')[0];
-      int colorValue = int.parse(colorInteger, radix: 16);
+      int? colorValue = color?.value;
 
       isar.writeTxnSync(() {
         planSchema.name = name;

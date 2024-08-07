@@ -61,9 +61,7 @@ class ProjectRepository {
     Color color,
   ) async {
     try {
-      String colorString = color.toString();
-      String colorInteger = colorString.split('(0x')[1].split(')')[0];
-      int colorValue = int.parse(colorInteger, radix: 16);
+      int colorValue = color.value;
 
       isar.writeTxnSync(() {
         final projectSchema = Project()
