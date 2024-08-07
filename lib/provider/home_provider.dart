@@ -1,7 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:mandalart/model/detailed_plan_model.dart';
-import 'package:mandalart/model/plan_model.dart';
 import 'package:mandalart/model/project_model.dart';
 import 'package:mandalart/repository/detailed_plan_repository.dart';
 import 'package:mandalart/repository/plan_repository.dart';
@@ -28,8 +26,9 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
       _project = project;
 
-      _isEmpty =
-          project == null || project.plans == null || project.plans!.isEmpty;
+      _isEmpty = project == null ||
+          project.plans == null ||
+          project.plans?.isEmpty == true;
 
       return project == null;
     } catch (error) {
@@ -47,10 +46,15 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
       notifyListeners();
 
-      _project = await ProjectRepository().createMandalProject(
-        name,
-        color,
-      );
+      await ProjectRepository().createMandalProject(name, color);
+
+      ProjectModel? project = await ProjectRepository().getProject();
+
+      _project = project;
+
+      _isEmpty = project == null ||
+          project.plans == null ||
+          project.plans?.isEmpty == true;
     } catch (error) {
       rethrow;
     } finally {
@@ -66,34 +70,23 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
     Color? color,
   ) async {
     try {
-      if (_project == null) return;
-
-      PlanModel? newPlan;
+      if (_project == null || _project?.id == null) return;
 
       _isLoading = true;
 
       notifyListeners();
 
       if (planId == null) {
-        newPlan = await PlanRepository().createPlan(
-          _project!.id,
-          name,
-          color,
-        );
+        await PlanRepository().createPlan(_project!.id, name, color);
       } else {
-        newPlan = await PlanRepository().updatePlan(
-          planId,
-          name,
-          color,
-        );
+        await PlanRepository().updatePlan(planId, name, color);
       }
 
-      if (_project?.plans == null) return;
+      var plans = await PlanRepository().getPlans(_project!.id);
 
-      _project!.plans = _project!.plans
-              ?.map((plan) => plan?.id == newPlan?.id ? newPlan : plan)
-              .toList() ??
-          [];
+      if (plans == null) return;
+
+      _project!.plans = plans;
     } catch (error) {
       rethrow;
     } finally {
@@ -112,50 +105,29 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
     try {
       if (_project == null || planId == null) return;
 
-      DetailedPlanModel? newDetailedPlan;
-
       _isLoading = true;
 
       notifyListeners();
 
       if (detailedPlanId == null) {
-        newDetailedPlan = await DetailedPlanRepository().createDetailedPlan(
+        await DetailedPlanRepository().createDetailedPlan(
           planId,
           name,
           color,
         );
       } else {
-        newDetailedPlan = await DetailedPlanRepository().updateDetailedPlan(
+        await DetailedPlanRepository().updateDetailedPlan(
           detailedPlanId,
           name,
           color,
         );
       }
 
-      if (_project?.plans == null) return;
+      var plans = await PlanRepository().getPlans(_project!.id);
 
-      _project!.plans = _project!.plans?.map(
-            (plan) {
-              if (plan == null) return null;
+      if (plans == null) return;
 
-              if (plan.id != planId) return plan;
-
-              if (plan.detailedPlans == null) return plan;
-
-              plan.detailedPlans = plan.detailedPlans
-                      ?.map(
-                        (detailedPlan) =>
-                            detailedPlan?.id == newDetailedPlan?.id
-                                ? newDetailedPlan
-                                : detailedPlan,
-                      )
-                      .toList() ??
-                  [];
-
-              return plan;
-            },
-          ).toList() ??
-          [];
+      _project!.plans = plans;
     } catch (error) {
       rethrow;
     } finally {

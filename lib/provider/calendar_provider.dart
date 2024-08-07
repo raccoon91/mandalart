@@ -27,7 +27,7 @@ class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
           project == null || project.plans == null || project.plans!.isEmpty;
 
       _plans = project?.plans
-          ?.where((plan) => plan?.name?.isNotEmpty ?? false)
+          ?.where((plan) => plan.name?.isNotEmpty ?? false)
           .toList();
     } catch (error) {
       rethrow;
@@ -58,7 +58,7 @@ class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
       if (plan != null) {
         _detailedPlans = plan.detailedPlans
-            ?.where((detailedPlan) => detailedPlan?.name?.isNotEmpty ?? false)
+            ?.where((detailedPlan) => detailedPlan.name?.isNotEmpty ?? false)
             .toList();
       } else {
         _detailedPlans = null;

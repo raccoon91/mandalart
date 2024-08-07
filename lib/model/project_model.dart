@@ -8,7 +8,7 @@ class ProjectModel {
   String name;
   Color? color;
   bool delete;
-  List<PlanModel?>? plans;
+  List<PlanModel>? plans;
 
   ProjectModel({
     required this.id,
@@ -19,9 +19,8 @@ class ProjectModel {
     this.plans,
   });
 
-  factory ProjectModel.fromSchema(Project schema) {
+  factory ProjectModel.fromSchema(Project schema, List<PlanModel> plans) {
     Color? color = schema.color != null ? Color(schema.color!) : null;
-    List<PlanModel?>? plans = schema.plans.map(PlanModel.fromSchema).toList();
 
     return ProjectModel(
       id: schema.id,

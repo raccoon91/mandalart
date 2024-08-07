@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:mandalart/model/detailed_plan_model.dart';
 import 'package:mandalart/model/plan_model.dart';
 import 'package:mandalart/repository/detailed_plan_repository.dart';
 import 'package:mandalart/repository/plan_repository.dart';
@@ -33,7 +32,7 @@ class PlanProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
       _isEmpty = plan == null ||
           plan.detailedPlans == null ||
-          plan.detailedPlans!.isEmpty;
+          plan.detailedPlans?.isEmpty == true;
 
       return plan == null;
     } catch (error) {
@@ -54,34 +53,29 @@ class PlanProvider with ChangeNotifier, DiagnosticableTreeMixin {
     try {
       if (_plan == null || planId == null) return;
 
-      DetailedPlanModel? newDetailedPlan;
-
       _isLoading = true;
 
       notifyListeners();
 
+      PlanModel? plan;
+
       if (detailedPlanId == null) {
-        newDetailedPlan = await DetailedPlanRepository().createDetailedPlan(
+        await DetailedPlanRepository().createDetailedPlan(
           planId,
           name,
           color,
         );
       } else {
-        newDetailedPlan = await DetailedPlanRepository().updateDetailedPlan(
+        await DetailedPlanRepository().updateDetailedPlan(
           detailedPlanId,
           name,
           color,
         );
       }
 
-      _plan!.detailedPlans = _plan!.detailedPlans
-              ?.map(
-                (detailedPlan) => detailedPlan?.id == newDetailedPlan?.id
-                    ? newDetailedPlan
-                    : detailedPlan,
-              )
-              .toList() ??
-          [];
+      plan = await PlanRepository().getPlan(planId);
+
+      _plan = plan;
     } catch (error) {
       rethrow;
     } finally {

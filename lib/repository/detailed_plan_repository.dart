@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
-import 'package:mandalart/db/isar_db.dart';
+import 'package:mandalart/main.dart';
 import 'package:mandalart/model/detailed_plan_model.dart';
 import 'package:mandalart/schema/detailed_plan_schema.dart';
 
@@ -9,84 +9,70 @@ class DetailedPlanRepository {
     try {
       if (planId == null) return null;
 
-      final detailedPlansSchema = await IsarDB.isar.detailedPlans
-          .filter()
-          .planIdEqualTo(planId)
-          .findAll();
+      final detailedPlansSchema =
+          await isar.detailedPlans.filter().planIdEqualTo(planId).findAll();
 
-      List<DetailedPlanModel> plans =
+      List<DetailedPlanModel> detailedPlans =
           detailedPlansSchema.map(DetailedPlanModel.fromSchema).toList();
 
-      return plans;
+      return detailedPlans;
     } catch (error) {
       rethrow;
     }
   }
 
-  Future<DetailedPlanModel?> createDetailedPlan(
+  Future<void> createDetailedPlan(
     int? planId,
     String? name,
     Color? color,
   ) async {
     try {
-      if (planId == null) return null;
+      if (planId == null) return;
 
       String colorString = color.toString();
       String colorInteger = colorString.split('(0x')[1].split(')')[0];
       int colorValue = int.parse(colorInteger, radix: 16);
 
-      final detailedPlanSchema = DetailedPlan()
-        ..planId = planId
-        ..name = name
-        ..color = colorValue;
+      isar.writeTxnSync(() {
+        final detailedPlanSchema = DetailedPlan()
+          ..planId = planId
+          ..name = name
+          ..color = colorValue;
 
-      await IsarDB.isar.writeTxn(() async {
-        int planId = await IsarDB.isar.detailedPlans.put(
-          detailedPlanSchema,
-        );
-
-        detailedPlanSchema.id = planId;
+        isar.detailedPlans.putSync(detailedPlanSchema);
       });
-
-      final detailedPlan = DetailedPlanModel.fromSchema(detailedPlanSchema);
-
-      return detailedPlan;
     } catch (error) {
       rethrow;
     }
   }
 
-  Future<DetailedPlanModel?> updateDetailedPlan(
+  Future<bool> updateDetailedPlan(
     int? detailedPlanId,
     String? name,
     Color? color,
   ) async {
     try {
-      if (detailedPlanId == null) return null;
+      if (detailedPlanId == null) return false;
 
-      final detailedPlanSchema = await IsarDB.isar.detailedPlans
+      final detailedPlanSchema = await isar.detailedPlans
           .where()
           .idEqualTo(detailedPlanId)
           .findFirst();
 
-      if (detailedPlanSchema == null) return null;
+      if (detailedPlanSchema == null) return false;
 
       String colorString = color.toString();
       String colorInteger = colorString.split('(0x')[1].split(')')[0];
       int colorValue = int.parse(colorInteger, radix: 16);
 
-      detailedPlanSchema.name = name;
-      detailedPlanSchema.color = colorValue;
+      isar.writeTxnSync(() {
+        detailedPlanSchema.name = name;
+        detailedPlanSchema.color = colorValue;
 
-      await IsarDB.isar.writeTxn(() async {
-        detailedPlanSchema.id = await IsarDB.isar.detailedPlans.put(
-          detailedPlanSchema,
-        );
+        detailedPlanSchema.id = isar.detailedPlans.putSync(detailedPlanSchema);
       });
 
-      final detailedPlan = DetailedPlanModel.fromSchema(detailedPlanSchema);
-
-      return detailedPlan;
+      return true;
     } catch (error) {
       rethrow;
     }
