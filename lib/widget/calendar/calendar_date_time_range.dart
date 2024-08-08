@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/base/date_picker.dart';
 import 'package:mandalart/widget/base/time_picker.dart';
 
 class CalendarDateTimeRange extends StatelessWidget {
   final DateTime from;
   final DateTime to;
+  final bool allDay;
   final void Function(DateTime date)? fromChanged;
   final void Function(DateTime date)? toChanged;
+  final void Function(bool value)? allDayChanged;
 
   const CalendarDateTimeRange({
     super.key,
     required this.from,
     required this.to,
+    required this.allDay,
     this.fromChanged,
     this.toChanged,
+    this.allDayChanged,
   });
 
   @override
@@ -27,13 +32,31 @@ class CalendarDateTimeRange extends StatelessWidget {
       child: Column(
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Icon(Icons.access_time),
-              SizedBox(width: 10.w),
-              Text(
-                "날짜",
-                style: TextStyle(fontSize: 18.sp),
-              )
+              Row(
+                children: [
+                  const Icon(Icons.access_time),
+                  SizedBox(width: 10.w),
+                  Text(
+                    "날짜",
+                    style: TextStyle(fontSize: 18.sp),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 30.h,
+                child: FittedBox(
+                  fit: BoxFit.fill,
+                  child: Switch(
+                    activeColor: ColorClass.blue,
+                    activeTrackColor: ColorClass.skyBlue,
+                    inactiveTrackColor: ColorClass.under,
+                    value: allDay,
+                    onChanged: allDayChanged,
+                  ),
+                ),
+              ),
             ],
           ),
           SizedBox(height: 10.h),

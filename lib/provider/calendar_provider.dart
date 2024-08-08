@@ -1,19 +1,24 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:mandalart/model/detailed_plan_model.dart';
 import 'package:mandalart/model/plan_model.dart';
 import 'package:mandalart/model/project_model.dart';
+import 'package:mandalart/model/task_model.dart';
 import 'package:mandalart/repository/project_repository.dart';
+import 'package:mandalart/repository/task_repository.dart';
 
 class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
   bool _isEmpty = true;
   bool _isLoading = false;
   List<PlanModel?>? _plans;
   List<DetailedPlanModel?>? _detailedPlans;
+  List<TaskModel>? _tasks;
 
   bool get isEmpty => _isEmpty;
   bool get isLoading => _isLoading;
   List<PlanModel?>? get plans => _plans;
   List<DetailedPlanModel?>? get detailedPlans => _detailedPlans;
+  List<TaskModel>? get tasks => _tasks;
 
   Future<void> getPlans() async {
     try {
@@ -66,6 +71,64 @@ class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
     } catch (error) {
       rethrow;
     } finally {
+      notifyListeners();
+    }
+  }
+
+  Future<void> getTasks() async {
+    try {
+      _isLoading = true;
+
+      notifyListeners();
+
+      var tasks = await TaskRepository().getTodayTask();
+
+      _tasks = tasks;
+    } catch (error) {
+      rethrow;
+    } finally {
+      _isLoading = false;
+
+      notifyListeners();
+    }
+  }
+
+  Future<void> createTask(
+    String name,
+    DateTime from,
+    DateTime to,
+    Color color,
+    bool allDay,
+    bool everyDay,
+    int? everyWeek,
+    int? everyMonth,
+  ) async {
+    try {
+      _isLoading = true;
+
+      notifyListeners();
+
+      var newTask = await TaskRepository().createTask(
+        name,
+        from,
+        to,
+        color,
+        allDay,
+        everyDay,
+        everyWeek,
+        everyMonth,
+      );
+
+      List<TaskModel> tasks = _tasks ?? [];
+
+      tasks.add(newTask);
+
+      _tasks = tasks;
+    } catch (error) {
+      rethrow;
+    } finally {
+      _isLoading = false;
+
       notifyListeners();
     }
   }

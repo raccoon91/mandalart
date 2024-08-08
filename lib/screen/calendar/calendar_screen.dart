@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mandalart/provider/calendar_provider.dart';
 import 'package:mandalart/theme/color.dart';
+import 'package:mandalart/utils/task_data_source.dart';
 import 'package:mandalart/widget/base/banner_ad.dart';
 import 'package:mandalart/widget/calendar/calendar_bottom_sheet.dart';
 import 'package:provider/provider.dart';
@@ -20,11 +21,18 @@ class _CalendarScreenState extends State<CalendarScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      getPlans();
+      getTasksAndPlans();
     });
   }
 
-  Future<void> getPlans() async {
+  void getTasksAndPlans() async {
+    await Provider.of<CalendarProvider>(
+      context,
+      listen: false,
+    ).getTasks();
+
+    if (!mounted) return;
+
     await Provider.of<CalendarProvider>(
       context,
       listen: false,
@@ -33,7 +41,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   onTapCell(CalendarTapDetails? calendar) {
     DateTime from = calendar?.date ?? DateTime.now();
-    DateTime? to = from.add(const Duration(hours: 1));
+    DateTime to = from.add(const Duration(hours: 1));
+    bool allDay = false;
 
     showModalBottomSheet<void>(
       context: context,
@@ -44,6 +53,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
         return CalendarBottomSheet(
           from: from,
           to: to,
+          allDay: allDay,
         );
       },
     );
@@ -58,34 +68,37 @@ class _CalendarScreenState extends State<CalendarScreen> {
           const BannerAD(),
           SizedBox(height: 10.h),
           Expanded(
-            child: SfCalendar(
-              view: CalendarView.week,
-              timeZone: "Asia/Seoul",
-              showWeekNumber: true,
-              showCurrentTimeIndicator: true,
-              initialDisplayDate: DateTime.now(),
-              headerDateFormat: 'yyyy년 MM월',
-              headerStyle: const CalendarHeaderStyle(
-                textAlign: TextAlign.center,
-                textStyle: TextStyle(fontWeight: FontWeight.w700),
-                backgroundColor: ColorClass.under,
-              ),
-              weekNumberStyle: const WeekNumberStyle(
-                backgroundColor: ColorClass.under,
-                textStyle: TextStyle(fontWeight: FontWeight.w700),
-              ),
-              todayHighlightColor: ColorClass.blue,
-              todayTextStyle: const TextStyle(
-                color: ColorClass.black,
-                fontWeight: FontWeight.w700,
-              ),
-              selectionDecoration: BoxDecoration(
-                border: Border.all(
-                  width: 2,
-                  color: ColorClass.blue,
+            child: Consumer<CalendarProvider>(
+              builder: (context, state, child) => SfCalendar(
+                view: CalendarView.week,
+                timeZone: "Asia/Seoul",
+                showWeekNumber: true,
+                showCurrentTimeIndicator: true,
+                initialDisplayDate: DateTime.now(),
+                headerDateFormat: 'yyyy년 MM월',
+                headerStyle: const CalendarHeaderStyle(
+                  textAlign: TextAlign.center,
+                  textStyle: TextStyle(fontWeight: FontWeight.w700),
+                  backgroundColor: ColorClass.under,
                 ),
+                weekNumberStyle: const WeekNumberStyle(
+                  backgroundColor: ColorClass.under,
+                  textStyle: TextStyle(fontWeight: FontWeight.w700),
+                ),
+                todayHighlightColor: ColorClass.blue,
+                todayTextStyle: const TextStyle(
+                  color: ColorClass.black,
+                  fontWeight: FontWeight.w700,
+                ),
+                selectionDecoration: BoxDecoration(
+                  border: Border.all(
+                    width: 2,
+                    color: ColorClass.blue,
+                  ),
+                ),
+                dataSource: TaskDataSource(state.tasks),
+                onTap: onTapCell,
               ),
-              onTap: onTapCell,
             ),
           ),
         ],

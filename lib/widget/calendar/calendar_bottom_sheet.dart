@@ -10,11 +10,13 @@ import 'package:provider/provider.dart';
 class CalendarBottomSheet extends StatefulWidget {
   final DateTime from;
   final DateTime to;
+  final bool allDay;
 
   const CalendarBottomSheet({
     super.key,
     required this.from,
     required this.to,
+    required this.allDay,
   });
 
   @override
@@ -24,6 +26,7 @@ class CalendarBottomSheet extends StatefulWidget {
 class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
   late DateTime fromDate;
   late DateTime toDate;
+  late bool allDay;
   int? selectedPlanId;
   int? selectedDetailedPlanId;
 
@@ -33,6 +36,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
 
     fromDate = widget.from;
     toDate = widget.to;
+    allDay = widget.allDay;
   }
 
   fromDateChanged(DateTime date) {
@@ -43,6 +47,12 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
 
   toDateChanged(DateTime date) {
     toDate = date;
+
+    setState(() {});
+  }
+
+  allDayChanged(bool value) {
+    allDay = value;
 
     setState(() {});
   }
@@ -88,8 +98,10 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
                   CalendarDateTimeRange(
                     from: fromDate,
                     to: toDate,
+                    allDay: allDay,
                     fromChanged: fromDateChanged,
                     toChanged: toDateChanged,
+                    allDayChanged: allDayChanged,
                   ),
                   const Divider(),
                   CalendarPlanPicker(
