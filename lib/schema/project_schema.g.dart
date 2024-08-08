@@ -54,7 +54,14 @@ const ProjectSchema = CollectionSchema(
   deserializeProp: _projectDeserializeProp,
   idName: r'id',
   indexes: {},
-  links: {},
+  links: {
+    r'plans': LinkSchema(
+      id: 3587173482241355349,
+      name: r'plans',
+      target: r'Plan',
+      single: false,
+    )
+  },
   embeddedSchemas: {},
   getId: _projectGetId,
   getLinks: _projectGetLinks,
@@ -144,11 +151,12 @@ Id _projectGetId(Project object) {
 }
 
 List<IsarLinkBase<dynamic>> _projectGetLinks(Project object) {
-  return [];
+  return [object.plans];
 }
 
 void _projectAttach(IsarCollection<dynamic> col, Id id, Project object) {
   object.id = id;
+  object.plans.attach(col, col.isar.collection<Plan>(), r'plans', id);
 }
 
 extension ProjectQueryWhereSort on QueryBuilder<Project, Project, QWhere> {
@@ -797,7 +805,63 @@ extension ProjectQueryObject
     on QueryBuilder<Project, Project, QFilterCondition> {}
 
 extension ProjectQueryLinks
-    on QueryBuilder<Project, Project, QFilterCondition> {}
+    on QueryBuilder<Project, Project, QFilterCondition> {
+  QueryBuilder<Project, Project, QAfterFilterCondition> plans(
+      FilterQuery<Plan> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'plans');
+    });
+  }
+
+  QueryBuilder<Project, Project, QAfterFilterCondition> plansLengthEqualTo(
+      int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'plans', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<Project, Project, QAfterFilterCondition> plansIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'plans', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Project, Project, QAfterFilterCondition> plansIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'plans', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<Project, Project, QAfterFilterCondition> plansLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'plans', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<Project, Project, QAfterFilterCondition> plansLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'plans', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<Project, Project, QAfterFilterCondition> plansLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+          r'plans', lower, includeLower, upper, includeUpper);
+    });
+  }
+}
 
 extension ProjectQuerySortBy on QueryBuilder<Project, Project, QSortBy> {
   QueryBuilder<Project, Project, QAfterSortBy> sortByColor() {

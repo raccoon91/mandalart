@@ -42,13 +42,8 @@ const DetailedPlanSchema = CollectionSchema(
       name: r'planId',
       type: IsarType.long,
     ),
-    r'projectId': PropertySchema(
-      id: 5,
-      name: r'projectId',
-      type: IsarType.long,
-    ),
     r'style': PropertySchema(
-      id: 6,
+      id: 5,
       name: r'style',
       type: IsarType.string,
     )
@@ -105,8 +100,7 @@ void _detailedPlanSerialize(
   writer.writeString(offsets[2], object.description);
   writer.writeString(offsets[3], object.name);
   writer.writeLong(offsets[4], object.planId);
-  writer.writeLong(offsets[5], object.projectId);
-  writer.writeString(offsets[6], object.style);
+  writer.writeString(offsets[5], object.style);
 }
 
 DetailedPlan _detailedPlanDeserialize(
@@ -122,8 +116,7 @@ DetailedPlan _detailedPlanDeserialize(
   object.id = id;
   object.name = reader.readStringOrNull(offsets[3]);
   object.planId = reader.readLong(offsets[4]);
-  object.projectId = reader.readLong(offsets[5]);
-  object.style = reader.readStringOrNull(offsets[6]);
+  object.style = reader.readStringOrNull(offsets[5]);
   return object;
 }
 
@@ -145,8 +138,6 @@ P _detailedPlanDeserializeProp<P>(
     case 4:
       return (reader.readLong(offset)) as P;
     case 5:
-      return (reader.readLong(offset)) as P;
-    case 6:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -743,62 +734,6 @@ extension DetailedPlanQueryFilter
   }
 
   QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      projectIdEqualTo(int value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'projectId',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      projectIdGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'projectId',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      projectIdLessThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'projectId',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      projectIdBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'projectId',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
       styleIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -1020,18 +955,6 @@ extension DetailedPlanQuerySortBy
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> sortByProjectId() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'projectId', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> sortByProjectIdDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'projectId', Sort.desc);
-    });
-  }
-
   QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> sortByStyle() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'style', Sort.asc);
@@ -1120,18 +1043,6 @@ extension DetailedPlanQuerySortThenBy
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> thenByProjectId() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'projectId', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> thenByProjectIdDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'projectId', Sort.desc);
-    });
-  }
-
   QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> thenByStyle() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'style', Sort.asc);
@@ -1179,12 +1090,6 @@ extension DetailedPlanQueryWhereDistinct
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QDistinct> distinctByProjectId() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'projectId');
-    });
-  }
-
   QueryBuilder<DetailedPlan, DetailedPlan, QDistinct> distinctByStyle(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1228,12 +1133,6 @@ extension DetailedPlanQueryProperty
   QueryBuilder<DetailedPlan, int, QQueryOperations> planIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'planId');
-    });
-  }
-
-  QueryBuilder<DetailedPlan, int, QQueryOperations> projectIdProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'projectId');
     });
   }
 

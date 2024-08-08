@@ -8,7 +8,7 @@ class PlanModel {
   Color? color;
   bool delete;
   int projectId;
-  List<DetailedPlanModel>? detailedPlans;
+  List<DetailedPlanModel?>? detailedPlans;
 
   PlanModel({
     required this.id,
@@ -19,11 +19,10 @@ class PlanModel {
     this.detailedPlans,
   });
 
-  factory PlanModel.fromSchema(
-    Plan schema,
-    List<DetailedPlanModel> detailedPlans,
-  ) {
+  factory PlanModel.fromSchema(Plan schema) {
     Color? color = schema.color != null ? Color(schema.color!) : null;
+    List<DetailedPlanModel?>? detailedPlans =
+        schema.detailedPlans.map(DetailedPlanModel.fromSchema).toList();
 
     return PlanModel(
       id: schema.id,
