@@ -39,52 +39,56 @@ class CalendarPlanPicker extends StatelessWidget {
               builder: (context, state, child) => state.isEmpty
                   ? const Text("계획을 설정하세요")
                   : LayoutBuilder(
-                      builder: (context, constraints) => Wrap(
-                        spacing: 8.w,
-                        runSpacing: 8.w,
-                        children: state.plans
-                                ?.map(
-                                  (plan) => GestureDetector(
-                                    onTap: () {
-                                      if (plan?.id == null ||
-                                          onChanged == null) {
-                                        return;
-                                      }
+                      builder: (context, constraints) => SizedBox(
+                        width: constraints.maxWidth,
+                        child: Wrap(
+                          spacing: 8.w,
+                          runSpacing: 8.w,
+                          children: state.plans
+                                  ?.map(
+                                    (plan) => GestureDetector(
+                                      onTap: () {
+                                        if (plan?.id == null ||
+                                            onChanged == null) {
+                                          return;
+                                        }
 
-                                      onChanged!(plan!.id);
-                                    },
-                                    child: Container(
-                                      width: (constraints.maxWidth - 18.w) / 2,
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: 8.h,
-                                        horizontal: 16.w,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: selectedPlanId == plan?.id
-                                            ? plan?.color
-                                            : ColorClass.white,
-                                        border: Border.all(
-                                          color: selectedPlanId == plan?.id
-                                              ? plan?.color ?? ColorClass.gray
-                                              : ColorClass.gray,
+                                        onChanged!(plan!.id);
+                                      },
+                                      child: Container(
+                                        width:
+                                            (constraints.maxWidth - 18.w) / 2,
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 8.h,
+                                          horizontal: 16.w,
                                         ),
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(4.r),
-                                        ),
-                                      ),
-                                      child: Text(
-                                        plan?.name ?? "",
-                                        style: TextStyle(
+                                        decoration: BoxDecoration(
                                           color: selectedPlanId == plan?.id
-                                              ? ColorClass.black
-                                              : ColorClass.gray,
+                                              ? plan?.color
+                                              : ColorClass.white,
+                                          border: Border.all(
+                                            color: selectedPlanId == plan?.id
+                                                ? plan?.color ?? ColorClass.gray
+                                                : ColorClass.gray,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(4.r),
+                                          ),
+                                        ),
+                                        child: Text(
+                                          plan?.name ?? "",
+                                          style: TextStyle(
+                                            color: selectedPlanId == plan?.id
+                                                ? ColorClass.black
+                                                : ColorClass.gray,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                )
-                                .toList() ??
-                            [],
+                                  )
+                                  .toList() ??
+                              [],
+                        ),
                       ),
                     ),
             )
