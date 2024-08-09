@@ -91,8 +91,8 @@ class TaskRepository {
     try {
       final taskSchema = Task()
         ..detailedPlanId = detailedPlanId
-        ..from = from.subtract(const Duration(hours: 9))
-        ..to = to.subtract(const Duration(hours: 9))
+        ..from = from
+        ..to = to
         ..allDay = allDay ?? false
         ..everyDay = everyDay ?? false
         ..everyWeek = everyWeek
