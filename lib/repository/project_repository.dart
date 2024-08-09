@@ -5,6 +5,7 @@ import 'package:mandalart/model/project_model.dart';
 import 'package:mandalart/schema/detailed_plan_schema.dart';
 import 'package:mandalart/schema/plan_schema.dart';
 import 'package:mandalart/schema/project_schema.dart';
+import 'package:mandalart/schema/task_schema.dart';
 
 class ProjectRepository {
   Future<String?> getProjectName() async {
@@ -107,7 +108,12 @@ class ProjectRepository {
         },
       );
 
+      List<Task> taskSchema = await IsarDB.isar.tasks.where().findAll();
+
+      List<int> taskIds = taskSchema.map((task) => task.id).toList();
+
       await IsarDB.isar.writeTxn(() async {
+        await IsarDB.isar.tasks.deleteAll(taskIds);
         await IsarDB.isar.detailedPlans.deleteAll(detailedPlanIds);
         await IsarDB.isar.plans.deleteAll(planIds);
         await IsarDB.isar.projects.delete(proejctId);
