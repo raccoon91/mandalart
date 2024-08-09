@@ -6,17 +6,13 @@ part 'task_schema.g.dart';
 class Task {
   Id id = Isar.autoIncrement;
 
-  late int planId;
-
   late int detailedPlanId;
-
-  late String name;
-
-  String? description;
 
   late DateTime from;
 
   late DateTime to;
+
+  DateTime? terminate;
 
   int? color;
 

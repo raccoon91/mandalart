@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mandalart/provider/calendar_provider.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/utils/task_data_source.dart';
@@ -39,10 +40,43 @@ class _CalendarScreenState extends State<CalendarScreen> {
     ).getPlans();
   }
 
+  Future<void> createTask(
+    int detailedPlanId,
+    DateTime from,
+    DateTime to,
+    bool? allDay,
+    bool? everyDay,
+    int? everyWeek,
+    int? everyMonth,
+  ) async {
+    bool success = await Provider.of<CalendarProvider>(
+      context,
+      listen: false,
+    ).createTask(
+      detailedPlanId,
+      from,
+      to,
+      allDay,
+      everyDay,
+      everyWeek,
+      everyMonth,
+    );
+
+    if (!mounted || success == false) return;
+
+    await Provider.of<CalendarProvider>(
+      context,
+      listen: false,
+    ).getTasks();
+
+    if (!mounted) return;
+
+    context.pop();
+  }
+
   onTapCell(CalendarTapDetails? calendar) {
     DateTime from = calendar?.date ?? DateTime.now();
     DateTime to = from.add(const Duration(hours: 1));
-    bool allDay = false;
 
     showModalBottomSheet<void>(
       context: context,
@@ -53,7 +87,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
         return CalendarBottomSheet(
           from: from,
           to: to,
-          allDay: allDay,
+          onCreate: createTask,
         );
       },
     );

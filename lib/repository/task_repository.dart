@@ -1,23 +1,38 @@
-import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:mandalart/db/isar_db.dart';
 import 'package:mandalart/model/task_model.dart';
+import 'package:mandalart/schema/detailed_plan_schema.dart';
 import 'package:mandalart/schema/task_schema.dart';
 
 class TaskRepository {
   Future<List<TaskModel>?> getTodayTask() async {
     try {
       var today = DateTime.now();
-      var fromDate = today.copyWith(hour: 0, minute: 0, second: 0);
-      var toDate = today.copyWith(hour: 11, minute: 59, second: 59);
+      var fromDate = today
+          .subtract(Duration(days: today.weekday))
+          .copyWith(hour: 0, minute: 0, second: 0);
+      var toDate = today
+          .add(Duration(days: DateTime.daysPerWeek - today.weekday - 1))
+          .copyWith(hour: 11, minute: 59, second: 59);
 
-      final tasksSchema = await IsarDB.isar.tasks
+      final taskSchemaList = await IsarDB.isar.tasks
           .filter()
           .fromGreaterThan(fromDate)
           .toLessThan(toDate)
           .findAll();
 
-      List<TaskModel> tasks = tasksSchema.map(TaskModel.fromSchema).toList();
+      List<TaskModel> tasks = [];
+
+      for (var taskSchema in taskSchemaList) {
+        var detailedPlanSchema = await IsarDB.isar.detailedPlans
+            .filter()
+            .idEqualTo(taskSchema.detailedPlanId)
+            .findFirst();
+
+        if (detailedPlanSchema == null) continue;
+
+        tasks.add(TaskModel.fromSchema(taskSchema, detailedPlanSchema));
+      }
 
       return tasks;
     } catch (error) {
@@ -25,73 +40,78 @@ class TaskRepository {
     }
   }
 
-  Future<List<TaskModel>?> getEveryDayTask() async {
-    try {
-      final tasksSchema =
-          await IsarDB.isar.tasks.filter().everyDayEqualTo(true).findAll();
+  // Future<List<TaskModel>?> getEveryDayTask() async {
+  //   try {
+  //     final taskSchema =
+  //         await IsarDB.isar.tasks.filter().everyDayEqualTo(true).findAll();
 
-      List<TaskModel> tasks = tasksSchema.map(TaskModel.fromSchema).toList();
+  //     List<TaskModel> tasks = taskSchema.map(TaskModel.fromSchema).toList();
 
-      return tasks;
-    } catch (error) {
-      rethrow;
-    }
-  }
+  //     return tasks;
+  //   } catch (error) {
+  //     rethrow;
+  //   }
+  // }
 
-  Future<List<TaskModel>?> getEveryWeekTask(int weekday) async {
-    try {
-      final tasksSchema =
-          await IsarDB.isar.tasks.filter().everyWeekEqualTo(weekday).findAll();
+  // Future<List<TaskModel>?> getEveryWeekTask(int weekday) async {
+  //   try {
+  //     final taskSchema =
+  //         await IsarDB.isar.tasks.filter().everyWeekEqualTo(weekday).findAll();
 
-      List<TaskModel> tasks = tasksSchema.map(TaskModel.fromSchema).toList();
+  //     List<TaskModel> tasks = taskSchema.map(TaskModel.fromSchema).toList();
 
-      return tasks;
-    } catch (error) {
-      rethrow;
-    }
-  }
+  //     return tasks;
+  //   } catch (error) {
+  //     rethrow;
+  //   }
+  // }
 
-  Future<List<TaskModel>?> getEveryMonthTask(int day) async {
-    try {
-      final tasksSchema =
-          await IsarDB.isar.tasks.filter().everyMonthEqualTo(day).findAll();
+  // Future<List<TaskModel>?> getEveryMonthTask(int day) async {
+  //   try {
+  //     final taskSchema =
+  //         await IsarDB.isar.tasks.filter().everyMonthEqualTo(day).findAll();
 
-      List<TaskModel> tasks = tasksSchema.map(TaskModel.fromSchema).toList();
+  //     List<TaskModel> tasks = taskSchema.map(TaskModel.fromSchema).toList();
 
-      return tasks;
-    } catch (error) {
-      rethrow;
-    }
-  }
+  //     return tasks;
+  //   } catch (error) {
+  //     rethrow;
+  //   }
+  // }
 
-  Future<TaskModel> createTask(
-    String name,
+  Future<TaskModel?> createTask(
+    int detailedPlanId,
     DateTime from,
     DateTime to,
-    Color color,
-    bool allDay,
-    bool everyDay,
+    bool? allDay,
+    bool? everyDay,
     int? everyWeek,
     int? everyMonth,
   ) async {
     try {
-      int colorValue = color.value;
-
       final taskSchema = Task()
-        ..name = name
+        ..detailedPlanId = detailedPlanId
         ..from = from
         ..to = to
-        ..color = colorValue
-        ..allDay = allDay
-        ..everyDay = everyDay
+        ..allDay = allDay ?? false
+        ..everyDay = everyDay ?? false
         ..everyWeek = everyWeek
         ..everyMonth = everyMonth;
 
-      await IsarDB.isar.tasks.put(taskSchema);
+      await IsarDB.isar.writeTxn(() async {
+        await IsarDB.isar.tasks.put(taskSchema);
+      });
 
-      final project = TaskModel.fromSchema(taskSchema);
+      var detailedPlanSchema = await IsarDB.isar.detailedPlans
+          .filter()
+          .idEqualTo(detailedPlanId)
+          .findFirst();
 
-      return project;
+      if (detailedPlanSchema == null) return null;
+
+      final task = TaskModel.fromSchema(taskSchema, detailedPlanSchema);
+
+      return task;
     } catch (error) {
       rethrow;
     }

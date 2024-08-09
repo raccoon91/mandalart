@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:mandalart/model/detailed_plan_model.dart';
 import 'package:mandalart/model/plan_model.dart';
 import 'package:mandalart/model/project_model.dart';
@@ -81,7 +80,7 @@ class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
       notifyListeners();
 
-      var tasks = await TaskRepository().getTodayTask();
+      List<TaskModel>? tasks = await TaskRepository().getTodayTask();
 
       _tasks = tasks;
     } catch (error) {
@@ -93,13 +92,12 @@ class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
-  Future<void> createTask(
-    String name,
+  Future<bool> createTask(
+    int detailedPlanId,
     DateTime from,
     DateTime to,
-    Color color,
-    bool allDay,
-    bool everyDay,
+    bool? allDay,
+    bool? everyDay,
     int? everyWeek,
     int? everyMonth,
   ) async {
@@ -109,10 +107,9 @@ class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
       notifyListeners();
 
       var newTask = await TaskRepository().createTask(
-        name,
+        detailedPlanId,
         from,
         to,
-        color,
         allDay,
         everyDay,
         everyWeek,
@@ -121,9 +118,13 @@ class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
       List<TaskModel> tasks = _tasks ?? [];
 
+      if (newTask == null) return false;
+
       tasks.add(newTask);
 
       _tasks = tasks;
+
+      return true;
     } catch (error) {
       rethrow;
     } finally {

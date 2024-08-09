@@ -9,9 +9,9 @@ void main() async {
 
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  await MobileAds.instance.initialize();
-
   await IsarDB().init();
+
+  await MobileAds.instance.initialize();
 
   runApp(const App());
 }

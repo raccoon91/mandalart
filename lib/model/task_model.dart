@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:mandalart/model/detailed_plan_model.dart';
+import 'package:mandalart/schema/detailed_plan_schema.dart';
 import 'package:mandalart/schema/task_schema.dart';
 
 class TaskModel {
-  String name;
+  int detailedPlanId;
+  DetailedPlanModel detailedPlan;
   DateTime from;
   DateTime to;
+  DateTime? terminate;
   Color? color;
   bool allDay;
   bool everyDay;
@@ -12,9 +16,11 @@ class TaskModel {
   int? everyMonth;
 
   TaskModel({
-    required this.name,
+    required this.detailedPlanId,
+    required this.detailedPlan,
     required this.from,
     required this.to,
+    this.terminate,
     this.color,
     required this.allDay,
     required this.everyDay,
@@ -22,18 +28,24 @@ class TaskModel {
     required this.everyMonth,
   });
 
-  factory TaskModel.fromSchema(Task schema) {
-    Color? color = schema.color != null ? Color(schema.color!) : null;
+  factory TaskModel.fromSchema(
+    Task taskSchema,
+    DetailedPlan detailedPlanSchema,
+  ) {
+    Color? color = taskSchema.color != null ? Color(taskSchema.color!) : null;
+    var detailedPlan = DetailedPlanModel.fromSchema(detailedPlanSchema);
 
     return TaskModel(
-      name: schema.name,
-      from: schema.from,
-      to: schema.to,
+      detailedPlanId: taskSchema.detailedPlanId,
+      detailedPlan: detailedPlan,
+      from: taskSchema.from,
+      to: taskSchema.to,
+      terminate: taskSchema.terminate,
       color: color,
-      allDay: schema.allDay,
-      everyDay: schema.everyDay,
-      everyWeek: schema.everyWeek,
-      everyMonth: schema.everyMonth,
+      allDay: taskSchema.allDay,
+      everyDay: taskSchema.everyDay,
+      everyWeek: taskSchema.everyWeek,
+      everyMonth: taskSchema.everyMonth,
     );
   }
 }

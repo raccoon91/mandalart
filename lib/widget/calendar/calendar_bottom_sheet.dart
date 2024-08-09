@@ -10,13 +10,21 @@ import 'package:provider/provider.dart';
 class CalendarBottomSheet extends StatefulWidget {
   final DateTime from;
   final DateTime to;
-  final bool allDay;
+  final Future<void> Function(
+    int detailedPlanId,
+    DateTime from,
+    DateTime to,
+    bool? allDay,
+    bool? everyDay,
+    int? everyWeek,
+    int? everyMonth,
+  )? onCreate;
 
   const CalendarBottomSheet({
     super.key,
     required this.from,
     required this.to,
-    required this.allDay,
+    this.onCreate,
   });
 
   @override
@@ -24,11 +32,15 @@ class CalendarBottomSheet extends StatefulWidget {
 }
 
 class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
-  late DateTime fromDate;
-  late DateTime toDate;
-  late bool allDay;
   int? selectedPlanId;
   int? selectedDetailedPlanId;
+  late DateTime fromDate;
+  late DateTime toDate;
+  bool allDay = false;
+  bool everyDay = false;
+  int? everyWeek;
+  int? everyMonth;
+  bool enabled = false;
 
   @override
   void initState() {
@@ -36,11 +48,16 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
 
     fromDate = widget.from;
     toDate = widget.to;
-    allDay = widget.allDay;
+  }
+
+  checkEnabled() {
+    enabled = selectedPlanId != null && selectedDetailedPlanId != null;
   }
 
   fromDateChanged(DateTime date) {
     fromDate = date;
+
+    checkEnabled();
 
     setState(() {});
   }
@@ -48,11 +65,15 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
   toDateChanged(DateTime date) {
     toDate = date;
 
+    checkEnabled();
+
     setState(() {});
   }
 
   allDayChanged(bool value) {
     allDay = value;
+
+    checkEnabled();
 
     setState(() {});
   }
@@ -71,6 +92,8 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
       listen: false,
     ).getDetailedPlans(selectedPlanId);
 
+    checkEnabled();
+
     setState(() {});
   }
 
@@ -81,7 +104,23 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
       selectedDetailedPlanId = detailedPlanId;
     }
 
+    checkEnabled();
+
     setState(() {});
+  }
+
+  createTapped() {
+    if (widget.onCreate == null || selectedDetailedPlanId == null) return;
+
+    widget.onCreate!(
+      selectedDetailedPlanId!,
+      fromDate,
+      toDate,
+      allDay,
+      everyDay,
+      everyWeek,
+      everyMonth,
+    );
   }
 
   @override
@@ -127,7 +166,11 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
             child: SizedBox(
               width: double.infinity,
               height: 60.h,
-              child: const Button(text: '만들기'),
+              child: Button(
+                text: '만들기',
+                onPressed:
+                    enabled && widget.onCreate != null ? createTapped : null,
+              ),
             ),
           ),
         ],
