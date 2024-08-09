@@ -35,7 +35,11 @@ class TimePicker extends StatelessWidget {
                 ),
               ),
             ),
-            child: child!,
+            child: Localizations.override(
+              context: context,
+              locale: const Locale('ko'),
+              child: child!,
+            ),
           ),
         );
 

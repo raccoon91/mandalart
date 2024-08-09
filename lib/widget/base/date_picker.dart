@@ -20,7 +20,6 @@ class DatePicker extends StatelessWidget {
       onTap: () async {
         final DateTime? value = await showDatePicker(
           context: context,
-          locale: const Locale("ko"),
           initialDate: date,
           firstDate: DateTime(2020),
           lastDate: DateTime(2100),
