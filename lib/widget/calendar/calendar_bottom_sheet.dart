@@ -126,7 +126,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 40.h, bottom: 20.h),
+      padding: EdgeInsets.only(top: 60.h, bottom: 20.h),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

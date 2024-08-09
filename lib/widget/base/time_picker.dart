@@ -49,7 +49,7 @@ class TimePicker extends StatelessWidget {
       },
       child: Text(
         DateFormat("a HH:mm").format(date),
-        style: TextStyle(fontSize: 18.sp),
+        style: TextStyle(fontSize: 20.sp),
       ),
     );
   }

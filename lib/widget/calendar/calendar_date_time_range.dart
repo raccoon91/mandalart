@@ -27,7 +27,7 @@ class CalendarDateTimeRange extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(
         vertical: 10.h,
-        horizontal: 20.w,
+        horizontal: 40.w,
       ),
       child: Column(
         children: [
@@ -40,7 +40,7 @@ class CalendarDateTimeRange extends StatelessWidget {
                   SizedBox(width: 10.w),
                   Text(
                     "날짜",
-                    style: TextStyle(fontSize: 18.sp),
+                    style: TextStyle(fontSize: 20.sp),
                   )
                 ],
               ),

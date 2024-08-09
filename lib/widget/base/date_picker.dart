@@ -46,7 +46,7 @@ class DatePicker extends StatelessWidget {
       },
       child: Text(
         DateFormat("yyyy년 MM월 dd일").format(date),
-        style: TextStyle(fontSize: 18.sp),
+        style: TextStyle(fontSize: 20.sp),
       ),
     );
   }

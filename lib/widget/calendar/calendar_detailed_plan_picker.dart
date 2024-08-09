@@ -19,7 +19,7 @@ class CalendarDetailedPlanPicker extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(
         vertical: 10.h,
-        horizontal: 20.w,
+        horizontal: 40.w,
       ),
       child: Column(
         children: [
@@ -29,7 +29,7 @@ class CalendarDetailedPlanPicker extends StatelessWidget {
               SizedBox(width: 10.w),
               Text(
                 "상세 계획",
-                style: TextStyle(fontSize: 18.sp),
+                style: TextStyle(fontSize: 20.sp),
               )
             ],
           ),
@@ -42,8 +42,8 @@ class CalendarDetailedPlanPicker extends StatelessWidget {
                     builder: (context, constraints) => SizedBox(
                       width: constraints.maxWidth,
                       child: Wrap(
-                        spacing: 8.w,
-                        runSpacing: 8.w,
+                        spacing: 10.w,
+                        runSpacing: 10.w,
                         children: state.detailedPlans
                                 ?.map(
                                   (detailedPlan) => GestureDetector(
@@ -57,7 +57,7 @@ class CalendarDetailedPlanPicker extends StatelessWidget {
                                       onChanged!(detailedPlan!.id);
                                     },
                                     child: Container(
-                                      width: (constraints.maxWidth - 18.w) / 2,
+                                      width: (constraints.maxWidth - 22.w) / 2,
                                       padding: EdgeInsets.symmetric(
                                         vertical: 8.h,
                                         horizontal: 16.w,
@@ -85,6 +85,7 @@ class CalendarDetailedPlanPicker extends StatelessWidget {
                                                   detailedPlan?.id
                                               ? ColorClass.black
                                               : ColorClass.gray,
+                                          fontSize: 18.sp,
                                         ),
                                       ),
                                     ),
