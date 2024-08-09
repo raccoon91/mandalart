@@ -20,6 +20,7 @@ class CardWidget extends StatelessWidget {
     return AspectRatio(
       aspectRatio: 1,
       child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
         onTap: onTap,
         child: Container(
           width: size,

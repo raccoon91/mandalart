@@ -16,6 +16,7 @@ class DatePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: () async {
         final DateTime? value = await showDatePicker(
           context: context,

@@ -23,6 +23,7 @@ class EmptyWidget extends StatelessWidget {
     return AspectRatio(
       aspectRatio: 1,
       child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
         onTap: () {
           showModalBottomSheet<void>(
             context: context,

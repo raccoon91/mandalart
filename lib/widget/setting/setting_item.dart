@@ -26,6 +26,7 @@ class _SettingItemState extends State<SettingItem> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: widget.to == null ? null : onTapItem,
       child: Padding(
         padding: EdgeInsets.symmetric(

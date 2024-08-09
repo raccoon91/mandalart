@@ -47,6 +47,7 @@ class CalendarDetailedPlanPicker extends StatelessWidget {
                         children: state.detailedPlans
                                 ?.map(
                                   (detailedPlan) => GestureDetector(
+                                    behavior: HitTestBehavior.translucent,
                                     onTap: () {
                                       if (detailedPlan?.id == null ||
                                           onChanged == null) {

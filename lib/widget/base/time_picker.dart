@@ -16,6 +16,7 @@ class TimePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: () async {
         final TimeOfDay? value = await showTimePicker(
           context: context,

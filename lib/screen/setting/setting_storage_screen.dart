@@ -40,6 +40,7 @@ class _SettingStorageScreenState extends State<SettingStorageScreen> {
                 borderRadius: BorderRadius.all(Radius.circular(8.r)),
               ),
               child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
                 onTap: onTapClean,
                 child: Row(
                   children: [

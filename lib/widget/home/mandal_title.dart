@@ -60,6 +60,7 @@ class _MandalTitleState extends State<MandalTitle> {
                   Positioned(
                     right: 0,
                     child: GestureDetector(
+                      behavior: HitTestBehavior.translucent,
                       onTap: closeTapped,
                       child: Center(
                         child: Icon(

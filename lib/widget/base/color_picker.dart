@@ -43,6 +43,7 @@ class ColorPicker extends StatelessWidget {
             children: List.generate(
               colorList.length,
               (index) => GestureDetector(
+                behavior: HitTestBehavior.translucent,
                 onTap: colorTapped(colorList[index]),
                 child: ColorWidget(
                   margin: 6.w,
