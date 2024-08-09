@@ -5,19 +5,22 @@ import 'package:mandalart/model/project_model.dart';
 import 'package:mandalart/model/task_model.dart';
 import 'package:mandalart/repository/project_repository.dart';
 import 'package:mandalart/repository/task_repository.dart';
+import 'package:mandalart/theme/color.dart';
+import 'package:mandalart/utils/task_data_source.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
   bool _isEmpty = true;
   bool _isLoading = false;
   List<PlanModel?>? _plans;
   List<DetailedPlanModel?>? _detailedPlans;
-  List<TaskModel>? _tasks;
+  List<Appointment> _tasks = [];
 
   bool get isEmpty => _isEmpty;
   bool get isLoading => _isLoading;
   List<PlanModel?>? get plans => _plans;
   List<DetailedPlanModel?>? get detailedPlans => _detailedPlans;
-  List<TaskModel>? get tasks => _tasks;
+  TaskDataSource get tasks => TaskDataSource(_tasks);
 
   Future<void> getPlans() async {
     try {
@@ -82,7 +85,18 @@ class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
       List<TaskModel>? tasks = await TaskRepository().getTodayTask();
 
-      _tasks = tasks;
+      _tasks = tasks
+              ?.map(
+                (task) => Appointment(
+                  startTime: task.from,
+                  endTime: task.to,
+                  subject: task.detailedPlan.name ?? "",
+                  color: task.detailedPlan.color ?? ColorClass.under,
+                  isAllDay: task.allDay,
+                ),
+              )
+              .toList() ??
+          [];
     } catch (error) {
       rethrow;
     } finally {
@@ -116,11 +130,19 @@ class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
         everyMonth,
       );
 
-      List<TaskModel> tasks = _tasks ?? [];
+      List<Appointment> tasks = [..._tasks];
 
       if (newTask == null) return false;
 
-      tasks.add(newTask);
+      tasks.add(
+        Appointment(
+          startTime: newTask.from,
+          endTime: newTask.to,
+          subject: newTask.detailedPlan.name ?? "",
+          color: newTask.detailedPlan.color ?? ColorClass.under,
+          isAllDay: newTask.allDay,
+        ),
+      );
 
       _tasks = tasks;
 

@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mandalart/provider/calendar_provider.dart';
 import 'package:mandalart/theme/color.dart';
-import 'package:mandalart/utils/task_data_source.dart';
 import 'package:mandalart/widget/base/banner_ad.dart';
 import 'package:mandalart/widget/calendar/calendar_bottom_sheet.dart';
 import 'package:provider/provider.dart';
@@ -130,7 +129,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     color: ColorClass.blue,
                   ),
                 ),
-                dataSource: TaskDataSource(state.tasks),
+                appointmentTextStyle: TextStyle(
+                  color: ColorClass.black,
+                  fontSize: 14.sp,
+                ),
+                dataSource: state.tasks,
                 onTap: onTapCell,
               ),
             ),
