@@ -34,7 +34,7 @@ class _SettingStorageScreenState extends State<SettingStorageScreen> {
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
+              padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 24.w),
               decoration: BoxDecoration(
                 color: ColorClass.under,
                 borderRadius: BorderRadius.all(Radius.circular(8.r)),
@@ -45,7 +45,7 @@ class _SettingStorageScreenState extends State<SettingStorageScreen> {
                 child: Row(
                   children: [
                     const Icon(Icons.cleaning_services),
-                    SizedBox(width: 20.w),
+                    SizedBox(width: 10.w),
                     Text(
                       "데이터 삭제",
                       style: TextStyle(

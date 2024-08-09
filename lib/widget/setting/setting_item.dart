@@ -30,13 +30,13 @@ class _SettingItemState extends State<SettingItem> {
       onTap: widget.to == null ? null : onTapItem,
       child: Padding(
         padding: EdgeInsets.symmetric(
-          vertical: 8.h,
-          horizontal: 16.w,
+          vertical: 12.h,
+          horizontal: 24.w,
         ),
         child: Row(
           children: [
             const Icon(Icons.storage),
-            SizedBox(width: 20.w),
+            SizedBox(width: 10.w),
             Text(
               widget.name,
               style: TextStyle(
