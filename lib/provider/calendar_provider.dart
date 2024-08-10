@@ -30,8 +30,9 @@ class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
       ProjectModel? project = await ProjectRepository().getProject();
 
-      _isEmpty =
-          project == null || project.plans == null || project.plans!.isEmpty;
+      _isEmpty = project == null ||
+          project.plans == null ||
+          project.plans?.isEmpty == true;
 
       _plans = project?.plans
           ?.where((plan) => plan?.name?.isNotEmpty ?? false)
@@ -85,17 +86,15 @@ class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
       List<TaskModel>? tasks = await TaskRepository().getTodayTask();
 
-      _tasks = tasks
-              ?.map(
-                (task) => Appointment(
-                  startTime: task.from,
-                  endTime: task.to,
-                  subject: task.detailedPlan.name ?? '',
-                  color: task.detailedPlan.color ?? ColorClass.under,
-                  isAllDay: task.allDay,
-                ),
-              )
-              .toList() ??
+      _tasks = tasks?.map((task) {
+            return Appointment(
+              startTime: task.from,
+              endTime: task.to,
+              subject: task.detailedPlan.name ?? '',
+              color: task.detailedPlan.color ?? ColorClass.under,
+              isAllDay: task.allDay,
+            );
+          }).toList() ??
           [];
     } catch (error) {
       rethrow;

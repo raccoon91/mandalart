@@ -33,7 +33,7 @@ class PlanProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
       _isEmpty = plan == null ||
           plan.detailedPlans == null ||
-          plan.detailedPlans!.isEmpty;
+          plan.detailedPlans?.isEmpty == true;
 
       return plan == null;
     } catch (error) {

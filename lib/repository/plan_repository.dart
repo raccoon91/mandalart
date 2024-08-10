@@ -62,9 +62,7 @@ class PlanRepository {
         ..color = colorValue;
 
       await IsarDB.isar.writeTxn(() async {
-        int planId = await IsarDB.isar.plans.put(
-          planSchema,
-        );
+        int planId = await IsarDB.isar.plans.put(planSchema);
 
         planSchema.id = planId;
 
@@ -73,9 +71,7 @@ class PlanRepository {
 
           planSchema.detailedPlans.add(detailedPlanSchema);
 
-          await IsarDB.isar.detailedPlans.put(
-            detailedPlanSchema,
-          );
+          await IsarDB.isar.detailedPlans.put(detailedPlanSchema);
         }
 
         await planSchema.detailedPlans.save();
@@ -108,9 +104,7 @@ class PlanRepository {
       planSchema.color = colorValue;
 
       await IsarDB.isar.writeTxn(() async {
-        planSchema.id = await IsarDB.isar.plans.put(
-          planSchema,
-        );
+        planSchema.id = await IsarDB.isar.plans.put(planSchema);
       });
 
       final plan = PlanModel.fromSchema(planSchema);

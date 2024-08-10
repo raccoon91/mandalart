@@ -28,8 +28,9 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
       _project = project;
 
-      _isEmpty =
-          project == null || project.plans == null || project.plans!.isEmpty;
+      _isEmpty = project == null ||
+          project.plans == null ||
+          project.plans?.isEmpty == true;
 
       return project == null;
     } catch (error) {
@@ -47,10 +48,7 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
       notifyListeners();
 
-      _project = await ProjectRepository().createMandalProject(
-        name,
-        color,
-      );
+      _project = await ProjectRepository().createMandalProject(name, color);
     } catch (error) {
       rethrow;
     } finally {
@@ -75,17 +73,9 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
       notifyListeners();
 
       if (planId == null) {
-        newPlan = await PlanRepository().createPlan(
-          _project!.id,
-          name,
-          color,
-        );
+        newPlan = await PlanRepository().createPlan(_project!.id, name, color);
       } else {
-        newPlan = await PlanRepository().updatePlan(
-          planId,
-          name,
-          color,
-        );
+        newPlan = await PlanRepository().updatePlan(planId, name, color);
       }
 
       if (_project?.plans == null) return;

@@ -56,18 +56,14 @@ class ProjectRepository {
 
           projectSchema.plans.add(planSchema);
 
-          int planId = await IsarDB.isar.plans.put(
-            planSchema,
-          );
+          int planId = await IsarDB.isar.plans.put(planSchema);
 
           for (int index = 0; index < 8; index++) {
             final detailedPlanSchema = DetailedPlan()..planId = planId;
 
             planSchema.detailedPlans.add(detailedPlanSchema);
 
-            await IsarDB.isar.detailedPlans.put(
-              detailedPlanSchema,
-            );
+            await IsarDB.isar.detailedPlans.put(detailedPlanSchema);
           }
 
           await planSchema.detailedPlans.save();
@@ -91,7 +87,10 @@ class ProjectRepository {
 
       if (projectSchema == null) return false;
 
+      List<Task> taskSchema = await IsarDB.isar.tasks.where().findAll();
+
       int proejctId = projectSchema.id;
+
       List<int> planIds = projectSchema.plans
           .map(
             (planShcema) => planShcema.id,
@@ -107,9 +106,6 @@ class ProjectRepository {
           return acc;
         },
       );
-
-      List<Task> taskSchema = await IsarDB.isar.tasks.where().findAll();
-
       List<int> taskIds = taskSchema.map((task) => task.id).toList();
 
       await IsarDB.isar.writeTxn(() async {
