@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mandalart/router/bottom_sheet_page.dart';
 import 'package:mandalart/router/get_page.dart';
 import 'package:mandalart/router/slide_transition_page.dart';
 import 'package:mandalart/screen/calendar/calendar_screen.dart';
+import 'package:mandalart/screen/home/detailed_plan_bottom_sheet_screen.dart';
 import 'package:mandalart/screen/home/home_screen.dart';
+import 'package:mandalart/screen/home/plan_bottom_sheet_screen.dart';
 import 'package:mandalart/screen/home/plan_screen.dart';
 import 'package:mandalart/screen/project/project_create_screen.dart';
 import 'package:mandalart/screen/project/project_start_screen.dart';
@@ -123,6 +126,28 @@ final GoRouter router = GoRouter(
           },
         ),
       ],
+    ),
+    GoRoute(
+      path: '/sheet/plan/:planId',
+      pageBuilder: (BuildContext context, GoRouterState state) {
+        return BottomSheetPage(
+          child: PlanBottomSheetScreen(
+            planId: state.pathParameters['planId'],
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/sheet/detailed/:mode/:planId/:detailedId',
+      pageBuilder: (BuildContext context, GoRouterState state) {
+        return BottomSheetPage(
+          child: DetailedPlanBottomSheetScreen(
+            mode: state.pathParameters['mode'],
+            planId: state.pathParameters['planId'],
+            detailedPlanId: state.pathParameters['detailedId'],
+          ),
+        );
+      },
     ),
     GoRoute(
       path: '/setting/storage',

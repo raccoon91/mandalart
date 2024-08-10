@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mandalart/model/detailed_plan_model.dart';
-import 'package:mandalart/provider/calendar_provider.dart';
-import 'package:mandalart/provider/home_provider.dart';
-import 'package:mandalart/provider/plan_provider.dart';
 import 'package:mandalart/theme/color.dart';
-import 'package:mandalart/widget/home/plan_bottom_sheet.dart';
-import 'package:provider/provider.dart';
 
 class DetailedEmptyWidget extends StatelessWidget {
   final String? mode;
@@ -29,47 +25,10 @@ class DetailedEmptyWidget extends StatelessWidget {
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {
-          showModalBottomSheet(
-            context: context,
-            useRootNavigator: true,
-            isScrollControlled: true,
-            backgroundColor: ColorClass.white,
-            builder: (BuildContext context) {
-              return PlanBottomSheet(
-                type: 'detailedPlan',
-                planId: detailedPlan?.planId,
-                detailedPlanId: detailedPlan?.id,
-                create: (String name, Color color) async {
-                  if (mode == 'maximize') {
-                    await Provider.of<HomeProvider>(context, listen: false)
-                        .upsertMandalDetailedPlan(
-                      detailedPlan?.planId,
-                      detailedPlan?.id,
-                      name,
-                      color,
-                    );
-                  } else {
-                    await Provider.of<PlanProvider>(context, listen: false)
-                        .upsertMandalDetailedPlan(
-                      detailedPlan?.planId,
-                      detailedPlan?.id,
-                      name,
-                      color,
-                    );
+          if (detailedPlan?.planId == null || detailedPlan?.id == null) return;
 
-                    if (context.mounted) {
-                      await Provider.of<HomeProvider>(context, listen: false)
-                          .getProjectWithPlans();
-                    }
-                  }
-
-                  if (!context.mounted) return;
-
-                  Provider.of<CalendarProvider>(context, listen: false)
-                      .getPlans();
-                },
-              );
-            },
+          context.push(
+            '/sheet/detailed/$mode/${detailedPlan!.planId}/${detailedPlan!.id}',
           );
         },
         child: Container(

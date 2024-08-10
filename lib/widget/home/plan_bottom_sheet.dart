@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/base/button.dart';
 import 'package:mandalart/widget/base/color_picker.dart';
@@ -50,7 +51,7 @@ class _PlanBottomSheetState extends State<PlanBottomSheet> {
 
     if (!mounted) return;
 
-    Navigator.of(context, rootNavigator: false).pop();
+    context.pop();
   }
 
   submitted(String name) async {
@@ -60,28 +61,37 @@ class _PlanBottomSheetState extends State<PlanBottomSheet> {
 
     if (!mounted) return;
 
-    Navigator.of(context, rootNavigator: false).pop();
+    // Navigator.of(context, rootNavigator: false).pop();
+    context.pop();
   }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).viewInsets.bottom + 500.h,
+      height: MediaQuery.of(context).viewInsets.bottom + 530.h,
       child: Padding(
         padding: EdgeInsets.only(
-          top: 20.h,
+          top: 30.h,
           right: 20.w,
           left: 20.w,
           bottom: MediaQuery.of(context).viewInsets.bottom + 20.h,
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Container(
+              width: 100.w,
+              height: 4.h,
+              decoration: BoxDecoration(
+                color: ColorClass.border,
+                borderRadius: BorderRadius.all(Radius.circular(4.r)),
+              ),
+            ),
+            SizedBox(height: 30.h),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    SizedBox(height: 20.h),
+                    SizedBox(height: 10.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
