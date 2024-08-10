@@ -5,6 +5,17 @@ import 'package:mandalart/model/detailed_plan_model.dart';
 import 'package:mandalart/schema/detailed_plan_schema.dart';
 
 class DetailedPlanRepository {
+  Future<int?> getDetailedPlanSize() async {
+    try {
+      final detailedPlanSize = await IsarDB.isar.detailedPlans
+          .getSize(includeIndexes: true, includeLinks: true);
+
+      return detailedPlanSize;
+    } catch (error) {
+      rethrow;
+    }
+  }
+
   Future<List<DetailedPlanModel>?> getDetailedPlans(int? planId) async {
     try {
       if (planId == null) return null;

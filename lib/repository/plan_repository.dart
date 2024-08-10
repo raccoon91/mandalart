@@ -7,6 +7,17 @@ import 'package:mandalart/schema/plan_schema.dart';
 import 'package:mandalart/schema/project_schema.dart';
 
 class PlanRepository {
+  Future<int?> getPlanSize() async {
+    try {
+      final planSize = await IsarDB.isar.plans
+          .getSize(includeIndexes: true, includeLinks: true);
+
+      return planSize;
+    } catch (error) {
+      rethrow;
+    }
+  }
+
   Future<PlanModel?> getPlan(int? planId) async {
     try {
       if (planId == null) return null;

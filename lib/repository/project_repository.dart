@@ -8,6 +8,17 @@ import 'package:mandalart/schema/project_schema.dart';
 import 'package:mandalart/schema/task_schema.dart';
 
 class ProjectRepository {
+  Future<int?> getProjectSize() async {
+    try {
+      final projectSize = await IsarDB.isar.projects
+          .getSize(includeIndexes: true, includeLinks: true);
+
+      return projectSize;
+    } catch (error) {
+      rethrow;
+    }
+  }
+
   Future<String?> getProjectName() async {
     try {
       final projectSchema =

@@ -94,6 +94,8 @@ class PlanProvider with ChangeNotifier, DiagnosticableTreeMixin {
   void clearPlan() {
     _plan = null;
     _isEmpty = true;
+    _isLoading = false;
+    _proejctName = null;
 
     notifyListeners();
   }

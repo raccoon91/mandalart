@@ -13,6 +13,7 @@ class SettingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 24.w),
       decoration: BoxDecoration(
         color: ColorClass.under,
         borderRadius: BorderRadius.all(Radius.circular(4.r)),

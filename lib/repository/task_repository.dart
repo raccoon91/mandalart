@@ -5,6 +5,17 @@ import 'package:mandalart/schema/detailed_plan_schema.dart';
 import 'package:mandalart/schema/task_schema.dart';
 
 class TaskRepository {
+  Future<int?> getTaskSize() async {
+    try {
+      final taskSize = await IsarDB.isar.tasks
+          .getSize(includeIndexes: true, includeLinks: true);
+
+      return taskSize;
+    } catch (error) {
+      rethrow;
+    }
+  }
+
   Future<List<TaskModel>?> getTodayTask() async {
     try {
       var today = DateTime.now();

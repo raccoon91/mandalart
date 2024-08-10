@@ -126,20 +126,19 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
       _project!.plans = _project!.plans?.map(
             (plan) {
-              if (plan == null) return null;
+              if (plan == null ||
+                  plan.id != planId ||
+                  plan.detailedPlans == null) {
+                return plan;
+              }
 
-              if (plan.id != planId) return plan;
+              plan.detailedPlans = plan.detailedPlans?.map((detailedPlan) {
+                    if (detailedPlan?.id == newDetailedPlan?.id) {
+                      return newDetailedPlan;
+                    }
 
-              if (plan.detailedPlans == null) return plan;
-
-              plan.detailedPlans = plan.detailedPlans
-                      ?.map(
-                        (detailedPlan) =>
-                            detailedPlan?.id == newDetailedPlan?.id
-                                ? newDetailedPlan
-                                : detailedPlan,
-                      )
-                      .toList() ??
+                    return detailedPlan;
+                  }).toList() ??
                   [];
 
               return plan;
@@ -161,27 +160,13 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
     notifyListeners();
   }
 
-  Future<bool> deleteMandalProject() async {
-    try {
-      _isLoading = true;
+  void clearHome() {
+    _project = null;
+    _isEmpty = true;
+    _isLoading = false;
+    _mode = 'minimize';
 
-      notifyListeners();
-
-      bool success = await ProjectRepository().deleteProject();
-
-      if (success) {
-        _project = null;
-        _isEmpty = true;
-      }
-
-      return success;
-    } catch (error) {
-      rethrow;
-    } finally {
-      _isLoading = false;
-
-      notifyListeners();
-    }
+    notifyListeners();
   }
 
   @override

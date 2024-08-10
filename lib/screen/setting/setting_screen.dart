@@ -37,6 +37,7 @@ class SettingScreen extends StatelessWidget {
                   children: [
                     SettingItem(
                       name: '저장공간',
+                      icon: Icons.storage,
                       to: '/setting/storage',
                     ),
                   ],
