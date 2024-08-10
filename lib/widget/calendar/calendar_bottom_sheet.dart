@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mandalart/provider/calendar_provider.dart';
+import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/base/button.dart';
 import 'package:mandalart/widget/calendar/calendar_date_time_range.dart';
 import 'package:mandalart/widget/calendar/calendar_detailed_plan_picker.dart';
 import 'package:mandalart/widget/calendar/calendar_plan_picker.dart';
+import 'package:mandalart/widget/calendar/calendar_repeat_widget.dart';
 import 'package:provider/provider.dart';
 
 class CalendarBottomSheet extends StatefulWidget {
@@ -15,9 +17,7 @@ class CalendarBottomSheet extends StatefulWidget {
     DateTime from,
     DateTime to,
     bool? allDay,
-    bool? everyDay,
-    int? everyWeek,
-    int? everyMonth,
+    String? repeat,
   )? onCreate;
 
   const CalendarBottomSheet({
@@ -37,9 +37,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
   late DateTime fromDate;
   late DateTime toDate;
   bool allDay = false;
-  bool everyDay = false;
-  int? everyWeek;
-  int? everyMonth;
+  String? repeat;
   bool enabled = false;
 
   @override
@@ -78,6 +76,16 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
     setState(() {});
   }
 
+  repeatChanged(String? value) {
+    if (repeat == value) {
+      repeat = null;
+    } else {
+      repeat = value;
+    }
+
+    setState(() {});
+  }
+
   planChanged(int planId) {
     if (selectedPlanId == planId) {
       selectedPlanId = null;
@@ -112,24 +120,24 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
   createTapped() {
     if (widget.onCreate == null || selectedDetailedPlanId == null) return;
 
-    widget.onCreate!(
-      selectedDetailedPlanId!,
-      fromDate,
-      toDate,
-      allDay,
-      everyDay,
-      everyWeek,
-      everyMonth,
-    );
+    widget.onCreate!(selectedDetailedPlanId!, fromDate, toDate, allDay, repeat);
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 60.h, bottom: 20.h),
+      padding: EdgeInsets.only(top: 30.h, bottom: 20.h),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Container(
+            width: 100.w,
+            height: 4.h,
+            decoration: BoxDecoration(
+              color: ColorClass.border,
+              borderRadius: BorderRadius.all(Radius.circular(4.r)),
+            ),
+          ),
+          SizedBox(height: 30.h),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
@@ -141,6 +149,11 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
                     fromChanged: fromDateChanged,
                     toChanged: toDateChanged,
                     allDayChanged: allDayChanged,
+                  ),
+                  const Divider(),
+                  CalendarRepeatWidget(
+                    value: repeat,
+                    onChanged: repeatChanged,
                   ),
                   const Divider(),
                   CalendarPlanPicker(

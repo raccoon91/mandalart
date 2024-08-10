@@ -78,24 +78,49 @@ class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
-  Future<void> getTasks() async {
+  Future<void> getTasks(DateTime from, DateTime to) async {
     try {
       _isLoading = true;
 
       notifyListeners();
 
-      List<TaskModel>? tasks = await TaskRepository().getTodayTask();
+      List<Appointment> tasks = [];
 
-      _tasks = tasks?.map((task) {
-            return Appointment(
-              startTime: task.from,
-              endTime: task.to,
-              subject: task.detailedPlan.name ?? '',
-              color: task.detailedPlan.color ?? ColorClass.under,
-              isAllDay: task.allDay,
-            );
-          }).toList() ??
-          [];
+      var weekTasks = await TaskRepository().getWeekTasks(from, to);
+      var everyDayTasks = await TaskRepository().getEveryDayTask(from);
+      var everyWeekTasks = await TaskRepository().getEveryWeekTask(from);
+
+      for (TaskModel task in weekTasks ?? []) {
+        tasks.add(Appointment(
+          startTime: task.from,
+          endTime: task.to,
+          subject: task.detailedPlan.name ?? '',
+          color: task.detailedPlan.color ?? ColorClass.under,
+          isAllDay: task.allDay,
+        ));
+      }
+
+      for (TaskModel task in everyDayTasks ?? []) {
+        tasks.add(Appointment(
+          startTime: task.from,
+          endTime: task.to,
+          subject: task.detailedPlan.name ?? '',
+          color: task.detailedPlan.color ?? ColorClass.under,
+          isAllDay: task.allDay,
+        ));
+      }
+
+      for (TaskModel task in everyWeekTasks ?? []) {
+        tasks.add(Appointment(
+          startTime: task.from,
+          endTime: task.to,
+          subject: task.detailedPlan.name ?? '',
+          color: task.detailedPlan.color ?? ColorClass.under,
+          isAllDay: task.allDay,
+        ));
+      }
+
+      _tasks = tasks;
     } catch (error) {
       rethrow;
     } finally {
@@ -110,9 +135,7 @@ class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
     DateTime from,
     DateTime to,
     bool? allDay,
-    bool? everyDay,
-    int? everyWeek,
-    int? everyMonth,
+    String? repeat,
   ) async {
     try {
       _isLoading = true;
@@ -124,9 +147,7 @@ class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
         from,
         to,
         allDay,
-        everyDay,
-        everyWeek,
-        everyMonth,
+        repeat,
       );
 
       List<Appointment> tasks = [..._tasks];

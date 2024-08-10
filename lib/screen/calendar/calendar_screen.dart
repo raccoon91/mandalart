@@ -16,27 +16,32 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
+  late DateTime weekFrom;
+  late DateTime weekTo;
+
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      getTasksAndPlans();
+      getPlans();
     });
   }
 
-  void getTasksAndPlans() async {
-    await Provider.of<CalendarProvider>(
-      context,
-      listen: false,
-    ).getTasks();
-
-    if (!mounted) return;
-
+  void getPlans() async {
     await Provider.of<CalendarProvider>(
       context,
       listen: false,
     ).getPlans();
+  }
+
+  void getTasks(DateTime from, DateTime to) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<CalendarProvider>(
+        context,
+        listen: false,
+      ).getTasks(from, to);
+    });
   }
 
   Future<void> createTask(
@@ -44,9 +49,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     DateTime from,
     DateTime to,
     bool? allDay,
-    bool? everyDay,
-    int? everyWeek,
-    int? everyMonth,
+    String? repeat,
   ) async {
     bool success = await Provider.of<CalendarProvider>(
       context,
@@ -56,9 +59,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       from,
       to,
       allDay,
-      everyDay,
-      everyWeek,
-      everyMonth,
+      repeat,
     );
 
     if (!mounted || success == false) return;
@@ -66,7 +67,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     await Provider.of<CalendarProvider>(
       context,
       listen: false,
-    ).getTasks();
+    ).getTasks(weekFrom, weekTo);
 
     if (!mounted) return;
 
@@ -135,6 +136,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 ),
                 dataSource: state.tasks,
                 onTap: onTapCell,
+                onViewChanged: (view) {
+                  weekFrom = view.visibleDates.first;
+                  weekTo = view.visibleDates.last;
+
+                  getTasks(weekFrom, weekTo);
+                },
               ),
             ),
           ),

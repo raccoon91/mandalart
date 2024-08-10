@@ -11,9 +11,7 @@ class TaskModel {
   DateTime? terminate;
   Color? color;
   bool allDay;
-  bool everyDay;
-  int? everyWeek;
-  int? everyMonth;
+  String? repeat;
 
   TaskModel({
     required this.detailedPlanId,
@@ -23,9 +21,7 @@ class TaskModel {
     this.terminate,
     this.color,
     required this.allDay,
-    required this.everyDay,
-    required this.everyWeek,
-    required this.everyMonth,
+    this.repeat,
   });
 
   factory TaskModel.fromSchema(
@@ -43,9 +39,7 @@ class TaskModel {
       terminate: taskSchema.terminate,
       color: color,
       allDay: taskSchema.allDay,
-      everyDay: taskSchema.everyDay,
-      everyWeek: taskSchema.everyWeek,
-      everyMonth: taskSchema.everyMonth,
+      repeat: taskSchema.repeat,
     );
   }
 }

@@ -31,7 +31,15 @@ class CalendarPlanPicker extends StatelessWidget {
             SizedBox(height: 10.h),
             Consumer<CalendarProvider>(builder: (context, state, child) {
               if (state.plans == null || state.plans?.isEmpty == true) {
-                return const Text('계획을 설정하세요');
+                return Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10.h),
+                  child: const Text(
+                    '계획을 설정하세요',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                );
               }
 
               return LayoutBuilder(builder: (context, constraints) {

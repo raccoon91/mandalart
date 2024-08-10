@@ -38,10 +38,7 @@ class CalendarDateTimeRange extends StatelessWidget {
                 children: [
                   const Icon(Icons.access_time),
                   SizedBox(width: 10.w),
-                  Text(
-                    '날짜',
-                    style: TextStyle(fontSize: 20.sp),
-                  )
+                  Text('날짜', style: TextStyle(fontSize: 20.sp))
                 ],
               ),
               SizedBox(

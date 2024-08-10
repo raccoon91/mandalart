@@ -27,25 +27,21 @@ class CalendarPlanWidget extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: width,
-        padding: EdgeInsets.symmetric(
-          vertical: 8.h,
-          horizontal: 16.w,
-        ),
+        padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
         decoration: BoxDecoration(
           color: selected == true ? color : ColorClass.white,
           border: Border.all(
             color:
                 selected == true ? color ?? ColorClass.gray : ColorClass.gray,
           ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(4.r),
-          ),
+          borderRadius: BorderRadius.all(Radius.circular(4.r)),
         ),
         child: Text(
           name ?? '',
           style: TextStyle(
             color: selected == true ? ColorClass.black : ColorClass.gray,
             fontSize: 18.sp,
+            fontWeight: selected == true ? FontWeight.w700 : FontWeight.w400,
           ),
         ),
       ),

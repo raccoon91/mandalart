@@ -16,18 +16,14 @@ class TaskRepository {
     }
   }
 
-  Future<List<TaskModel>?> getTodayTask() async {
+  Future<List<TaskModel>?> getWeekTasks(DateTime from, DateTime to) async {
     try {
-      var today = DateTime.now();
-      var fromDate = today
-          .subtract(Duration(days: today.weekday))
-          .copyWith(hour: 0, minute: 0, second: 0);
-      var toDate = today
-          .add(Duration(days: DateTime.daysPerWeek - today.weekday - 1))
-          .copyWith(hour: 11, minute: 59, second: 59);
+      var fromDate = from.copyWith(hour: 0, minute: 0, second: 0);
+      var toDate = to.copyWith(hour: 11, minute: 59, second: 59);
 
       final taskSchemaList = await IsarDB.isar.tasks
           .filter()
+          .repeatIsNull()
           .fromGreaterThan(fromDate)
           .toLessThan(toDate)
           .findAll();
@@ -51,31 +47,79 @@ class TaskRepository {
     }
   }
 
-  // Future<List<TaskModel>?> getEveryDayTask() async {
-  //   try {
-  //     final taskSchema =
-  //         await IsarDB.isar.tasks.filter().everyDayEqualTo(true).findAll();
+  Future<List<TaskModel>?> getEveryDayTask(DateTime from) async {
+    try {
+      var weekStartDay = from.day;
 
-  //     List<TaskModel> tasks = taskSchema.map(TaskModel.fromSchema).toList();
+      final taskSchemaList =
+          await IsarDB.isar.tasks.filter().repeatEqualTo("day").findAll();
 
-  //     return tasks;
-  //   } catch (error) {
-  //     rethrow;
-  //   }
-  // }
+      List<TaskModel> tasks = [];
 
-  // Future<List<TaskModel>?> getEveryWeekTask(int weekday) async {
-  //   try {
-  //     final taskSchema =
-  //         await IsarDB.isar.tasks.filter().everyWeekEqualTo(weekday).findAll();
+      for (var taskSchema in taskSchemaList) {
+        var detailedPlanSchema = await IsarDB.isar.detailedPlans
+            .filter()
+            .idEqualTo(taskSchema.detailedPlanId)
+            .findFirst();
 
-  //     List<TaskModel> tasks = taskSchema.map(TaskModel.fromSchema).toList();
+        if (detailedPlanSchema == null) continue;
 
-  //     return tasks;
-  //   } catch (error) {
-  //     rethrow;
-  //   }
-  // }
+        for (var calib = 0; calib < 7; calib++) {
+          taskSchema.from = taskSchema.from.copyWith(
+            year: from.year,
+            month: from.month,
+            day: weekStartDay + calib,
+          );
+          taskSchema.to = taskSchema.to.copyWith(
+            year: from.year,
+            month: from.month,
+            day: weekStartDay + calib,
+          );
+
+          tasks.add(TaskModel.fromSchema(taskSchema, detailedPlanSchema));
+        }
+      }
+
+      return tasks;
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  Future<List<TaskModel>?> getEveryWeekTask(DateTime from) async {
+    try {
+      final taskSchemaList =
+          await IsarDB.isar.tasks.filter().repeatEqualTo("week").findAll();
+
+      List<TaskModel> tasks = [];
+
+      for (var taskSchema in taskSchemaList) {
+        var detailedPlanSchema = await IsarDB.isar.detailedPlans
+            .filter()
+            .idEqualTo(taskSchema.detailedPlanId)
+            .findFirst();
+
+        if (detailedPlanSchema == null) continue;
+
+        taskSchema.from = taskSchema.from.copyWith(
+          year: from.year,
+          month: from.month,
+          day: from.day + taskSchema.from.weekday,
+        );
+        taskSchema.to = taskSchema.to.copyWith(
+          year: from.year,
+          month: from.month,
+          day: from.day + taskSchema.from.weekday,
+        );
+
+        tasks.add(TaskModel.fromSchema(taskSchema, detailedPlanSchema));
+      }
+
+      return tasks;
+    } catch (error) {
+      rethrow;
+    }
+  }
 
   // Future<List<TaskModel>?> getEveryMonthTask(int day) async {
   //   try {
@@ -95,9 +139,7 @@ class TaskRepository {
     DateTime from,
     DateTime to,
     bool? allDay,
-    bool? everyDay,
-    int? everyWeek,
-    int? everyMonth,
+    String? repeat,
   ) async {
     try {
       final taskSchema = Task()
@@ -105,9 +147,7 @@ class TaskRepository {
         ..from = from
         ..to = to
         ..allDay = allDay ?? false
-        ..everyDay = everyDay ?? false
-        ..everyWeek = everyWeek
-        ..everyMonth = everyMonth;
+        ..repeat = repeat;
 
       await IsarDB.isar.writeTxn(() async {
         await IsarDB.isar.tasks.put(taskSchema);

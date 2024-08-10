@@ -14,17 +14,13 @@ class Task {
 
   DateTime? terminate;
 
+  bool allDay = false;
+
+  String? repeat;
+
   int? color;
 
   String? style;
-
-  bool allDay = false;
-
-  bool everyDay = false;
-
-  int? everyWeek;
-
-  int? everyMonth;
 
   bool delete = false;
 }

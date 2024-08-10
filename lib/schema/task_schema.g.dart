@@ -37,38 +37,28 @@ const TaskSchema = CollectionSchema(
       name: r'detailedPlanId',
       type: IsarType.long,
     ),
-    r'everyDay': PropertySchema(
-      id: 4,
-      name: r'everyDay',
-      type: IsarType.bool,
-    ),
-    r'everyMonth': PropertySchema(
-      id: 5,
-      name: r'everyMonth',
-      type: IsarType.long,
-    ),
-    r'everyWeek': PropertySchema(
-      id: 6,
-      name: r'everyWeek',
-      type: IsarType.long,
-    ),
     r'from': PropertySchema(
-      id: 7,
+      id: 4,
       name: r'from',
       type: IsarType.dateTime,
     ),
+    r'repeat': PropertySchema(
+      id: 5,
+      name: r'repeat',
+      type: IsarType.string,
+    ),
     r'style': PropertySchema(
-      id: 8,
+      id: 6,
       name: r'style',
       type: IsarType.string,
     ),
     r'terminate': PropertySchema(
-      id: 9,
+      id: 7,
       name: r'terminate',
       type: IsarType.dateTime,
     ),
     r'to': PropertySchema(
-      id: 10,
+      id: 8,
       name: r'to',
       type: IsarType.dateTime,
     )
@@ -94,6 +84,12 @@ int _taskEstimateSize(
 ) {
   var bytesCount = offsets.last;
   {
+    final value = object.repeat;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.style;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -112,13 +108,11 @@ void _taskSerialize(
   writer.writeLong(offsets[1], object.color);
   writer.writeBool(offsets[2], object.delete);
   writer.writeLong(offsets[3], object.detailedPlanId);
-  writer.writeBool(offsets[4], object.everyDay);
-  writer.writeLong(offsets[5], object.everyMonth);
-  writer.writeLong(offsets[6], object.everyWeek);
-  writer.writeDateTime(offsets[7], object.from);
-  writer.writeString(offsets[8], object.style);
-  writer.writeDateTime(offsets[9], object.terminate);
-  writer.writeDateTime(offsets[10], object.to);
+  writer.writeDateTime(offsets[4], object.from);
+  writer.writeString(offsets[5], object.repeat);
+  writer.writeString(offsets[6], object.style);
+  writer.writeDateTime(offsets[7], object.terminate);
+  writer.writeDateTime(offsets[8], object.to);
 }
 
 Task _taskDeserialize(
@@ -132,14 +126,12 @@ Task _taskDeserialize(
   object.color = reader.readLongOrNull(offsets[1]);
   object.delete = reader.readBool(offsets[2]);
   object.detailedPlanId = reader.readLong(offsets[3]);
-  object.everyDay = reader.readBool(offsets[4]);
-  object.everyMonth = reader.readLongOrNull(offsets[5]);
-  object.everyWeek = reader.readLongOrNull(offsets[6]);
-  object.from = reader.readDateTime(offsets[7]);
+  object.from = reader.readDateTime(offsets[4]);
   object.id = id;
-  object.style = reader.readStringOrNull(offsets[8]);
-  object.terminate = reader.readDateTimeOrNull(offsets[9]);
-  object.to = reader.readDateTime(offsets[10]);
+  object.repeat = reader.readStringOrNull(offsets[5]);
+  object.style = reader.readStringOrNull(offsets[6]);
+  object.terminate = reader.readDateTimeOrNull(offsets[7]);
+  object.to = reader.readDateTime(offsets[8]);
   return object;
 }
 
@@ -159,18 +151,14 @@ P _taskDeserializeProp<P>(
     case 3:
       return (reader.readLong(offset)) as P;
     case 4:
-      return (reader.readBool(offset)) as P;
-    case 5:
-      return (reader.readLongOrNull(offset)) as P;
-    case 6:
-      return (reader.readLongOrNull(offset)) as P;
-    case 7:
       return (reader.readDateTime(offset)) as P;
-    case 8:
+    case 5:
       return (reader.readStringOrNull(offset)) as P;
-    case 9:
+    case 6:
+      return (reader.readStringOrNull(offset)) as P;
+    case 7:
       return (reader.readDateTimeOrNull(offset)) as P;
-    case 10:
+    case 8:
       return (reader.readDateTime(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -404,152 +392,6 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Task, Task, QAfterFilterCondition> everyDayEqualTo(bool value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'everyDay',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Task, Task, QAfterFilterCondition> everyMonthIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'everyMonth',
-      ));
-    });
-  }
-
-  QueryBuilder<Task, Task, QAfterFilterCondition> everyMonthIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'everyMonth',
-      ));
-    });
-  }
-
-  QueryBuilder<Task, Task, QAfterFilterCondition> everyMonthEqualTo(
-      int? value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'everyMonth',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Task, Task, QAfterFilterCondition> everyMonthGreaterThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'everyMonth',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Task, Task, QAfterFilterCondition> everyMonthLessThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'everyMonth',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Task, Task, QAfterFilterCondition> everyMonthBetween(
-    int? lower,
-    int? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'everyMonth',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<Task, Task, QAfterFilterCondition> everyWeekIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'everyWeek',
-      ));
-    });
-  }
-
-  QueryBuilder<Task, Task, QAfterFilterCondition> everyWeekIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'everyWeek',
-      ));
-    });
-  }
-
-  QueryBuilder<Task, Task, QAfterFilterCondition> everyWeekEqualTo(int? value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'everyWeek',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Task, Task, QAfterFilterCondition> everyWeekGreaterThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'everyWeek',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Task, Task, QAfterFilterCondition> everyWeekLessThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'everyWeek',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Task, Task, QAfterFilterCondition> everyWeekBetween(
-    int? lower,
-    int? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'everyWeek',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
   QueryBuilder<Task, Task, QAfterFilterCondition> fromEqualTo(DateTime value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -650,6 +492,150 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterFilterCondition> repeatIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'repeat',
+      ));
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterFilterCondition> repeatIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'repeat',
+      ));
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterFilterCondition> repeatEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'repeat',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterFilterCondition> repeatGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'repeat',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterFilterCondition> repeatLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'repeat',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterFilterCondition> repeatBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'repeat',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterFilterCondition> repeatStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'repeat',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterFilterCondition> repeatEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'repeat',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterFilterCondition> repeatContains(String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'repeat',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterFilterCondition> repeatMatches(String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'repeat',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterFilterCondition> repeatIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'repeat',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterFilterCondition> repeatIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'repeat',
+        value: '',
       ));
     });
   }
@@ -973,42 +959,6 @@ extension TaskQuerySortBy on QueryBuilder<Task, Task, QSortBy> {
     });
   }
 
-  QueryBuilder<Task, Task, QAfterSortBy> sortByEveryDay() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'everyDay', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Task, Task, QAfterSortBy> sortByEveryDayDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'everyDay', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Task, Task, QAfterSortBy> sortByEveryMonth() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'everyMonth', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Task, Task, QAfterSortBy> sortByEveryMonthDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'everyMonth', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Task, Task, QAfterSortBy> sortByEveryWeek() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'everyWeek', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Task, Task, QAfterSortBy> sortByEveryWeekDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'everyWeek', Sort.desc);
-    });
-  }
-
   QueryBuilder<Task, Task, QAfterSortBy> sortByFrom() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'from', Sort.asc);
@@ -1018,6 +968,18 @@ extension TaskQuerySortBy on QueryBuilder<Task, Task, QSortBy> {
   QueryBuilder<Task, Task, QAfterSortBy> sortByFromDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'from', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterSortBy> sortByRepeat() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'repeat', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterSortBy> sortByRepeatDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'repeat', Sort.desc);
     });
   }
 
@@ -1107,42 +1069,6 @@ extension TaskQuerySortThenBy on QueryBuilder<Task, Task, QSortThenBy> {
     });
   }
 
-  QueryBuilder<Task, Task, QAfterSortBy> thenByEveryDay() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'everyDay', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Task, Task, QAfterSortBy> thenByEveryDayDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'everyDay', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Task, Task, QAfterSortBy> thenByEveryMonth() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'everyMonth', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Task, Task, QAfterSortBy> thenByEveryMonthDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'everyMonth', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Task, Task, QAfterSortBy> thenByEveryWeek() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'everyWeek', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Task, Task, QAfterSortBy> thenByEveryWeekDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'everyWeek', Sort.desc);
-    });
-  }
-
   QueryBuilder<Task, Task, QAfterSortBy> thenByFrom() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'from', Sort.asc);
@@ -1164,6 +1090,18 @@ extension TaskQuerySortThenBy on QueryBuilder<Task, Task, QSortThenBy> {
   QueryBuilder<Task, Task, QAfterSortBy> thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterSortBy> thenByRepeat() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'repeat', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterSortBy> thenByRepeatDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'repeat', Sort.desc);
     });
   }
 
@@ -1229,27 +1167,16 @@ extension TaskQueryWhereDistinct on QueryBuilder<Task, Task, QDistinct> {
     });
   }
 
-  QueryBuilder<Task, Task, QDistinct> distinctByEveryDay() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'everyDay');
-    });
-  }
-
-  QueryBuilder<Task, Task, QDistinct> distinctByEveryMonth() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'everyMonth');
-    });
-  }
-
-  QueryBuilder<Task, Task, QDistinct> distinctByEveryWeek() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'everyWeek');
-    });
-  }
-
   QueryBuilder<Task, Task, QDistinct> distinctByFrom() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'from');
+    });
+  }
+
+  QueryBuilder<Task, Task, QDistinct> distinctByRepeat(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'repeat', caseSensitive: caseSensitive);
     });
   }
 
@@ -1304,27 +1231,15 @@ extension TaskQueryProperty on QueryBuilder<Task, Task, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Task, bool, QQueryOperations> everyDayProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'everyDay');
-    });
-  }
-
-  QueryBuilder<Task, int?, QQueryOperations> everyMonthProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'everyMonth');
-    });
-  }
-
-  QueryBuilder<Task, int?, QQueryOperations> everyWeekProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'everyWeek');
-    });
-  }
-
   QueryBuilder<Task, DateTime, QQueryOperations> fromProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'from');
+    });
+  }
+
+  QueryBuilder<Task, String?, QQueryOperations> repeatProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'repeat');
     });
   }
 
