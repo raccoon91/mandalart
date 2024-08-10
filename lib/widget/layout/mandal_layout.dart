@@ -21,7 +21,7 @@ class MandalLayout extends StatelessWidget {
     if (isEmpty == true && emptyMessage != null) {
       return Center(
         child: Text(
-          emptyMessage ?? "",
+          emptyMessage ?? '',
           style: TextStyle(
             fontSize: 24.sp,
           ),

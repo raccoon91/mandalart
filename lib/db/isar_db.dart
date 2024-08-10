@@ -12,7 +12,7 @@ class IsarDB {
     final dir = await getApplicationDocumentsDirectory();
 
     isar = await Isar.open(
-      name: "mandalart",
+      name: 'mandalart',
       [ProjectSchema, PlanSchema, DetailedPlanSchema, TaskSchema],
       directory: dir.path,
     );

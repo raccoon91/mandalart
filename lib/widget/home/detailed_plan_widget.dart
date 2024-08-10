@@ -29,7 +29,7 @@ class DetailedPlanWidget extends StatelessWidget {
 
     return Flexible(
       child: CardWidget(
-        name: (mode == "minimize" || type == "detailedPlan")
+        name: (mode == 'minimize' || type == 'detailedPlan')
             ? null
             : detailedPlan?.name,
         color: detailedPlan?.color,

@@ -20,7 +20,7 @@ class SettingScreen extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  "설정",
+                  '설정',
                   style: TextStyle(
                     fontSize: 24.sp,
                     fontWeight: FontWeight.w700,
@@ -36,7 +36,7 @@ class SettingScreen extends StatelessWidget {
                 SettingCard(
                   children: [
                     SettingItem(
-                      name: "저장공간",
+                      name: '저장공간',
                       to: '/setting/storage',
                     ),
                   ],

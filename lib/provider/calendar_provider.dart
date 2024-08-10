@@ -90,7 +90,7 @@ class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
                 (task) => Appointment(
                   startTime: task.from,
                   endTime: task.to,
-                  subject: task.detailedPlan.name ?? "",
+                  subject: task.detailedPlan.name ?? '',
                   color: task.detailedPlan.color ?? ColorClass.under,
                   isAllDay: task.allDay,
                 ),
@@ -138,7 +138,7 @@ class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
         Appointment(
           startTime: newTask.from,
           endTime: newTask.to,
-          subject: newTask.detailedPlan.name ?? "",
+          subject: newTask.detailedPlan.name ?? '',
           color: newTask.detailedPlan.color ?? ColorClass.under,
           isAllDay: newTask.allDay,
         ),

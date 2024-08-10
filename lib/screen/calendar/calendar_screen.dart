@@ -104,7 +104,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             child: Consumer<CalendarProvider>(
               builder: (context, state, child) => SfCalendar(
                 view: CalendarView.week,
-                timeZone: "Asia/Seoul",
+                timeZone: 'Asia/Seoul',
                 showWeekNumber: true,
                 showCurrentTimeIndicator: true,
                 initialDisplayDate: DateTime.now(),

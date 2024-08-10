@@ -40,7 +40,7 @@ class DetailedEmptyWidget extends StatelessWidget {
                 planId: detailedPlan?.planId,
                 detailedPlanId: detailedPlan?.id,
                 create: (String name, Color color) async {
-                  if (mode == "maximize") {
+                  if (mode == 'maximize') {
                     await Provider.of<HomeProvider>(context, listen: false)
                         .upsertMandalDetailedPlan(
                       detailedPlan?.planId,

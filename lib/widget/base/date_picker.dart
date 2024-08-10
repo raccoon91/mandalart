@@ -45,7 +45,7 @@ class DatePicker extends StatelessWidget {
         onChange!(value.copyWith(hour: date.hour, minute: date.minute));
       },
       child: Text(
-        DateFormat("yyyy년 MM월 dd일").format(date),
+        DateFormat('yyyy년 MM월 dd일').format(date),
         style: TextStyle(fontSize: 20.sp),
       ),
     );

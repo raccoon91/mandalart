@@ -28,7 +28,7 @@ class _SettingStorageScreenState extends State<SettingStorageScreen> {
   @override
   Widget build(BuildContext context) {
     return ScreenLayout(
-      title: "저장공간",
+      title: '저장공간',
       body: Padding(
         padding: EdgeInsets.only(top: 60.h, right: 20.w, left: 20.w),
         child: Column(
@@ -47,7 +47,7 @@ class _SettingStorageScreenState extends State<SettingStorageScreen> {
                     const Icon(Icons.cleaning_services),
                     SizedBox(width: 10.w),
                     Text(
-                      "데이터 삭제",
+                      '데이터 삭제',
                       style: TextStyle(
                         fontSize: 18.sp,
                         fontWeight: FontWeight.w700,

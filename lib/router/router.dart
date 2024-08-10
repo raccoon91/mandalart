@@ -100,7 +100,7 @@ final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
 );
 
 final GoRouter router = GoRouter(
-  initialLocation: "/home",
+  initialLocation: '/home',
   navigatorKey: _rootNavigatorKey,
   routes: <RouteBase>[
     bottomNavigationRoutes,

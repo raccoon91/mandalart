@@ -29,7 +29,7 @@ class CalendarPlanPicker extends StatelessWidget {
                 const Icon(Icons.playlist_add),
                 SizedBox(width: 10.w),
                 Text(
-                  "계획",
+                  '계획',
                   style: TextStyle(fontSize: 20.sp),
                 )
               ],
@@ -37,7 +37,7 @@ class CalendarPlanPicker extends StatelessWidget {
             SizedBox(height: 10.h),
             Consumer<CalendarProvider>(
               builder: (context, state, child) => state.isEmpty
-                  ? const Text("계획을 설정하세요")
+                  ? const Text('계획을 설정하세요')
                   : LayoutBuilder(
                       builder: (context, constraints) => SizedBox(
                         width: constraints.maxWidth,
@@ -77,7 +77,7 @@ class CalendarPlanPicker extends StatelessWidget {
                                           ),
                                         ),
                                         child: Text(
-                                          plan?.name ?? "",
+                                          plan?.name ?? '',
                                           style: TextStyle(
                                             color: selectedPlanId == plan?.id
                                                 ? ColorClass.black

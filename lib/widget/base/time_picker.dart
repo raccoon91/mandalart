@@ -48,7 +48,7 @@ class TimePicker extends StatelessWidget {
         onChange!(date.copyWith(hour: value.hour, minute: value.minute));
       },
       child: Text(
-        DateFormat("a HH:mm").format(date),
+        DateFormat('a HH:mm').format(date),
         style: TextStyle(fontSize: 20.sp),
       ),
     );

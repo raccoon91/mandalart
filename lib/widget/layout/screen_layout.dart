@@ -40,7 +40,7 @@ class _ScreenLayoutState extends State<ScreenLayout> {
               backgroundColor: ColorClass.white,
               surfaceTintColor: ColorClass.white,
               title: Text(
-                widget.title ?? "",
+                widget.title ?? '',
                 style: const TextStyle(
                   fontWeight: FontWeight.w700,
                 ),
