@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:mandalart/provider/calendar_provider.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/base/banner_ad.dart';
-import 'package:mandalart/widget/calendar/calendar_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -44,53 +43,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
     });
   }
 
-  Future<void> createTask(
-    int detailedPlanId,
-    DateTime from,
-    DateTime to,
-    bool? allDay,
-    String? repeat,
-  ) async {
-    bool success = await Provider.of<CalendarProvider>(
-      context,
-      listen: false,
-    ).createTask(
-      detailedPlanId,
-      from,
-      to,
-      allDay,
-      repeat,
-    );
-
-    if (!mounted || success == false) return;
-
-    await Provider.of<CalendarProvider>(
-      context,
-      listen: false,
-    ).getTasks(weekFrom, weekTo);
-
-    if (!mounted) return;
-
-    context.pop();
-  }
-
   onTapCell(CalendarTapDetails? calendar) {
-    DateTime from = calendar?.date ?? DateTime.now();
-    DateTime to = from.add(const Duration(hours: 1));
-
-    showModalBottomSheet<void>(
-      context: context,
-      useRootNavigator: true,
-      isScrollControlled: true,
-      backgroundColor: ColorClass.white,
-      builder: (BuildContext context) {
-        return CalendarBottomSheet(
-          from: from,
-          to: to,
-          onCreate: createTask,
-        );
-      },
-    );
+    context.push('/sheet/calendar/$weekFrom/$weekTo');
   }
 
   @override

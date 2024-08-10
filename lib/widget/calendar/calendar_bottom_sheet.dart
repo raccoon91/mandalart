@@ -130,10 +130,10 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
       child: Column(
         children: [
           Container(
-            width: 100.w,
+            width: 80.w,
             height: 4.h,
             decoration: BoxDecoration(
-              color: ColorClass.border,
+              color: ColorClass.gray,
               borderRadius: BorderRadius.all(Radius.circular(4.r)),
             ),
           ),
