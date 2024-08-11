@@ -12,14 +12,21 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
   bool _isEmpty = true;
   bool _isLoading = false;
+
+  DateTime? _start;
+  DateTime? _end;
+
   List<PlanModel?>? _plans;
   List<DetailedPlanModel?>? _detailedPlans;
+  TaskModel? _task;
   List<Appointment> _tasks = [];
 
   bool get isEmpty => _isEmpty;
   bool get isLoading => _isLoading;
+
   List<PlanModel?>? get plans => _plans;
   List<DetailedPlanModel?>? get detailedPlans => _detailedPlans;
+  TaskModel? get task => _task;
   TaskDataSource get tasks => TaskDataSource(_tasks);
 
   Future<void> getPlans() async {
@@ -46,7 +53,7 @@ class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
-  void getDetailedPlans(int? planId) async {
+  Future<void> getDetailedPlans(int? planId) async {
     try {
       if (_plans == null || planId == null) {
         _detailedPlans = null;
@@ -78,45 +85,81 @@ class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
-  Future<void> getTasks(DateTime from, DateTime to) async {
+  Future<void> getTask(int taskId) async {
     try {
       _isLoading = true;
 
       notifyListeners();
 
+      var task = await TaskRepository().getTask(taskId);
+
+      if (task?.detailedPlan.planId != null) {
+        await getDetailedPlans(task?.detailedPlan.planId);
+      }
+
+      _task = task;
+    } catch (error) {
+      rethrow;
+    } finally {
+      _isLoading = false;
+
+      notifyListeners();
+    }
+  }
+
+  Future<void> getTasks(DateTime? from, DateTime? to) async {
+    try {
+      _isLoading = true;
+
+      notifyListeners();
+
+      if (from != null) _start = from;
+      if (to != null) _end = to;
+
+      if (_start == null || _end == null) return;
+
       List<Appointment> tasks = [];
 
-      var weekTasks = await TaskRepository().getWeekTasks(from, to);
-      var everyDayTasks = await TaskRepository().getEveryDayTask(from);
-      var everyWeekTasks = await TaskRepository().getEveryWeekTask(from);
+      var weekTasks = await TaskRepository().getWeekTasks(_start!, _end!);
+      var everyDayTasks = await TaskRepository().getEveryDayTask(_start!);
+      var everyWeekTasks = await TaskRepository().getEveryWeekTask(_start!);
 
       for (TaskModel task in weekTasks ?? []) {
         tasks.add(Appointment(
+          subject: task.detailedPlan.name ?? '',
           startTime: task.from,
           endTime: task.to,
-          subject: task.detailedPlan.name ?? '',
-          color: task.detailedPlan.color ?? ColorClass.under,
           isAllDay: task.allDay,
+          color: task.detailedPlan.color ?? ColorClass.under,
+          resourceIds: [
+            {"taskId": task.id}
+          ],
         ));
       }
 
       for (TaskModel task in everyDayTasks ?? []) {
         tasks.add(Appointment(
+          subject: task.detailedPlan.name ?? '',
           startTime: task.from,
           endTime: task.to,
-          subject: task.detailedPlan.name ?? '',
-          color: task.detailedPlan.color ?? ColorClass.under,
           isAllDay: task.allDay,
+          color: task.detailedPlan.color ?? ColorClass.under,
+          resourceIds: [
+            {"taskId": task.id}
+          ],
         ));
       }
 
       for (TaskModel task in everyWeekTasks ?? []) {
         tasks.add(Appointment(
+          subject: task.detailedPlan.name ?? '',
           startTime: task.from,
           endTime: task.to,
-          subject: task.detailedPlan.name ?? '',
-          color: task.detailedPlan.color ?? ColorClass.under,
           isAllDay: task.allDay,
+          color: task.detailedPlan.color ?? ColorClass.under,
+          resourceIds: [
+            {"taskId": task.id}
+          ],
         ));
       }
 
@@ -174,6 +217,52 @@ class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
       notifyListeners();
     }
+  }
+
+  Future<void> deleteTask(int taskId) async {
+    try {
+      _isLoading = true;
+
+      notifyListeners();
+
+      var success = await TaskRepository().deleteTask(taskId);
+
+      if (!success) return;
+
+      _task = null;
+    } catch (error) {
+      rethrow;
+    } finally {
+      _isLoading = false;
+
+      notifyListeners();
+    }
+  }
+
+  Future<void> stopTask(int taskId, DateTime terminate) async {
+    try {
+      _isLoading = true;
+
+      notifyListeners();
+
+      var success = await TaskRepository().stopTask(taskId, terminate);
+
+      if (!success) return;
+
+      _task = null;
+    } catch (error) {
+      rethrow;
+    } finally {
+      _isLoading = false;
+
+      notifyListeners();
+    }
+  }
+
+  void clearTask() {
+    _task = null;
+
+    notifyListeners();
   }
 
   @override

@@ -5,6 +5,7 @@ import 'package:mandalart/router/get_page.dart';
 import 'package:mandalart/router/slide_transition_page.dart';
 import 'package:mandalart/screen/calendar/calendar_bottom_sheet_screen.dart';
 import 'package:mandalart/screen/calendar/calendar_screen.dart';
+import 'package:mandalart/screen/calendar/task_bottom_sheet_screen.dart';
 import 'package:mandalart/screen/home/detailed_plan_bottom_sheet_screen.dart';
 import 'package:mandalart/screen/home/home_screen.dart';
 import 'package:mandalart/screen/home/plan_bottom_sheet_screen.dart';
@@ -151,10 +152,21 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/sheet/calendar/:from/:to',
+      path: '/sheet/calendar/:date',
       pageBuilder: (BuildContext context, GoRouterState state) {
         return BottomSheetPage(
           child: CalendarBottomSheetScreen(
+            date: state.pathParameters['date'],
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/sheet/task/:taskId/:from/:to',
+      pageBuilder: (BuildContext context, GoRouterState state) {
+        return BottomSheetPage(
+          child: TaskBottomSheetScreen(
+            taskId: state.pathParameters['taskId'],
             from: state.pathParameters['from'],
             to: state.pathParameters['to'],
           ),

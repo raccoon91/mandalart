@@ -16,6 +16,28 @@ class TaskRepository {
     }
   }
 
+  Future<TaskModel?> getTask(int taskId) async {
+    try {
+      final taskSchema =
+          await IsarDB.isar.tasks.filter().idEqualTo(taskId).findFirst();
+
+      if (taskSchema == null) return null;
+
+      var detailedPlanSchema = await IsarDB.isar.detailedPlans
+          .filter()
+          .idEqualTo(taskSchema.detailedPlanId)
+          .findFirst();
+
+      if (detailedPlanSchema == null) return null;
+
+      TaskModel task = TaskModel.fromSchema(taskSchema, detailedPlanSchema);
+
+      return task;
+    } catch (error) {
+      rethrow;
+    }
+  }
+
   Future<List<TaskModel>?> getWeekTasks(DateTime from, DateTime to) async {
     try {
       var fromDate = from.copyWith(hour: 0, minute: 0, second: 0);
@@ -65,16 +87,24 @@ class TaskRepository {
         if (detailedPlanSchema == null) continue;
 
         for (var calib = 0; calib < 7; calib++) {
-          taskSchema.from = taskSchema.from.copyWith(
+          var taskFrom = taskSchema.from.copyWith(
             year: from.year,
             month: from.month,
             day: weekStartDay + calib,
           );
-          taskSchema.to = taskSchema.to.copyWith(
+          var taskTo = taskSchema.to.copyWith(
             year: from.year,
             month: from.month,
             day: weekStartDay + calib,
           );
+
+          if (taskSchema.terminate != null &&
+              taskTo.isAfter(taskSchema.terminate!)) {
+            continue;
+          }
+
+          taskSchema.from = taskFrom;
+          taskSchema.to = taskTo;
 
           tasks.add(TaskModel.fromSchema(taskSchema, detailedPlanSchema));
         }
@@ -163,6 +193,39 @@ class TaskRepository {
       final task = TaskModel.fromSchema(taskSchema, detailedPlanSchema);
 
       return task;
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  Future<bool> deleteTask(int taskId) async {
+    try {
+      bool success = false;
+
+      await IsarDB.isar.writeTxn(() async {
+        success = await IsarDB.isar.tasks.delete(taskId);
+      });
+
+      return success;
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  Future<bool> stopTask(int taskId, DateTime terminate) async {
+    try {
+      var taskSchema =
+          await IsarDB.isar.tasks.filter().idEqualTo(taskId).findFirst();
+
+      if (taskSchema == null) return false;
+
+      taskSchema.terminate = terminate;
+
+      await IsarDB.isar.writeTxn(() async {
+        await IsarDB.isar.tasks.put(taskSchema);
+      });
+
+      return true;
     } catch (error) {
       rethrow;
     }

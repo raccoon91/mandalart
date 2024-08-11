@@ -4,6 +4,7 @@ import 'package:mandalart/schema/detailed_plan_schema.dart';
 import 'package:mandalart/schema/task_schema.dart';
 
 class TaskModel {
+  int id;
   int detailedPlanId;
   DetailedPlanModel detailedPlan;
   DateTime from;
@@ -14,6 +15,7 @@ class TaskModel {
   String? repeat;
 
   TaskModel({
+    required this.id,
     required this.detailedPlanId,
     required this.detailedPlan,
     required this.from,
@@ -32,6 +34,7 @@ class TaskModel {
     var detailedPlan = DetailedPlanModel.fromSchema(detailedPlanSchema);
 
     return TaskModel(
+      id: taskSchema.id,
       detailedPlanId: taskSchema.detailedPlanId,
       detailedPlan: detailedPlan,
       from: taskSchema.from,

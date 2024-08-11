@@ -6,7 +6,7 @@ import 'package:mandalart/widget/base/button.dart';
 import 'package:mandalart/widget/calendar/calendar_date_time_range.dart';
 import 'package:mandalart/widget/calendar/calendar_detailed_plan_picker.dart';
 import 'package:mandalart/widget/calendar/calendar_plan_picker.dart';
-import 'package:mandalart/widget/calendar/calendar_repeat_widget.dart';
+import 'package:mandalart/widget/calendar/calendar_repeat_picker.dart';
 import 'package:provider/provider.dart';
 
 class CalendarBottomSheet extends StatefulWidget {
@@ -54,6 +54,11 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
 
   fromDateChanged(DateTime date) {
     fromDate = date;
+    toDate = toDate.copyWith(
+      year: fromDate.year,
+      month: fromDate.month,
+      day: fromDate.day,
+    );
 
     checkEnabled();
 
@@ -61,7 +66,11 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
   }
 
   toDateChanged(DateTime date) {
-    toDate = date;
+    toDate = date.copyWith(
+      year: fromDate.year,
+      month: fromDate.month,
+      day: fromDate.day,
+    );
 
     checkEnabled();
 
@@ -151,7 +160,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
                     allDayChanged: allDayChanged,
                   ),
                   const Divider(),
-                  CalendarRepeatWidget(
+                  CalendarRepeatPicker(
                     value: repeat,
                     onChanged: repeatChanged,
                   ),
@@ -180,7 +189,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
               width: double.infinity,
               height: 60.h,
               child: Button(
-                text: '만들기',
+                text: '시작하기',
                 onPressed:
                     enabled && widget.onCreate != null ? createTapped : null,
               ),

@@ -27,8 +27,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
     });
   }
 
-  void getPlans() async {
-    await Provider.of<CalendarProvider>(
+  void getPlans() {
+    Provider.of<CalendarProvider>(
       context,
       listen: false,
     ).getPlans();
@@ -44,7 +44,21 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   onTapCell(CalendarTapDetails? calendar) {
-    context.push('/sheet/calendar/$weekFrom/$weekTo');
+    if (calendar?.appointments == null) {
+      if (calendar?.date == null) return;
+
+      context.push('/sheet/calendar/${calendar?.date.toString()}');
+    } else {
+      Appointment appointment = calendar?.appointments?.first;
+      dynamic task = appointment.resourceIds
+          ?.firstWhere((dynamic resource) => resource?['taskId'] != null);
+
+      if (task == null) return;
+
+      context.push(
+        '/sheet/task/${task?['taskId']}/${appointment.startTime.toString()}/${appointment.endTime.toString()}',
+      );
+    }
   }
 
   @override

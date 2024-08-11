@@ -5,13 +5,11 @@ import 'package:mandalart/widget/calendar/calendar_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 class CalendarBottomSheetScreen extends StatefulWidget {
-  final String? from;
-  final String? to;
+  final String? date;
 
   const CalendarBottomSheetScreen({
     super.key,
-    this.from,
-    this.to,
+    this.date,
   });
 
   @override
@@ -27,8 +25,8 @@ class _CalendarBottomSheetScreenState extends State<CalendarBottomSheetScreen> {
   void initState() {
     super.initState();
 
-    from = DateTime.parse(widget.from ?? "");
-    to = DateTime.parse(widget.to ?? "");
+    from = DateTime.parse(widget.date ?? "");
+    to = from.add(const Duration(hours: 1));
   }
 
   Future<void> createTask(
@@ -54,7 +52,7 @@ class _CalendarBottomSheetScreenState extends State<CalendarBottomSheetScreen> {
     await Provider.of<CalendarProvider>(
       context,
       listen: false,
-    ).getTasks(from, to);
+    ).getTasks(null, null);
 
     if (!mounted) return;
 

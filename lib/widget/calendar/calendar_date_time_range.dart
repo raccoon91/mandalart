@@ -83,12 +83,8 @@ class CalendarDateTimeRange extends StatelessWidget {
               SizedBox(width: 40.w),
               Expanded(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    DatePicker(
-                      date: to,
-                      onChange: toChanged,
-                    ),
                     TimePicker(
                       date: to,
                       onChange: toChanged,
