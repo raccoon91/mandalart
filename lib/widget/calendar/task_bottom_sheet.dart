@@ -26,7 +26,7 @@ class TaskBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 30.h, bottom: 20.h),
+      padding: EdgeInsets.only(top: 30.h, bottom: 10.h),
       child: Column(
         children: [
           Container(
@@ -65,9 +65,8 @@ class TaskBottomSheet extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 10.h),
           const Divider(),
-          SizedBox(height: 16.h),
+          SizedBox(height: 10.h),
           Row(
             children: [
               Expanded(
@@ -76,15 +75,9 @@ class TaskBottomSheet extends StatelessWidget {
                   onTap: onDelete,
                   child: Column(
                     children: [
-                      Icon(
-                        Icons.clear,
-                        size: 30.sp,
-                      ),
-                      SizedBox(height: 10.h),
-                      Text(
-                        "삭제",
-                        style: TextStyle(fontSize: 16.sp),
-                      ),
+                      Icon(Icons.clear, size: 36.sp),
+                      SizedBox(height: 6.h),
+                      Text("삭제", style: TextStyle(fontSize: 16.sp)),
                     ],
                   ),
                 ),
@@ -95,15 +88,9 @@ class TaskBottomSheet extends StatelessWidget {
                   onTap: onStop,
                   child: Column(
                     children: [
-                      Icon(
-                        Icons.block,
-                        size: 30.sp,
-                      ),
-                      SizedBox(height: 10.h),
-                      Text(
-                        "종료",
-                        style: TextStyle(fontSize: 16.sp),
-                      ),
+                      Icon(Icons.block, size: 36.sp),
+                      SizedBox(height: 6.h),
+                      Text("종료", style: TextStyle(fontSize: 16.sp)),
                     ],
                   ),
                 ),
