@@ -38,6 +38,108 @@ class TaskRepository {
     }
   }
 
+  Future<List<TaskModel>?> getWeekDayTasks(DateTime from) async {
+    try {
+      var weekStartDay = from.day;
+
+      final taskSchemaList =
+          await IsarDB.isar.tasks.filter().repeatEqualTo("weekdays").findAll();
+
+      List<TaskModel> tasks = [];
+
+      for (var taskSchema in taskSchemaList) {
+        if (taskSchema.from.weekday == 7 || taskSchema.from.weekday == 6) {
+          continue;
+        }
+
+        var detailedPlanSchema = await IsarDB.isar.detailedPlans
+            .filter()
+            .idEqualTo(taskSchema.detailedPlanId)
+            .findFirst();
+
+        if (detailedPlanSchema == null) continue;
+
+        for (var calib = 1; calib < 6; calib++) {
+          var taskFrom = taskSchema.from.copyWith(
+            year: from.year,
+            month: from.month,
+            day: weekStartDay + calib,
+          );
+          var taskTo = taskSchema.to.copyWith(
+            year: from.year,
+            month: from.month,
+            day: weekStartDay + calib,
+          );
+
+          if (taskSchema.terminate != null &&
+              taskTo.isAfter(taskSchema.terminate!)) {
+            continue;
+          }
+
+          taskSchema.from = taskFrom;
+          taskSchema.to = taskTo;
+
+          tasks.add(TaskModel.fromSchema(taskSchema, detailedPlanSchema));
+        }
+      }
+
+      return tasks;
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  Future<List<TaskModel>?> getWeekendTasks(DateTime from) async {
+    try {
+      var weekStartDay = from.day;
+
+      final taskSchemaList =
+          await IsarDB.isar.tasks.filter().repeatEqualTo("weekend").findAll();
+
+      List<TaskModel> tasks = [];
+
+      for (var taskSchema in taskSchemaList) {
+        if (taskSchema.from.weekday != 7 && taskSchema.from.weekday != 6) {
+          continue;
+        }
+
+        var detailedPlanSchema = await IsarDB.isar.detailedPlans
+            .filter()
+            .idEqualTo(taskSchema.detailedPlanId)
+            .findFirst();
+
+        if (detailedPlanSchema == null) continue;
+
+        for (var calib in [0, 6]) {
+          var taskFrom = taskSchema.from.copyWith(
+            year: from.year,
+            month: from.month,
+            day: weekStartDay + calib,
+          );
+          var taskTo = taskSchema.to.copyWith(
+            year: from.year,
+            month: from.month,
+            day: weekStartDay + calib,
+          );
+
+          if (taskSchema.terminate != null &&
+              taskTo.isAfter(taskSchema.terminate!)) {
+            continue;
+          }
+
+          taskSchema.from = taskFrom;
+          taskSchema.to = taskTo;
+
+          tasks.add(TaskModel.fromSchema(taskSchema, detailedPlanSchema));
+        }
+      }
+
+      return tasks;
+    } catch (error) {
+      rethrow;
+    }
+  }
+
   Future<List<TaskModel>?> getWeekTasks(DateTime from, DateTime to) async {
     try {
       var fromDate = from.copyWith(hour: 0, minute: 0, second: 0);
@@ -131,16 +233,24 @@ class TaskRepository {
 
         if (detailedPlanSchema == null) continue;
 
-        taskSchema.from = taskSchema.from.copyWith(
+        var taskFrom = taskSchema.from.copyWith(
           year: from.year,
           month: from.month,
           day: from.day + taskSchema.from.weekday,
         );
-        taskSchema.to = taskSchema.to.copyWith(
+        var taskTo = taskSchema.to.copyWith(
           year: from.year,
           month: from.month,
           day: from.day + taskSchema.from.weekday,
         );
+
+        if (taskSchema.terminate != null &&
+            taskTo.isAfter(taskSchema.terminate!)) {
+          continue;
+        }
+
+        taskSchema.from = taskFrom;
+        taskSchema.to = taskTo;
 
         tasks.add(TaskModel.fromSchema(taskSchema, detailedPlanSchema));
       }
@@ -151,18 +261,45 @@ class TaskRepository {
     }
   }
 
-  // Future<List<TaskModel>?> getEveryMonthTask(int day) async {
-  //   try {
-  //     final taskSchema =
-  //         await IsarDB.isar.tasks.filter().everyMonthEqualTo(day).findAll();
+  Future<List<TaskModel>?> getEveryMonthTask(DateTime from) async {
+    try {
+      final taskSchemaList =
+          await IsarDB.isar.tasks.filter().repeatEqualTo("month").findAll();
 
-  //     List<TaskModel> tasks = taskSchema.map(TaskModel.fromSchema).toList();
+      List<TaskModel> tasks = [];
 
-  //     return tasks;
-  //   } catch (error) {
-  //     rethrow;
-  //   }
-  // }
+      for (var taskSchema in taskSchemaList) {
+        var detailedPlanSchema = await IsarDB.isar.detailedPlans
+            .filter()
+            .idEqualTo(taskSchema.detailedPlanId)
+            .findFirst();
+
+        if (detailedPlanSchema == null) continue;
+
+        var taskFrom = taskSchema.from.copyWith(
+          year: from.year,
+          month: from.month,
+        );
+        var taskTo = taskSchema.to.copyWith(
+          year: from.year,
+          month: from.month,
+        );
+
+        if (taskSchema.terminate != null &&
+            taskTo.isAfter(taskSchema.terminate!)) {
+          continue;
+        }
+
+        taskSchema.from = taskFrom;
+        taskSchema.to = taskTo;
+        tasks.add(TaskModel.fromSchema(taskSchema, detailedPlanSchema));
+      }
+
+      return tasks;
+    } catch (error) {
+      rethrow;
+    }
+  }
 
   Future<TaskModel?> createTask(
     int detailedPlanId,

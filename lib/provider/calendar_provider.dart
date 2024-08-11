@@ -118,14 +118,26 @@ class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
       if (_start == null || _end == null) return;
 
-      List<Appointment> tasks = [];
+      List<Appointment> appointments = [];
 
+      var weekDayTasks = await TaskRepository().getWeekDayTasks(_start!);
+      var weekendTasks = await TaskRepository().getWeekendTasks(_start!);
       var weekTasks = await TaskRepository().getWeekTasks(_start!, _end!);
       var everyDayTasks = await TaskRepository().getEveryDayTask(_start!);
       var everyWeekTasks = await TaskRepository().getEveryWeekTask(_start!);
+      var everyMonthTasks = await TaskRepository().getEveryMonthTask(_start!);
 
-      for (TaskModel task in weekTasks ?? []) {
-        tasks.add(Appointment(
+      List<TaskModel> tasks = [
+        ...(weekDayTasks ?? []),
+        ...(weekendTasks ?? []),
+        ...(weekTasks ?? []),
+        ...(everyDayTasks ?? []),
+        ...(everyWeekTasks ?? []),
+        ...(everyMonthTasks ?? []),
+      ];
+
+      for (TaskModel task in tasks) {
+        appointments.add(Appointment(
           subject: task.detailedPlan.name ?? '',
           startTime: task.from,
           endTime: task.to,
@@ -137,33 +149,7 @@ class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
         ));
       }
 
-      for (TaskModel task in everyDayTasks ?? []) {
-        tasks.add(Appointment(
-          subject: task.detailedPlan.name ?? '',
-          startTime: task.from,
-          endTime: task.to,
-          isAllDay: task.allDay,
-          color: task.detailedPlan.color ?? ColorClass.under,
-          resourceIds: [
-            {"taskId": task.id}
-          ],
-        ));
-      }
-
-      for (TaskModel task in everyWeekTasks ?? []) {
-        tasks.add(Appointment(
-          subject: task.detailedPlan.name ?? '',
-          startTime: task.from,
-          endTime: task.to,
-          isAllDay: task.allDay,
-          color: task.detailedPlan.color ?? ColorClass.under,
-          resourceIds: [
-            {"taskId": task.id}
-          ],
-        ));
-      }
-
-      _tasks = tasks;
+      _tasks = appointments;
     } catch (error) {
       rethrow;
     } finally {
