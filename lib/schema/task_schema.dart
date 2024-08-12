@@ -12,11 +12,23 @@ class Task {
 
   late DateTime to;
 
-  DateTime? terminate;
-
   bool allDay = false;
 
   String? repeat;
+
+  bool weekday = false;
+
+  bool weekend = false;
+
+  bool everyDay = false;
+
+  int? everyWeek;
+
+  int? everyMonth;
+
+  DateTime? terminate;
+
+  String? description;
 
   int? color;
 

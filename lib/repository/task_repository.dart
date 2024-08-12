@@ -42,16 +42,15 @@ class TaskRepository {
     try {
       var weekStartDay = from.day;
 
-      final taskSchemaList =
-          await IsarDB.isar.tasks.filter().repeatEqualTo("weekdays").findAll();
+      final taskSchemaList = await IsarDB.isar.tasks
+          .filter()
+          .repeatEqualTo("weekdays")
+          .weekdayEqualTo(true)
+          .findAll();
 
       List<TaskModel> tasks = [];
 
       for (var taskSchema in taskSchemaList) {
-        if (taskSchema.from.weekday == 7 || taskSchema.from.weekday == 6) {
-          continue;
-        }
-
         var detailedPlanSchema = await IsarDB.isar.detailedPlans
             .filter()
             .idEqualTo(taskSchema.detailedPlanId)
@@ -93,16 +92,15 @@ class TaskRepository {
     try {
       var weekStartDay = from.day;
 
-      final taskSchemaList =
-          await IsarDB.isar.tasks.filter().repeatEqualTo("weekend").findAll();
+      final taskSchemaList = await IsarDB.isar.tasks
+          .filter()
+          .repeatEqualTo("weekend")
+          .weekendEqualTo(true)
+          .findAll();
 
       List<TaskModel> tasks = [];
 
       for (var taskSchema in taskSchemaList) {
-        if (taskSchema.from.weekday != 7 && taskSchema.from.weekday != 6) {
-          continue;
-        }
-
         var detailedPlanSchema = await IsarDB.isar.detailedPlans
             .filter()
             .idEqualTo(taskSchema.detailedPlanId)
@@ -175,8 +173,11 @@ class TaskRepository {
     try {
       var weekStartDay = from.day;
 
-      final taskSchemaList =
-          await IsarDB.isar.tasks.filter().repeatEqualTo("day").findAll();
+      final taskSchemaList = await IsarDB.isar.tasks
+          .filter()
+          .repeatEqualTo("day")
+          .everyDayEqualTo(true)
+          .findAll();
 
       List<TaskModel> tasks = [];
 
@@ -220,8 +221,11 @@ class TaskRepository {
 
   Future<List<TaskModel>?> getEveryWeekTask(DateTime from) async {
     try {
-      final taskSchemaList =
-          await IsarDB.isar.tasks.filter().repeatEqualTo("week").findAll();
+      final taskSchemaList = await IsarDB.isar.tasks
+          .filter()
+          .repeatEqualTo("week")
+          .everyWeekIsNotNull()
+          .findAll();
 
       List<TaskModel> tasks = [];
 
@@ -263,8 +267,11 @@ class TaskRepository {
 
   Future<List<TaskModel>?> getEveryMonthTask(DateTime from) async {
     try {
-      final taskSchemaList =
-          await IsarDB.isar.tasks.filter().repeatEqualTo("month").findAll();
+      final taskSchemaList = await IsarDB.isar.tasks
+          .filter()
+          .repeatEqualTo("month")
+          .everyMonthIsNotNull()
+          .findAll();
 
       List<TaskModel> tasks = [];
 
@@ -314,7 +321,12 @@ class TaskRepository {
         ..from = from
         ..to = to
         ..allDay = allDay ?? false
-        ..repeat = repeat;
+        ..repeat = repeat
+        ..weekday = repeat == "weekdays" ? true : false
+        ..weekend = repeat == "weekend" ? true : false
+        ..everyDay = repeat == "day" ? true : false
+        ..everyWeek = repeat == "week" ? from.weekday : null
+        ..everyMonth = repeat == "month" ? from.day : null;
 
       await IsarDB.isar.writeTxn(() async {
         await IsarDB.isar.tasks.put(taskSchema);
