@@ -9,6 +9,8 @@ class Plan {
 
   late int projectId;
 
+  late int order;
+
   String? name;
 
   String? description;

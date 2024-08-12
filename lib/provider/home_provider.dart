@@ -64,19 +64,22 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
     Color? color,
   ) async {
     try {
-      if (_project == null) return;
-
-      PlanModel? newPlan;
+      if (_project == null || planId == null) return;
 
       _isLoading = true;
 
       notifyListeners();
 
-      if (planId == null) {
-        newPlan = await PlanRepository().createPlan(_project!.id, name, color);
-      } else {
-        newPlan = await PlanRepository().updatePlan(planId, name, color);
-      }
+      // if (planId == null) {
+      //   newPlan = await PlanRepository().createPlan(_project!.id, name, color);
+      // } else {
+      // }
+
+      PlanModel? newPlan = await PlanRepository().updatePlan(
+        planId,
+        name,
+        color,
+      );
 
       if (_project?.plans == null) return;
 
@@ -100,27 +103,27 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
     Color? color,
   ) async {
     try {
-      if (_project == null || planId == null) return;
-
-      DetailedPlanModel? newDetailedPlan;
+      if (_project == null || planId == null || detailedPlanId == null) return;
 
       _isLoading = true;
 
       notifyListeners();
 
-      if (detailedPlanId == null) {
-        newDetailedPlan = await DetailedPlanRepository().createDetailedPlan(
-          planId,
-          name,
-          color,
-        );
-      } else {
-        newDetailedPlan = await DetailedPlanRepository().updateDetailedPlan(
-          detailedPlanId,
-          name,
-          color,
-        );
-      }
+      // if (detailedPlanId == null) {
+      //   newDetailedPlan = await DetailedPlanRepository().createDetailedPlan(
+      //     planId,
+      //     name,
+      //     color,
+      //   );
+      // } else {
+      // }
+
+      DetailedPlanModel? newDetailedPlan =
+          await DetailedPlanRepository().updateDetailedPlan(
+        detailedPlanId,
+        name,
+        color,
+      );
 
       if (_project?.plans == null) return;
 

@@ -8,6 +8,8 @@ class DetailedPlan {
 
   late int planId;
 
+  late int order;
+
   String? name;
 
   String? description;

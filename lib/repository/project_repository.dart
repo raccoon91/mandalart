@@ -63,14 +63,18 @@ class ProjectRepository {
         int projectId = await IsarDB.isar.projects.put(projectSchema);
 
         for (int index = 0; index < 8; index++) {
-          final planSchema = Plan()..projectId = projectId;
+          final planSchema = Plan()
+            ..projectId = projectId
+            ..order = index + 1;
 
           projectSchema.plans.add(planSchema);
 
           int planId = await IsarDB.isar.plans.put(planSchema);
 
           for (int index = 0; index < 8; index++) {
-            final detailedPlanSchema = DetailedPlan()..planId = planId;
+            final detailedPlanSchema = DetailedPlan()
+              ..planId = planId
+              ..order = index + 1;
 
             planSchema.detailedPlans.add(detailedPlanSchema);
 

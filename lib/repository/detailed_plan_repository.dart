@@ -34,34 +34,34 @@ class DetailedPlanRepository {
     }
   }
 
-  Future<DetailedPlanModel?> createDetailedPlan(
-    int? planId,
-    String? name,
-    Color? color,
-  ) async {
-    try {
-      if (planId == null) return null;
+  // Future<DetailedPlanModel?> createDetailedPlan(
+  //   int? planId,
+  //   String? name,
+  //   Color? color,
+  // ) async {
+  //   try {
+  //     if (planId == null) return null;
 
-      int? colorValue = color?.value;
+  //     int? colorValue = color?.value;
 
-      final detailedPlanSchema = DetailedPlan()
-        ..planId = planId
-        ..name = name
-        ..color = colorValue;
+  //     final detailedPlanSchema = DetailedPlan()
+  //       ..planId = planId
+  //       ..name = name
+  //       ..color = colorValue;
 
-      await IsarDB.isar.writeTxn(() async {
-        int planId = await IsarDB.isar.detailedPlans.put(detailedPlanSchema);
+  //     await IsarDB.isar.writeTxn(() async {
+  //       int planId = await IsarDB.isar.detailedPlans.put(detailedPlanSchema);
 
-        detailedPlanSchema.id = planId;
-      });
+  //       detailedPlanSchema.id = planId;
+  //     });
 
-      final detailedPlan = DetailedPlanModel.fromSchema(detailedPlanSchema);
+  //     final detailedPlan = DetailedPlanModel.fromSchema(detailedPlanSchema);
 
-      return detailedPlan;
-    } catch (error) {
-      rethrow;
-    }
-  }
+  //     return detailedPlan;
+  //   } catch (error) {
+  //     rethrow;
+  //   }
+  // }
 
   Future<DetailedPlanModel?> updateDetailedPlan(
     int? detailedPlanId,

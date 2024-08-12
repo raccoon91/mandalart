@@ -52,27 +52,27 @@ class PlanProvider with ChangeNotifier, DiagnosticableTreeMixin {
     Color? color,
   ) async {
     try {
-      if (_plan == null || planId == null) return;
+      if (_plan == null || planId == null || detailedPlanId == null) return;
 
-      DetailedPlanModel? newDetailedPlan;
 
       _isLoading = true;
 
       notifyListeners();
 
-      if (detailedPlanId == null) {
-        newDetailedPlan = await DetailedPlanRepository().createDetailedPlan(
-          planId,
-          name,
-          color,
-        );
-      } else {
-        newDetailedPlan = await DetailedPlanRepository().updateDetailedPlan(
-          detailedPlanId,
-          name,
-          color,
-        );
-      }
+      // if (detailedPlanId == null) {
+      //   newDetailedPlan = await DetailedPlanRepository().createDetailedPlan(
+      //     planId,
+      //     name,
+      //     color,
+      //   );
+      // } else {
+      // }
+
+      DetailedPlanModel? newDetailedPlan = await DetailedPlanRepository().updateDetailedPlan(
+        detailedPlanId,
+        name,
+        color,
+      );
 
       _plan!.detailedPlans = _plan!.detailedPlans
               ?.map(

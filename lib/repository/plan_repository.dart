@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:mandalart/db/isar_db.dart';
 import 'package:mandalart/model/plan_model.dart';
-import 'package:mandalart/schema/detailed_plan_schema.dart';
 import 'package:mandalart/schema/plan_schema.dart';
 import 'package:mandalart/schema/project_schema.dart';
 
@@ -57,44 +56,44 @@ class PlanRepository {
     }
   }
 
-  Future<PlanModel?> createPlan(
-    int? projectId,
-    String? name,
-    Color? color,
-  ) async {
-    try {
-      if (projectId == null) return null;
+  // Future<PlanModel?> createPlan(
+  //   int? projectId,
+  //   String? name,
+  //   Color? color,
+  // ) async {
+  //   try {
+  //     if (projectId == null) return null;
 
-      int? colorValue = color?.value;
+  //     int? colorValue = color?.value;
 
-      final planSchema = Plan()
-        ..projectId = projectId
-        ..name = name
-        ..color = colorValue;
+  //     final planSchema = Plan()
+  //       ..projectId = projectId
+  //       ..name = name
+  //       ..color = colorValue;
 
-      await IsarDB.isar.writeTxn(() async {
-        int planId = await IsarDB.isar.plans.put(planSchema);
+  //     await IsarDB.isar.writeTxn(() async {
+  //       int planId = await IsarDB.isar.plans.put(planSchema);
 
-        planSchema.id = planId;
+  //       planSchema.id = planId;
 
-        for (int index = 0; index < 8; index++) {
-          final detailedPlanSchema = DetailedPlan()..planId = planId;
+  //       for (int index = 0; index < 8; index++) {
+  //         final detailedPlanSchema = DetailedPlan()..planId = planId;
 
-          planSchema.detailedPlans.add(detailedPlanSchema);
+  //         planSchema.detailedPlans.add(detailedPlanSchema);
 
-          await IsarDB.isar.detailedPlans.put(detailedPlanSchema);
-        }
+  //         await IsarDB.isar.detailedPlans.put(detailedPlanSchema);
+  //       }
 
-        await planSchema.detailedPlans.save();
-      });
+  //       await planSchema.detailedPlans.save();
+  //     });
 
-      final plan = PlanModel.fromSchema(planSchema);
+  //     final plan = PlanModel.fromSchema(planSchema);
 
-      return plan;
-    } catch (error) {
-      rethrow;
-    }
-  }
+  //     return plan;
+  //   } catch (error) {
+  //     rethrow;
+  //   }
+  // }
 
   Future<PlanModel?> updatePlan(
     int? planId,

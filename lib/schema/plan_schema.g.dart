@@ -37,13 +37,18 @@ const PlanSchema = CollectionSchema(
       name: r'name',
       type: IsarType.string,
     ),
-    r'projectId': PropertySchema(
+    r'order': PropertySchema(
       id: 4,
+      name: r'order',
+      type: IsarType.long,
+    ),
+    r'projectId': PropertySchema(
+      id: 5,
       name: r'projectId',
       type: IsarType.long,
     ),
     r'style': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'style',
       type: IsarType.string,
     )
@@ -106,8 +111,9 @@ void _planSerialize(
   writer.writeBool(offsets[1], object.delete);
   writer.writeString(offsets[2], object.description);
   writer.writeString(offsets[3], object.name);
-  writer.writeLong(offsets[4], object.projectId);
-  writer.writeString(offsets[5], object.style);
+  writer.writeLong(offsets[4], object.order);
+  writer.writeLong(offsets[5], object.projectId);
+  writer.writeString(offsets[6], object.style);
 }
 
 Plan _planDeserialize(
@@ -122,8 +128,9 @@ Plan _planDeserialize(
   object.description = reader.readStringOrNull(offsets[2]);
   object.id = id;
   object.name = reader.readStringOrNull(offsets[3]);
-  object.projectId = reader.readLong(offsets[4]);
-  object.style = reader.readStringOrNull(offsets[5]);
+  object.order = reader.readLong(offsets[4]);
+  object.projectId = reader.readLong(offsets[5]);
+  object.style = reader.readStringOrNull(offsets[6]);
   return object;
 }
 
@@ -145,6 +152,8 @@ P _planDeserializeProp<P>(
     case 4:
       return (reader.readLong(offset)) as P;
     case 5:
+      return (reader.readLong(offset)) as P;
+    case 6:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -660,6 +669,58 @@ extension PlanQueryFilter on QueryBuilder<Plan, Plan, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Plan, Plan, QAfterFilterCondition> orderEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'order',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Plan, Plan, QAfterFilterCondition> orderGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'order',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Plan, Plan, QAfterFilterCondition> orderLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'order',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Plan, Plan, QAfterFilterCondition> orderBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'order',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Plan, Plan, QAfterFilterCondition> projectIdEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -967,6 +1028,18 @@ extension PlanQuerySortBy on QueryBuilder<Plan, Plan, QSortBy> {
     });
   }
 
+  QueryBuilder<Plan, Plan, QAfterSortBy> sortByOrder() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'order', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Plan, Plan, QAfterSortBy> sortByOrderDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'order', Sort.desc);
+    });
+  }
+
   QueryBuilder<Plan, Plan, QAfterSortBy> sortByProjectId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'projectId', Sort.asc);
@@ -1053,6 +1126,18 @@ extension PlanQuerySortThenBy on QueryBuilder<Plan, Plan, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Plan, Plan, QAfterSortBy> thenByOrder() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'order', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Plan, Plan, QAfterSortBy> thenByOrderDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'order', Sort.desc);
+    });
+  }
+
   QueryBuilder<Plan, Plan, QAfterSortBy> thenByProjectId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'projectId', Sort.asc);
@@ -1105,6 +1190,12 @@ extension PlanQueryWhereDistinct on QueryBuilder<Plan, Plan, QDistinct> {
     });
   }
 
+  QueryBuilder<Plan, Plan, QDistinct> distinctByOrder() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'order');
+    });
+  }
+
   QueryBuilder<Plan, Plan, QDistinct> distinctByProjectId() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'projectId');
@@ -1147,6 +1238,12 @@ extension PlanQueryProperty on QueryBuilder<Plan, Plan, QQueryProperty> {
   QueryBuilder<Plan, String?, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
+    });
+  }
+
+  QueryBuilder<Plan, int, QQueryOperations> orderProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'order');
     });
   }
 
