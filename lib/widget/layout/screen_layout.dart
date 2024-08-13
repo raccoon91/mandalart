@@ -34,26 +34,13 @@ class _ScreenLayoutState extends State<ScreenLayout> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: widget.title == null
-            ? null
-            : AppBar(
-                centerTitle: true,
-                backgroundColor: ColorClass.white,
-                surfaceTintColor: ColorClass.white,
-                title: Text(
-                  widget.title ?? '',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
         backgroundColor: ColorClass.white,
-        body: widget.body,
         floatingActionButton: FloatingButton(
           show: widget.showFloatingAction,
           onPressed: modeTapped,
         ),
         bottomNavigationBar: widget.bottomNavigationBar,
+        body: widget.body,
       ),
     );
   }
