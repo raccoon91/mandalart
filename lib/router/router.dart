@@ -14,6 +14,7 @@ import 'package:mandalart/screen/project/project_create_screen.dart';
 import 'package:mandalart/screen/project/project_start_screen.dart';
 import 'package:mandalart/screen/setting/setting_screen.dart';
 import 'package:mandalart/screen/setting/setting_storage_screen.dart';
+import 'package:mandalart/screen/task/task_screen.dart';
 import 'package:mandalart/widget/layout/bottom_navigation_layout.dart';
 
 final screenPathMap = {
@@ -25,6 +26,7 @@ final screenPathMap = {
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _homeTabNavigatorKey = GlobalKey<NavigatorState>();
 final _calendarTabNavigatorKey = GlobalKey<NavigatorState>();
+final _taskTabNavigatorKey = GlobalKey<NavigatorState>();
 final _settingTabNavigatorKey = GlobalKey<NavigatorState>();
 
 final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
@@ -66,6 +68,20 @@ final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
             return getPage(
               state: state,
               child: const CalendarScreen(),
+            );
+          },
+        ),
+      ],
+    ),
+    StatefulShellBranch(
+      navigatorKey: _taskTabNavigatorKey,
+      routes: [
+        GoRoute(
+          path: '/task',
+          pageBuilder: (BuildContext context, GoRouterState state) {
+            return getPage(
+              state: state,
+              child: const TaskScreen(),
             );
           },
         ),

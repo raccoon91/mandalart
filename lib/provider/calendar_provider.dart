@@ -122,7 +122,7 @@ class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
       var weekDayTasks = await TaskRepository().getWeekDayTasks(_start!);
       var weekendTasks = await TaskRepository().getWeekendTasks(_start!);
-      var weekTasks = await TaskRepository().getWeekTasks(_start!, _end!);
+      var weekTasks = await TaskRepository().getWeekTasks(_start!);
       var everyDayTasks = await TaskRepository().getEveryDayTask(_start!);
       var everyWeekTasks = await TaskRepository().getEveryWeekTask(_start!);
       var everyMonthTasks = await TaskRepository().getEveryMonthTask(_start!);

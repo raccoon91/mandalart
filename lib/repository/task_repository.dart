@@ -38,9 +38,9 @@ class TaskRepository {
     }
   }
 
-  Future<List<TaskModel>?> getWeekDayTasks(DateTime from) async {
+  Future<List<TaskModel>?> getWeekDayTasks(DateTime date) async {
     try {
-      var weekStartDay = from.day;
+      var weekStartDay = date.day;
 
       final taskSchemaList = await IsarDB.isar.tasks
           .filter()
@@ -60,13 +60,13 @@ class TaskRepository {
 
         for (var calib = 1; calib < 6; calib++) {
           var taskFrom = taskSchema.from.copyWith(
-            year: from.year,
-            month: from.month,
+            year: date.year,
+            month: date.month,
             day: weekStartDay + calib,
           );
           var taskTo = taskSchema.to.copyWith(
-            year: from.year,
-            month: from.month,
+            year: date.year,
+            month: date.month,
             day: weekStartDay + calib,
           );
 
@@ -88,9 +88,9 @@ class TaskRepository {
     }
   }
 
-  Future<List<TaskModel>?> getWeekendTasks(DateTime from) async {
+  Future<List<TaskModel>?> getWeekendTasks(DateTime date) async {
     try {
-      var weekStartDay = from.day;
+      var weekStartDay = date.day;
 
       final taskSchemaList = await IsarDB.isar.tasks
           .filter()
@@ -110,13 +110,13 @@ class TaskRepository {
 
         for (var calib in [0, 6]) {
           var taskFrom = taskSchema.from.copyWith(
-            year: from.year,
-            month: from.month,
+            year: date.year,
+            month: date.month,
             day: weekStartDay + calib,
           );
           var taskTo = taskSchema.to.copyWith(
-            year: from.year,
-            month: from.month,
+            year: date.year,
+            month: date.month,
             day: weekStartDay + calib,
           );
 
@@ -138,10 +138,10 @@ class TaskRepository {
     }
   }
 
-  Future<List<TaskModel>?> getWeekTasks(DateTime from, DateTime to) async {
+  Future<List<TaskModel>?> getWeekTasks(DateTime date) async {
     try {
-      var fromDate = from.copyWith(hour: 0, minute: 0, second: 0);
-      var toDate = to.copyWith(hour: 11, minute: 59, second: 59);
+      var fromDate = date.copyWith(hour: 0, minute: 0, second: 0);
+      var toDate = date.copyWith(hour: 11, minute: 59, second: 59);
 
       final taskSchemaList = await IsarDB.isar.tasks
           .filter()
@@ -169,9 +169,9 @@ class TaskRepository {
     }
   }
 
-  Future<List<TaskModel>?> getEveryDayTask(DateTime from) async {
+  Future<List<TaskModel>?> getEveryDayTask(DateTime date) async {
     try {
-      var weekStartDay = from.day;
+      var weekStartDay = date.day;
 
       final taskSchemaList = await IsarDB.isar.tasks
           .filter()
@@ -191,13 +191,13 @@ class TaskRepository {
 
         for (var calib = 0; calib < 7; calib++) {
           var taskFrom = taskSchema.from.copyWith(
-            year: from.year,
-            month: from.month,
+            year: date.year,
+            month: date.month,
             day: weekStartDay + calib,
           );
           var taskTo = taskSchema.to.copyWith(
-            year: from.year,
-            month: from.month,
+            year: date.year,
+            month: date.month,
             day: weekStartDay + calib,
           );
 
@@ -219,7 +219,7 @@ class TaskRepository {
     }
   }
 
-  Future<List<TaskModel>?> getEveryWeekTask(DateTime from) async {
+  Future<List<TaskModel>?> getEveryWeekTask(DateTime date) async {
     try {
       final taskSchemaList = await IsarDB.isar.tasks
           .filter()
@@ -238,14 +238,14 @@ class TaskRepository {
         if (detailedPlanSchema == null) continue;
 
         var taskFrom = taskSchema.from.copyWith(
-          year: from.year,
-          month: from.month,
-          day: from.day + taskSchema.from.weekday,
+          year: date.year,
+          month: date.month,
+          day: date.day + taskSchema.from.weekday,
         );
         var taskTo = taskSchema.to.copyWith(
-          year: from.year,
-          month: from.month,
-          day: from.day + taskSchema.from.weekday,
+          year: date.year,
+          month: date.month,
+          day: date.day + taskSchema.from.weekday,
         );
 
         if (taskSchema.terminate != null &&
@@ -265,7 +265,7 @@ class TaskRepository {
     }
   }
 
-  Future<List<TaskModel>?> getEveryMonthTask(DateTime from) async {
+  Future<List<TaskModel>?> getEveryMonthTask(DateTime date) async {
     try {
       final taskSchemaList = await IsarDB.isar.tasks
           .filter()
@@ -284,12 +284,12 @@ class TaskRepository {
         if (detailedPlanSchema == null) continue;
 
         var taskFrom = taskSchema.from.copyWith(
-          year: from.year,
-          month: from.month,
+          year: date.year,
+          month: date.month,
         );
         var taskTo = taskSchema.to.copyWith(
-          year: from.year,
-          month: from.month,
+          year: date.year,
+          month: date.month,
         );
 
         if (taskSchema.terminate != null &&

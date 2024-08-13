@@ -56,7 +56,6 @@ class _BottomNavigationLayoutState extends State<BottomNavigationLayout> {
       onPopInvoked: onPopInvoked,
       child: ScreenLayout(
         title: widget.title,
-        body: widget.child,
         showFloatingAction: widget.screenName == 'home',
         bottomNavigationBar: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
@@ -72,36 +71,45 @@ class _BottomNavigationLayoutState extends State<BottomNavigationLayout> {
                     ? Radius.circular(50.r)
                     : const Radius.circular(0),
               ),
-              child: BottomNavigationBar(
-                currentIndex: widget.child.currentIndex,
-                selectedFontSize: 0,
-                unselectedFontSize: 0,
-                showSelectedLabels: false,
-                showUnselectedLabels: false,
-                backgroundColor: ColorClass.under,
-                selectedItemColor: ColorClass.blue,
-                unselectedItemColor: ColorClass.border,
-                onTap: bottomItemTapped,
-                items: const [
-                  BottomNavigationBarItem(
-                    label: 'Home',
-                    icon: SizedBox(
-                      child: Icon(Icons.home_filled),
+              child: Theme(
+                data: Theme.of(context).copyWith(
+                  canvasColor: ColorClass.under,
+                  primaryColor: ColorClass.blue,
+                ),
+                child: BottomNavigationBar(
+                  currentIndex: widget.child.currentIndex,
+                  selectedFontSize: 0,
+                  unselectedFontSize: 0,
+                  showSelectedLabels: false,
+                  showUnselectedLabels: false,
+                  backgroundColor: ColorClass.under,
+                  selectedItemColor: ColorClass.blue,
+                  unselectedItemColor: ColorClass.border,
+                  onTap: bottomItemTapped,
+                  items: const [
+                    BottomNavigationBarItem(
+                      label: 'Home',
+                      icon: Icon(Icons.home_filled),
                     ),
-                  ),
-                  BottomNavigationBarItem(
-                    label: 'Calendar',
-                    icon: Icon(Icons.event_available),
-                  ),
-                  BottomNavigationBarItem(
-                    label: 'Setting',
-                    icon: Icon(Icons.settings),
-                  ),
-                ],
+                    BottomNavigationBarItem(
+                      label: 'Calendar',
+                      icon: Icon(Icons.event_available),
+                    ),
+                    BottomNavigationBarItem(
+                      label: 'Task',
+                      icon: Icon(Icons.task_alt),
+                    ),
+                    BottomNavigationBarItem(
+                      label: 'Setting',
+                      icon: Icon(Icons.settings),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
+        body: widget.child,
       ),
     );
   }
