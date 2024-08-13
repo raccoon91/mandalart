@@ -18,6 +18,8 @@ class TimePicker extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () async {
+        if (onChange == null) return;
+
         final TimeOfDay? value = await showTimePicker(
           context: context,
           initialTime: TimeOfDay.fromDateTime(date),

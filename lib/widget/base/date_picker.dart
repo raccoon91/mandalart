@@ -18,6 +18,8 @@ class DatePicker extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () async {
+        if (onChange == null) return;
+
         final DateTime? value = await showDatePicker(
           context: context,
           initialDate: date,
