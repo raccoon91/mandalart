@@ -4,16 +4,16 @@ import 'package:go_router/go_router.dart';
 import 'package:mandalart/widget/base/button.dart';
 import 'package:mandalart/widget/layout/screen_layout.dart';
 
-class ProjectStartScreen extends StatefulWidget {
-  const ProjectStartScreen({super.key});
+class VisionStartScreen extends StatefulWidget {
+  const VisionStartScreen({super.key});
 
   @override
-  State<ProjectStartScreen> createState() => _ProjectStartScreenState();
+  State<VisionStartScreen> createState() => _VisionStartScreenState();
 }
 
-class _ProjectStartScreenState extends State<ProjectStartScreen> {
+class _VisionStartScreenState extends State<VisionStartScreen> {
   startTapped() {
-    context.push('/project/create');
+    context.push('/vision/create');
   }
 
   @override

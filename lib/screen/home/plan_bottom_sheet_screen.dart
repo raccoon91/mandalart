@@ -1,35 +1,65 @@
 import 'package:flutter/material.dart';
 import 'package:mandalart/provider/calendar_provider.dart';
+import 'package:mandalart/provider/goal_provider.dart';
 import 'package:mandalart/provider/home_provider.dart';
-import 'package:mandalart/widget/home/plan_bottom_sheet.dart';
+import 'package:mandalart/widget/home/mandal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 class PlanBottomSheetScreen extends StatelessWidget {
+  final String? mode;
+  final String? goalId;
   final String? planId;
 
   const PlanBottomSheetScreen({
     super.key,
+    this.mode,
+    this.goalId,
     this.planId,
   });
 
   @override
   Widget build(BuildContext context) {
-    return PlanBottomSheet(
+    return MandalBottomSheet(
       type: 'plan',
-      planId: planId != null ? int.parse(planId!) : null,
+      goalId: planId != null ? int.parse(planId!) : null,
+      planId: goalId != null ? int.parse(goalId!) : null,
       create: (String name, Color color) async {
-        await Provider.of<HomeProvider>(
-          context,
-          listen: false,
-        ).upsertMandalPlan(
-          planId != null ? int.parse(planId!) : null,
-          name,
-          color,
-        );
+        if (mode == 'maximize') {
+          await Provider.of<HomeProvider>(
+            context,
+            listen: false,
+          ).updatePlan(
+            goalId != null ? int.parse(goalId!) : null,
+            planId != null ? int.parse(planId!) : null,
+            name,
+            color,
+          );
+        } else {
+          await Provider.of<GoalProvider>(
+            context,
+            listen: false,
+          ).updatePlan(
+            goalId != null ? int.parse(goalId!) : null,
+            planId != null ? int.parse(planId!) : null,
+            name,
+            color,
+          );
+
+          if (context.mounted) {
+            await Provider.of<HomeProvider>(
+              context,
+              listen: false,
+            ).getInProgressVision();
+          }
+        }
 
         if (!context.mounted) return;
 
-        Provider.of<CalendarProvider>(context, listen: false).getPlans();
+        if (goalId != null) {
+          Provider.of<CalendarProvider>(context, listen: false).getPlans(
+            int.parse(goalId!),
+          );
+        }
       },
     );
   }

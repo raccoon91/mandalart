@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'detailed_plan_schema.dart';
+part of 'goal_schema.dart';
 
 // **************************************************************************
 // IsarCollectionGenerator
@@ -9,28 +9,28 @@ part of 'detailed_plan_schema.dart';
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-extension GetDetailedPlanCollection on Isar {
-  IsarCollection<DetailedPlan> get detailedPlans => this.collection();
+extension GetGoalCollection on Isar {
+  IsarCollection<Goal> get goals => this.collection();
 }
 
-const DetailedPlanSchema = CollectionSchema(
-  name: r'DetailedPlan',
-  id: -2773119135859739892,
+const GoalSchema = CollectionSchema(
+  name: r'Goal',
+  id: 4693499363663894908,
   properties: {
     r'color': PropertySchema(
       id: 0,
       name: r'color',
       type: IsarType.long,
     ),
-    r'delete': PropertySchema(
-      id: 1,
-      name: r'delete',
-      type: IsarType.bool,
-    ),
     r'description': PropertySchema(
-      id: 2,
+      id: 1,
       name: r'description',
       type: IsarType.string,
+    ),
+    r'isDelete': PropertySchema(
+      id: 2,
+      name: r'isDelete',
+      type: IsarType.bool,
     ),
     r'name': PropertySchema(
       id: 3,
@@ -42,33 +42,40 @@ const DetailedPlanSchema = CollectionSchema(
       name: r'order',
       type: IsarType.long,
     ),
-    r'planId': PropertySchema(
-      id: 5,
-      name: r'planId',
-      type: IsarType.long,
-    ),
     r'style': PropertySchema(
-      id: 6,
+      id: 5,
       name: r'style',
       type: IsarType.string,
+    ),
+    r'visionId': PropertySchema(
+      id: 6,
+      name: r'visionId',
+      type: IsarType.long,
     )
   },
-  estimateSize: _detailedPlanEstimateSize,
-  serialize: _detailedPlanSerialize,
-  deserialize: _detailedPlanDeserialize,
-  deserializeProp: _detailedPlanDeserializeProp,
+  estimateSize: _goalEstimateSize,
+  serialize: _goalSerialize,
+  deserialize: _goalDeserialize,
+  deserializeProp: _goalDeserializeProp,
   idName: r'id',
   indexes: {},
-  links: {},
+  links: {
+    r'plans': LinkSchema(
+      id: 2489433955420797312,
+      name: r'plans',
+      target: r'Plan',
+      single: false,
+    )
+  },
   embeddedSchemas: {},
-  getId: _detailedPlanGetId,
-  getLinks: _detailedPlanGetLinks,
-  attach: _detailedPlanAttach,
+  getId: _goalGetId,
+  getLinks: _goalGetLinks,
+  attach: _goalAttach,
   version: '3.1.0+1',
 );
 
-int _detailedPlanEstimateSize(
-  DetailedPlan object,
+int _goalEstimateSize(
+  Goal object,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -94,40 +101,40 @@ int _detailedPlanEstimateSize(
   return bytesCount;
 }
 
-void _detailedPlanSerialize(
-  DetailedPlan object,
+void _goalSerialize(
+  Goal object,
   IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeLong(offsets[0], object.color);
-  writer.writeBool(offsets[1], object.delete);
-  writer.writeString(offsets[2], object.description);
+  writer.writeString(offsets[1], object.description);
+  writer.writeBool(offsets[2], object.isDelete);
   writer.writeString(offsets[3], object.name);
   writer.writeLong(offsets[4], object.order);
-  writer.writeLong(offsets[5], object.planId);
-  writer.writeString(offsets[6], object.style);
+  writer.writeString(offsets[5], object.style);
+  writer.writeLong(offsets[6], object.visionId);
 }
 
-DetailedPlan _detailedPlanDeserialize(
+Goal _goalDeserialize(
   Id id,
   IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = DetailedPlan();
+  final object = Goal();
   object.color = reader.readLongOrNull(offsets[0]);
-  object.delete = reader.readBool(offsets[1]);
-  object.description = reader.readStringOrNull(offsets[2]);
+  object.description = reader.readStringOrNull(offsets[1]);
   object.id = id;
+  object.isDelete = reader.readBool(offsets[2]);
   object.name = reader.readStringOrNull(offsets[3]);
   object.order = reader.readLong(offsets[4]);
-  object.planId = reader.readLong(offsets[5]);
-  object.style = reader.readStringOrNull(offsets[6]);
+  object.style = reader.readStringOrNull(offsets[5]);
+  object.visionId = reader.readLong(offsets[6]);
   return object;
 }
 
-P _detailedPlanDeserializeProp<P>(
+P _goalDeserializeProp<P>(
   IsarReader reader,
   int propertyId,
   int offset,
@@ -137,47 +144,45 @@ P _detailedPlanDeserializeProp<P>(
     case 0:
       return (reader.readLongOrNull(offset)) as P;
     case 1:
-      return (reader.readBool(offset)) as P;
-    case 2:
       return (reader.readStringOrNull(offset)) as P;
+    case 2:
+      return (reader.readBool(offset)) as P;
     case 3:
       return (reader.readStringOrNull(offset)) as P;
     case 4:
       return (reader.readLong(offset)) as P;
     case 5:
-      return (reader.readLong(offset)) as P;
-    case 6:
       return (reader.readStringOrNull(offset)) as P;
+    case 6:
+      return (reader.readLong(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
 }
 
-Id _detailedPlanGetId(DetailedPlan object) {
+Id _goalGetId(Goal object) {
   return object.id;
 }
 
-List<IsarLinkBase<dynamic>> _detailedPlanGetLinks(DetailedPlan object) {
-  return [];
+List<IsarLinkBase<dynamic>> _goalGetLinks(Goal object) {
+  return [object.plans];
 }
 
-void _detailedPlanAttach(
-    IsarCollection<dynamic> col, Id id, DetailedPlan object) {
+void _goalAttach(IsarCollection<dynamic> col, Id id, Goal object) {
   object.id = id;
+  object.plans.attach(col, col.isar.collection<Plan>(), r'plans', id);
 }
 
-extension DetailedPlanQueryWhereSort
-    on QueryBuilder<DetailedPlan, DetailedPlan, QWhere> {
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterWhere> anyId() {
+extension GoalQueryWhereSort on QueryBuilder<Goal, Goal, QWhere> {
+  QueryBuilder<Goal, Goal, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
     });
   }
 }
 
-extension DetailedPlanQueryWhere
-    on QueryBuilder<DetailedPlan, DetailedPlan, QWhereClause> {
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterWhereClause> idEqualTo(Id id) {
+extension GoalQueryWhere on QueryBuilder<Goal, Goal, QWhereClause> {
+  QueryBuilder<Goal, Goal, QAfterWhereClause> idEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
         lower: id,
@@ -186,8 +191,7 @@ extension DetailedPlanQueryWhere
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterWhereClause> idNotEqualTo(
-      Id id) {
+  QueryBuilder<Goal, Goal, QAfterWhereClause> idNotEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -209,8 +213,7 @@ extension DetailedPlanQueryWhere
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterWhereClause> idGreaterThan(
-      Id id,
+  QueryBuilder<Goal, Goal, QAfterWhereClause> idGreaterThan(Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -219,7 +222,7 @@ extension DetailedPlanQueryWhere
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterWhereClause> idLessThan(Id id,
+  QueryBuilder<Goal, Goal, QAfterWhereClause> idLessThan(Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -228,7 +231,7 @@ extension DetailedPlanQueryWhere
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterWhereClause> idBetween(
+  QueryBuilder<Goal, Goal, QAfterWhereClause> idBetween(
     Id lowerId,
     Id upperId, {
     bool includeLower = true,
@@ -245,10 +248,8 @@ extension DetailedPlanQueryWhere
   }
 }
 
-extension DetailedPlanQueryFilter
-    on QueryBuilder<DetailedPlan, DetailedPlan, QFilterCondition> {
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      colorIsNull() {
+extension GoalQueryFilter on QueryBuilder<Goal, Goal, QFilterCondition> {
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> colorIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'color',
@@ -256,8 +257,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      colorIsNotNull() {
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> colorIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'color',
@@ -265,8 +265,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition> colorEqualTo(
-      int? value) {
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> colorEqualTo(int? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'color',
@@ -275,8 +274,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      colorGreaterThan(
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> colorGreaterThan(
     int? value, {
     bool include = false,
   }) {
@@ -289,7 +287,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition> colorLessThan(
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> colorLessThan(
     int? value, {
     bool include = false,
   }) {
@@ -302,7 +300,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition> colorBetween(
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> colorBetween(
     int? lower,
     int? upper, {
     bool includeLower = true,
@@ -319,18 +317,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition> deleteEqualTo(
-      bool value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'delete',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      descriptionIsNull() {
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> descriptionIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'description',
@@ -338,8 +325,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      descriptionIsNotNull() {
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> descriptionIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'description',
@@ -347,8 +333,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      descriptionEqualTo(
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> descriptionEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
@@ -361,8 +346,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      descriptionGreaterThan(
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> descriptionGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -377,8 +361,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      descriptionLessThan(
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> descriptionLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -393,8 +376,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      descriptionBetween(
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> descriptionBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -413,8 +395,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      descriptionStartsWith(
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> descriptionStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -427,8 +408,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      descriptionEndsWith(
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> descriptionEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -441,8 +421,9 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      descriptionContains(String value, {bool caseSensitive = true}) {
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> descriptionContains(
+      String value,
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
         property: r'description',
@@ -452,8 +433,9 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      descriptionMatches(String pattern, {bool caseSensitive = true}) {
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> descriptionMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
         property: r'description',
@@ -463,8 +445,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      descriptionIsEmpty() {
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> descriptionIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'description',
@@ -473,8 +454,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      descriptionIsNotEmpty() {
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> descriptionIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'description',
@@ -483,8 +463,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition> idEqualTo(
-      Id value) {
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'id',
@@ -493,7 +472,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition> idGreaterThan(
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> idGreaterThan(
     Id value, {
     bool include = false,
   }) {
@@ -506,7 +485,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition> idLessThan(
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> idLessThan(
     Id value, {
     bool include = false,
   }) {
@@ -519,7 +498,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition> idBetween(
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> idBetween(
     Id lower,
     Id upper, {
     bool includeLower = true,
@@ -536,7 +515,16 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition> nameIsNull() {
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> isDeleteEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isDelete',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> nameIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'name',
@@ -544,8 +532,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      nameIsNotNull() {
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> nameIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'name',
@@ -553,7 +540,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition> nameEqualTo(
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> nameEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
@@ -566,8 +553,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      nameGreaterThan(
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> nameGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -582,7 +568,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition> nameLessThan(
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> nameLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -597,7 +583,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition> nameBetween(
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> nameBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -616,8 +602,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      nameStartsWith(
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> nameStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -630,7 +615,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition> nameEndsWith(
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> nameEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -643,8 +628,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition> nameContains(
-      String value,
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> nameContains(String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -655,8 +639,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition> nameMatches(
-      String pattern,
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> nameMatches(String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
@@ -667,8 +650,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      nameIsEmpty() {
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> nameIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'name',
@@ -677,8 +659,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      nameIsNotEmpty() {
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> nameIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'name',
@@ -687,8 +668,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition> orderEqualTo(
-      int value) {
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> orderEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'order',
@@ -697,8 +677,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      orderGreaterThan(
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> orderGreaterThan(
     int value, {
     bool include = false,
   }) {
@@ -711,7 +690,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition> orderLessThan(
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> orderLessThan(
     int value, {
     bool include = false,
   }) {
@@ -724,7 +703,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition> orderBetween(
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> orderBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -741,63 +720,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition> planIdEqualTo(
-      int value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'planId',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      planIdGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'planId',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      planIdLessThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'planId',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition> planIdBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'planId',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      styleIsNull() {
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> styleIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'style',
@@ -805,8 +728,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      styleIsNotNull() {
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> styleIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'style',
@@ -814,7 +736,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition> styleEqualTo(
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> styleEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
@@ -827,8 +749,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      styleGreaterThan(
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> styleGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -843,7 +764,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition> styleLessThan(
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> styleLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -858,7 +779,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition> styleBetween(
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> styleBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -877,8 +798,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      styleStartsWith(
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> styleStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -891,7 +811,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition> styleEndsWith(
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> styleEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -904,8 +824,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition> styleContains(
-      String value,
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> styleContains(String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -916,8 +835,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition> styleMatches(
-      String pattern,
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> styleMatches(String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
@@ -928,8 +846,7 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      styleIsEmpty() {
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> styleIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'style',
@@ -938,306 +855,404 @@ extension DetailedPlanQueryFilter
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterFilterCondition>
-      styleIsNotEmpty() {
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> styleIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'style',
         value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> visionIdEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'visionId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> visionIdGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'visionId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> visionIdLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'visionId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> visionIdBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'visionId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
       ));
     });
   }
 }
 
-extension DetailedPlanQueryObject
-    on QueryBuilder<DetailedPlan, DetailedPlan, QFilterCondition> {}
+extension GoalQueryObject on QueryBuilder<Goal, Goal, QFilterCondition> {}
 
-extension DetailedPlanQueryLinks
-    on QueryBuilder<DetailedPlan, DetailedPlan, QFilterCondition> {}
+extension GoalQueryLinks on QueryBuilder<Goal, Goal, QFilterCondition> {
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> plans(FilterQuery<Plan> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'plans');
+    });
+  }
 
-extension DetailedPlanQuerySortBy
-    on QueryBuilder<DetailedPlan, DetailedPlan, QSortBy> {
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> sortByColor() {
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> plansLengthEqualTo(
+      int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'plans', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> plansIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'plans', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> plansIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'plans', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> plansLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'plans', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> plansLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'plans', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<Goal, Goal, QAfterFilterCondition> plansLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+          r'plans', lower, includeLower, upper, includeUpper);
+    });
+  }
+}
+
+extension GoalQuerySortBy on QueryBuilder<Goal, Goal, QSortBy> {
+  QueryBuilder<Goal, Goal, QAfterSortBy> sortByColor() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'color', Sort.asc);
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> sortByColorDesc() {
+  QueryBuilder<Goal, Goal, QAfterSortBy> sortByColorDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'color', Sort.desc);
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> sortByDelete() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'delete', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> sortByDeleteDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'delete', Sort.desc);
-    });
-  }
-
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> sortByDescription() {
+  QueryBuilder<Goal, Goal, QAfterSortBy> sortByDescription() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'description', Sort.asc);
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy>
-      sortByDescriptionDesc() {
+  QueryBuilder<Goal, Goal, QAfterSortBy> sortByDescriptionDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'description', Sort.desc);
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> sortByName() {
+  QueryBuilder<Goal, Goal, QAfterSortBy> sortByIsDelete() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isDelete', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Goal, Goal, QAfterSortBy> sortByIsDeleteDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isDelete', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Goal, Goal, QAfterSortBy> sortByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> sortByNameDesc() {
+  QueryBuilder<Goal, Goal, QAfterSortBy> sortByNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.desc);
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> sortByOrder() {
+  QueryBuilder<Goal, Goal, QAfterSortBy> sortByOrder() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'order', Sort.asc);
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> sortByOrderDesc() {
+  QueryBuilder<Goal, Goal, QAfterSortBy> sortByOrderDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'order', Sort.desc);
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> sortByPlanId() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'planId', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> sortByPlanIdDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'planId', Sort.desc);
-    });
-  }
-
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> sortByStyle() {
+  QueryBuilder<Goal, Goal, QAfterSortBy> sortByStyle() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'style', Sort.asc);
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> sortByStyleDesc() {
+  QueryBuilder<Goal, Goal, QAfterSortBy> sortByStyleDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'style', Sort.desc);
     });
   }
+
+  QueryBuilder<Goal, Goal, QAfterSortBy> sortByVisionId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'visionId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Goal, Goal, QAfterSortBy> sortByVisionIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'visionId', Sort.desc);
+    });
+  }
 }
 
-extension DetailedPlanQuerySortThenBy
-    on QueryBuilder<DetailedPlan, DetailedPlan, QSortThenBy> {
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> thenByColor() {
+extension GoalQuerySortThenBy on QueryBuilder<Goal, Goal, QSortThenBy> {
+  QueryBuilder<Goal, Goal, QAfterSortBy> thenByColor() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'color', Sort.asc);
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> thenByColorDesc() {
+  QueryBuilder<Goal, Goal, QAfterSortBy> thenByColorDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'color', Sort.desc);
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> thenByDelete() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'delete', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> thenByDeleteDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'delete', Sort.desc);
-    });
-  }
-
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> thenByDescription() {
+  QueryBuilder<Goal, Goal, QAfterSortBy> thenByDescription() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'description', Sort.asc);
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy>
-      thenByDescriptionDesc() {
+  QueryBuilder<Goal, Goal, QAfterSortBy> thenByDescriptionDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'description', Sort.desc);
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> thenById() {
+  QueryBuilder<Goal, Goal, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> thenByIdDesc() {
+  QueryBuilder<Goal, Goal, QAfterSortBy> thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> thenByName() {
+  QueryBuilder<Goal, Goal, QAfterSortBy> thenByIsDelete() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isDelete', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Goal, Goal, QAfterSortBy> thenByIsDeleteDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isDelete', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Goal, Goal, QAfterSortBy> thenByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> thenByNameDesc() {
+  QueryBuilder<Goal, Goal, QAfterSortBy> thenByNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.desc);
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> thenByOrder() {
+  QueryBuilder<Goal, Goal, QAfterSortBy> thenByOrder() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'order', Sort.asc);
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> thenByOrderDesc() {
+  QueryBuilder<Goal, Goal, QAfterSortBy> thenByOrderDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'order', Sort.desc);
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> thenByPlanId() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'planId', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> thenByPlanIdDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'planId', Sort.desc);
-    });
-  }
-
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> thenByStyle() {
+  QueryBuilder<Goal, Goal, QAfterSortBy> thenByStyle() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'style', Sort.asc);
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QAfterSortBy> thenByStyleDesc() {
+  QueryBuilder<Goal, Goal, QAfterSortBy> thenByStyleDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'style', Sort.desc);
     });
   }
+
+  QueryBuilder<Goal, Goal, QAfterSortBy> thenByVisionId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'visionId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Goal, Goal, QAfterSortBy> thenByVisionIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'visionId', Sort.desc);
+    });
+  }
 }
 
-extension DetailedPlanQueryWhereDistinct
-    on QueryBuilder<DetailedPlan, DetailedPlan, QDistinct> {
-  QueryBuilder<DetailedPlan, DetailedPlan, QDistinct> distinctByColor() {
+extension GoalQueryWhereDistinct on QueryBuilder<Goal, Goal, QDistinct> {
+  QueryBuilder<Goal, Goal, QDistinct> distinctByColor() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'color');
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QDistinct> distinctByDelete() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'delete');
-    });
-  }
-
-  QueryBuilder<DetailedPlan, DetailedPlan, QDistinct> distinctByDescription(
+  QueryBuilder<Goal, Goal, QDistinct> distinctByDescription(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'description', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QDistinct> distinctByName(
+  QueryBuilder<Goal, Goal, QDistinct> distinctByIsDelete() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isDelete');
+    });
+  }
+
+  QueryBuilder<Goal, Goal, QDistinct> distinctByName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QDistinct> distinctByOrder() {
+  QueryBuilder<Goal, Goal, QDistinct> distinctByOrder() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'order');
     });
   }
 
-  QueryBuilder<DetailedPlan, DetailedPlan, QDistinct> distinctByPlanId() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'planId');
-    });
-  }
-
-  QueryBuilder<DetailedPlan, DetailedPlan, QDistinct> distinctByStyle(
+  QueryBuilder<Goal, Goal, QDistinct> distinctByStyle(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'style', caseSensitive: caseSensitive);
     });
   }
+
+  QueryBuilder<Goal, Goal, QDistinct> distinctByVisionId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'visionId');
+    });
+  }
 }
 
-extension DetailedPlanQueryProperty
-    on QueryBuilder<DetailedPlan, DetailedPlan, QQueryProperty> {
-  QueryBuilder<DetailedPlan, int, QQueryOperations> idProperty() {
+extension GoalQueryProperty on QueryBuilder<Goal, Goal, QQueryProperty> {
+  QueryBuilder<Goal, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
     });
   }
 
-  QueryBuilder<DetailedPlan, int?, QQueryOperations> colorProperty() {
+  QueryBuilder<Goal, int?, QQueryOperations> colorProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'color');
     });
   }
 
-  QueryBuilder<DetailedPlan, bool, QQueryOperations> deleteProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'delete');
-    });
-  }
-
-  QueryBuilder<DetailedPlan, String?, QQueryOperations> descriptionProperty() {
+  QueryBuilder<Goal, String?, QQueryOperations> descriptionProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'description');
     });
   }
 
-  QueryBuilder<DetailedPlan, String?, QQueryOperations> nameProperty() {
+  QueryBuilder<Goal, bool, QQueryOperations> isDeleteProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isDelete');
+    });
+  }
+
+  QueryBuilder<Goal, String?, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
     });
   }
 
-  QueryBuilder<DetailedPlan, int, QQueryOperations> orderProperty() {
+  QueryBuilder<Goal, int, QQueryOperations> orderProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'order');
     });
   }
 
-  QueryBuilder<DetailedPlan, int, QQueryOperations> planIdProperty() {
+  QueryBuilder<Goal, String?, QQueryOperations> styleProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'planId');
+      return query.addPropertyName(r'style');
     });
   }
 
-  QueryBuilder<DetailedPlan, String?, QQueryOperations> styleProperty() {
+  QueryBuilder<Goal, int, QQueryOperations> visionIdProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'style');
+      return query.addPropertyName(r'visionId');
     });
   }
 }

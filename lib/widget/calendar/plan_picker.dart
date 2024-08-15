@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mandalart/provider/calendar_provider.dart';
-import 'package:mandalart/widget/calendar/calendar_plan_widget.dart';
+import 'package:mandalart/widget/calendar/subject_widget.dart';
 import 'package:provider/provider.dart';
 
-class CalendarDetailedPlanPicker extends StatelessWidget {
-  final int? selectedDetailedPlanId;
-  final void Function(int detailedPlanId)? onChanged;
+class PlanPicker extends StatelessWidget {
+  final int? selectedPlanId;
+  final void Function(int planId)? onChanged;
 
-  const CalendarDetailedPlanPicker({
+  const PlanPicker({
     super.key,
-    this.selectedDetailedPlanId,
+    this.selectedPlanId,
     this.onChanged,
   });
 
@@ -29,8 +29,7 @@ class CalendarDetailedPlanPicker extends StatelessWidget {
           ),
           SizedBox(height: 10.h),
           Consumer<CalendarProvider>(builder: (context, state, child) {
-            if (state.detailedPlans == null ||
-                state.detailedPlans?.isEmpty == true) {
+            if (state.plans == null || state.plans?.isEmpty == true) {
               return Padding(
                 padding: EdgeInsets.symmetric(vertical: 10.h),
                 child: const Text(
@@ -48,19 +47,19 @@ class CalendarDetailedPlanPicker extends StatelessWidget {
                 child: Wrap(
                   spacing: 10.w,
                   runSpacing: 10.w,
-                  children: state.detailedPlans?.map((detailedPlan) {
-                        return CalendarPlanWidget(
-                          id: detailedPlan?.id,
-                          name: detailedPlan?.name,
-                          color: detailedPlan?.color,
+                  children: state.plans?.map((plan) {
+                        return SubjectWidget(
+                          id: plan?.id,
+                          name: plan?.name,
+                          color: plan?.color,
                           width: (constraints.maxWidth - 22.w) / 2,
-                          selected: selectedDetailedPlanId == detailedPlan?.id,
+                          selected: selectedPlanId == plan?.id,
                           onTap: () {
-                            if (detailedPlan?.id == null || onChanged == null) {
+                            if (plan?.id == null || onChanged == null) {
                               return;
                             }
 
-                            onChanged!(detailedPlan!.id);
+                            onChanged!(plan!.id);
                           },
                         );
                       }).toList() ??

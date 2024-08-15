@@ -10,15 +10,15 @@ import 'package:mandalart/widget/home/card_widget.dart';
 import 'package:mandalart/widget/layout/screen_layout.dart';
 import 'package:provider/provider.dart';
 
-class ProjectCreateScreen extends StatefulWidget {
-  const ProjectCreateScreen({super.key});
+class VisionCreateScreen extends StatefulWidget {
+  const VisionCreateScreen({super.key});
 
   @override
-  State<ProjectCreateScreen> createState() => _ProjectCreateScreenState();
+  State<VisionCreateScreen> createState() => _VisionCreateScreenState();
 }
 
-class _ProjectCreateScreenState extends State<ProjectCreateScreen> {
-  final projectController = TextEditingController();
+class _VisionCreateScreenState extends State<VisionCreateScreen> {
+  final visionController = TextEditingController();
   Color color = ColorClass.red;
   bool enabled = false;
 
@@ -27,7 +27,7 @@ class _ProjectCreateScreenState extends State<ProjectCreateScreen> {
     setState(() {});
   }
 
-  projectChanged(String data) {
+  visionChanged(String data) {
     if (data.isEmpty) {
       enabled = false;
     } else {
@@ -37,10 +37,10 @@ class _ProjectCreateScreenState extends State<ProjectCreateScreen> {
   }
 
   createTapped() async {
-    if (projectController.text.isEmpty) return;
+    if (visionController.text.isEmpty) return;
 
-    await Provider.of<HomeProvider>(context, listen: false).createMandalProject(
-      projectController.text,
+    await Provider.of<HomeProvider>(context, listen: false).createVision(
+      visionController.text,
       color,
     );
 
@@ -52,7 +52,7 @@ class _ProjectCreateScreenState extends State<ProjectCreateScreen> {
   submitted(String name) async {
     if (name.isEmpty) return;
 
-    await Provider.of<HomeProvider>(context, listen: false).createMandalProject(
+    await Provider.of<HomeProvider>(context, listen: false).createVision(
       name,
       color,
     );
@@ -86,7 +86,7 @@ class _ProjectCreateScreenState extends State<ProjectCreateScreen> {
                         Flexible(
                           flex: 1,
                           child: CardWidget(
-                            name: projectController.text,
+                            name: visionController.text,
                             color: color,
                           ),
                         ),
@@ -102,11 +102,11 @@ class _ProjectCreateScreenState extends State<ProjectCreateScreen> {
                     Input(
                       autofocus: true,
                       placeholder: '목표를 입력하세요',
-                      controller: projectController,
+                      controller: visionController,
                       maxLines: null,
                       keyboardType: TextInputType.multiline,
                       textInputAction: TextInputAction.done,
-                      onChanged: projectChanged,
+                      onChanged: visionChanged,
                       onSubmitted: enabled ? submitted : null,
                     ),
                     SizedBox(height: 10.h),

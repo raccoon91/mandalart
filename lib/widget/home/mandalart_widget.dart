@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:mandalart/model/project_model.dart';
+import 'package:mandalart/model/vision_model.dart';
 import 'package:mandalart/widget/home/card_widget.dart';
-import 'package:mandalart/widget/home/plan_widget.dart';
+import 'package:mandalart/widget/home/goal_widget.dart';
 
 class MandalartWidget extends StatefulWidget {
   final String mode;
-  final ProjectModel? project;
+  final VisionModel? vision;
 
   const MandalartWidget({
     super.key,
     required this.mode,
-    this.project,
+    this.vision,
   });
 
   @override
@@ -24,35 +24,35 @@ class _MandalartWidgetState extends State<MandalartWidget> {
       children: [
         Row(
           children: List.generate(3, (index) {
-            return PlanWidget(
+            return GoalWidget(
               mode: widget.mode,
-              plan: widget.project?.plans?[index],
+              goal: widget.vision?.goals?[index],
             );
           }),
         ),
         Row(
           children: [
-            PlanWidget(
+            GoalWidget(
               mode: widget.mode,
-              plan: widget.project?.plans?[3],
+              goal: widget.vision?.goals?[3],
             ),
             Flexible(
               child: CardWidget(
-                name: widget.project?.name,
-                color: widget.project?.color,
+                name: widget.vision?.name,
+                color: widget.vision?.color,
               ),
             ),
-            PlanWidget(
+            GoalWidget(
               mode: widget.mode,
-              plan: widget.project?.plans?[4],
+              goal: widget.vision?.goals?[4],
             ),
           ],
         ),
         Row(
           children: List.generate(3, (index) {
-            return PlanWidget(
+            return GoalWidget(
               mode: widget.mode,
-              plan: widget.project?.plans?[index + 5],
+              goal: widget.vision?.goals?[index + 5],
             );
           }),
         ),

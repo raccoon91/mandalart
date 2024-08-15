@@ -4,14 +4,14 @@ import 'package:go_router/go_router.dart';
 
 class MandalTitle extends StatefulWidget {
   final bool? showClose;
-  final String? projectName;
-  final String? planName;
+  final String? visionName;
+  final String? goalName;
 
   const MandalTitle({
     super.key,
     this.showClose,
-    this.projectName,
-    this.planName,
+    this.visionName,
+    this.goalName,
   });
 
   @override
@@ -35,17 +35,17 @@ class _MandalTitleState extends State<MandalTitle> {
           Row(
             children: [
               Text(
-                '${widget.projectName?.split('\n')[0]}',
+                '${widget.visionName?.split('\n')[0]}',
                 style: TextStyle(
                   fontSize: 24.sp,
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              ...(widget.planName != null
+              ...(widget.goalName != null
                   ? [
                       const Icon(Icons.chevron_right),
                       Text(
-                        '${widget.planName?.split('\n')[0]}',
+                        '${widget.goalName?.split('\n')[0]}',
                         style: TextStyle(
                           fontSize: 24.sp,
                           fontWeight: FontWeight.w700,

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mandalart/extension/size_format_extension.dart';
+import 'package:mandalart/provider/goal_provider.dart';
 import 'package:mandalart/provider/home_provider.dart';
-import 'package:mandalart/provider/plan_provider.dart';
 import 'package:mandalart/provider/setting_provider.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/layout/screen_layout.dart';
@@ -24,15 +24,11 @@ class _SettingStorageScreenState extends State<SettingStorageScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      getSizes();
+      Provider.of<SettingProvider>(
+        context,
+        listen: false,
+      ).getSizes();
     });
-  }
-
-  void getSizes() {
-    Provider.of<SettingProvider>(
-      context,
-      listen: false,
-    ).getSizes();
   }
 
   onTapClean() async {
@@ -48,12 +44,12 @@ class _SettingStorageScreenState extends State<SettingStorageScreen> {
       listen: false,
     ).clearHome();
 
-    Provider.of<PlanProvider>(
+    Provider.of<GoalProvider>(
       context,
       listen: false,
-    ).clearPlan();
+    ).clearGoal();
 
-    context.go('/project');
+    context.go('/vision');
   }
 
   @override
@@ -82,7 +78,7 @@ class _SettingStorageScreenState extends State<SettingStorageScreen> {
                               ),
                             ),
                             Text(
-                              '${state.projectSize?.toFileSize()}',
+                              '${state.visionSize?.toFileSize()}',
                               style: TextStyle(
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.w700,
@@ -107,7 +103,7 @@ class _SettingStorageScreenState extends State<SettingStorageScreen> {
                               ),
                             ),
                             Text(
-                              '${state.planSize?.toFileSize()}',
+                              '${state.goalSize?.toFileSize()}',
                               style: TextStyle(
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.w700,
@@ -132,7 +128,7 @@ class _SettingStorageScreenState extends State<SettingStorageScreen> {
                               ),
                             ),
                             Text(
-                              '${state.detailedPlanSize?.toFileSize()}',
+                              '${state.planSize?.toFileSize()}',
                               style: TextStyle(
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.w700,
@@ -157,7 +153,7 @@ class _SettingStorageScreenState extends State<SettingStorageScreen> {
                               ),
                             ),
                             Text(
-                              '${state.taskSize?.toFileSize()}',
+                              '${state.scheduleSize?.toFileSize()}',
                               style: TextStyle(
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.w700,

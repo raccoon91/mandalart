@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mandalart/widget/calendar/calendar_repeat_widget.dart';
+import 'package:mandalart/widget/calendar/repeat_widget.dart';
 
-class CalendarRepeatPicker extends StatelessWidget {
+class RepeatPicker extends StatelessWidget {
   final String? value;
   final void Function(String? value)? onChanged;
 
-  const CalendarRepeatPicker({
+  const RepeatPicker({
     super.key,
     this.value,
     this.onChanged,
@@ -29,35 +29,35 @@ class CalendarRepeatPicker extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              CalendarRepeatWidget(
+              RepeatWidget(
                 value: "weekdays",
                 name: "주중",
                 selected: value == "weekdays",
                 onChanged: onChanged,
               ),
               SizedBox(width: 10.w),
-              CalendarRepeatWidget(
+              RepeatWidget(
                 value: "weekend",
                 name: "주말",
                 selected: value == "weekend",
                 onChanged: onChanged,
               ),
               SizedBox(width: 10.w),
-              CalendarRepeatWidget(
+              RepeatWidget(
                 value: "day",
                 name: "매일",
                 selected: value == "day",
                 onChanged: onChanged,
               ),
               SizedBox(width: 10.w),
-              CalendarRepeatWidget(
+              RepeatWidget(
                 value: "week",
                 name: "매주",
                 selected: value == "week",
                 onChanged: onChanged,
               ),
               SizedBox(width: 10.w),
-              CalendarRepeatWidget(
+              RepeatWidget(
                 value: "month",
                 name: "매달",
                 selected: value == "month",

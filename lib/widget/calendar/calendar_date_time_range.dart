@@ -7,7 +7,7 @@ import 'package:mandalart/widget/base/time_picker.dart';
 class CalendarDateTimeRange extends StatelessWidget {
   final DateTime from;
   final DateTime to;
-  final bool allDay;
+  final bool isAllDay;
   final void Function(DateTime date)? fromChanged;
   final void Function(DateTime date)? toChanged;
   final void Function(bool value)? allDayChanged;
@@ -16,7 +16,7 @@ class CalendarDateTimeRange extends StatelessWidget {
     super.key,
     required this.from,
     required this.to,
-    required this.allDay,
+    required this.isAllDay,
     this.fromChanged,
     this.toChanged,
     this.allDayChanged,
@@ -49,7 +49,7 @@ class CalendarDateTimeRange extends StatelessWidget {
                     activeColor: ColorClass.blue,
                     activeTrackColor: ColorClass.skyBlue,
                     inactiveTrackColor: ColorClass.under,
-                    value: allDay,
+                    value: isAllDay,
                     onChanged: allDayChanged,
                   ),
                 ),

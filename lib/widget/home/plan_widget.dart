@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mandalart/model/plan_model.dart';
 import 'package:mandalart/widget/home/card_widget.dart';
-import 'package:mandalart/widget/home/detailed_mandalart_widget.dart';
-import 'package:mandalart/widget/home/empty_widget.dart';
+import 'package:mandalart/widget/home/plan_empty_widget.dart';
 
 class PlanWidget extends StatelessWidget {
-  final String mode;
+  final String? mode;
+  final String type;
   final PlanModel? plan;
 
   const PlanWidget({
     super.key,
-    required this.mode,
+    this.mode,
+    required this.type,
     this.plan,
   });
 
@@ -19,18 +19,9 @@ class PlanWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     if (plan == null || plan?.name == null) {
       return Flexible(
-        child: EmptyWidget(
+        child: PlanEmptyWidget(
           mode: mode,
-          planId: plan?.id,
-        ),
-      );
-    }
-
-    if (mode == 'maximize') {
-      return Flexible(
-        child: DetailedMandalartWidget(
-          mode: mode,
-          type: 'detailedPlan',
+          type: type,
           plan: plan,
         ),
       );
@@ -38,13 +29,8 @@ class PlanWidget extends StatelessWidget {
 
     return Flexible(
       child: CardWidget(
-        name: plan?.name,
+        name: (mode == 'minimize' || type == 'plan') ? null : plan?.name,
         color: plan?.color,
-        onTap: () {
-          if (plan?.id == null) return;
-
-          context.push('/home/${plan?.id}');
-        },
       ),
     );
   }

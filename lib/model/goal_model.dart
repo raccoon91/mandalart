@@ -1,34 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:mandalart/model/plan_model.dart';
-import 'package:mandalart/schema/project_schema.dart';
+import 'package:mandalart/schema/goal_schema.dart';
 
-class ProjectModel {
+class GoalModel {
   int id;
-  bool progress;
-  String name;
+  int visionId;
+  String? name;
   Color? color;
-  bool delete;
+  bool isDelete;
   List<PlanModel?>? plans;
 
-  ProjectModel({
+  GoalModel({
     required this.id,
-    required this.progress,
-    required this.name,
+    required this.visionId,
+    this.name,
     this.color,
-    required this.delete,
+    required this.isDelete,
     this.plans,
   });
 
-  factory ProjectModel.fromSchema(Project schema) {
+  factory GoalModel.fromSchema(Goal schema) {
     Color? color = schema.color != null ? Color(schema.color!) : null;
     List<PlanModel?>? plans = schema.plans.map(PlanModel.fromSchema).toList();
 
-    return ProjectModel(
+    return GoalModel(
       id: schema.id,
-      progress: schema.progress,
+      visionId: schema.visionId,
       name: schema.name,
       color: color,
-      delete: schema.delete,
+      isDelete: schema.isDelete,
       plans: plans,
     );
   }

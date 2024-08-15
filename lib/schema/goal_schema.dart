@@ -1,15 +1,17 @@
 import 'package:isar/isar.dart';
 import 'package:mandalart/schema/plan_schema.dart';
 
-part 'project_schema.g.dart';
+part 'goal_schema.g.dart';
 
 @collection
-class Project {
+class Goal {
   Id id = Isar.autoIncrement;
 
-  bool progress = false;
+  late int visionId;
 
-  late String name;
+  late int order;
+
+  String? name;
 
   String? description;
 
@@ -17,7 +19,7 @@ class Project {
 
   String? style;
 
-  bool delete = false;
+  bool isDelete = false;
 
   final plans = IsarLinks<Plan>();
 }

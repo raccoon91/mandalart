@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mandalart/theme/color.dart';
 
-class CalendarRepeatWidget extends StatelessWidget {
+class RepeatWidget extends StatelessWidget {
   final String value;
   final String name;
   final bool selected;
   final void Function(String value)? onChanged;
 
-  const CalendarRepeatWidget({
+  const RepeatWidget({
     super.key,
     required this.value,
     required this.name,

@@ -30,7 +30,7 @@ class _CalendarBottomSheetScreenState extends State<CalendarBottomSheetScreen> {
   }
 
   Future<void> createTask(
-    int detailedPlanId,
+    int planId,
     DateTime from,
     DateTime to,
     bool? allDay,
@@ -39,8 +39,8 @@ class _CalendarBottomSheetScreenState extends State<CalendarBottomSheetScreen> {
     bool success = await Provider.of<CalendarProvider>(
       context,
       listen: false,
-    ).createTask(
-      detailedPlanId,
+    ).createSchedule(
+      planId,
       from,
       to,
       allDay,
@@ -52,7 +52,7 @@ class _CalendarBottomSheetScreenState extends State<CalendarBottomSheetScreen> {
     await Provider.of<CalendarProvider>(
       context,
       listen: false,
-    ).getTasks(null, null);
+    ).getSchedules(null, null);
 
     if (!mounted) return;
 

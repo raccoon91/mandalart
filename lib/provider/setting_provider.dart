@@ -1,55 +1,45 @@
 import 'package:flutter/foundation.dart';
-import 'package:mandalart/repository/detailed_plan_repository.dart';
+import 'package:mandalart/repository/goal_repository.dart';
 import 'package:mandalart/repository/plan_repository.dart';
-import 'package:mandalart/repository/project_repository.dart';
+import 'package:mandalart/repository/schedule_repository.dart';
 import 'package:mandalart/repository/task_repository.dart';
+import 'package:mandalart/repository/vision_repository.dart';
 
 class SettingProvider with ChangeNotifier {
-  bool _isLoading = false;
-  int? _projectSize;
+  int? _visionSize;
+  int? _goalSize;
   int? _planSize;
-  int? _detailedPlanSize;
+  int? _scheduleSize;
   int? _taskSize;
 
-  bool get isLoading => _isLoading;
-  int? get projectSize => _projectSize;
+  int? get visionSize => _visionSize;
+  int? get goalSize => _goalSize;
   int? get planSize => _planSize;
-  int? get detailedPlanSize => _detailedPlanSize;
+  int? get scheduleSize => _scheduleSize;
   int? get taskSize => _taskSize;
 
   Future<void> getSizes() async {
     try {
-      _isLoading = true;
-
-      notifyListeners();
-
-      _projectSize = await ProjectRepository().getProjectSize();
-      _planSize = await PlanRepository().getPlanSize();
-      _detailedPlanSize = await DetailedPlanRepository().getDetailedPlanSize();
-      _taskSize = await TaskRepository().getTaskSize();
+      _visionSize = await VisionRepository.getSize();
+      _goalSize = await GoalRepository.getSize();
+      _planSize = await PlanRepository.getSize();
+      _scheduleSize = await ScheduleRepository.getSize();
+      _taskSize = await TaskRepository.getSize();
     } catch (error) {
       rethrow;
     } finally {
-      _isLoading = false;
-
       notifyListeners();
     }
   }
 
   Future<bool> deleteDB() async {
     try {
-      _isLoading = true;
-
-      notifyListeners();
-
-      bool success = await ProjectRepository().deleteProject();
+      bool success = await VisionRepository.delete();
 
       return success;
     } catch (error) {
       rethrow;
     } finally {
-      _isLoading = false;
-
       notifyListeners();
     }
   }

@@ -6,15 +6,15 @@ import 'package:mandalart/router/slide_transition_page.dart';
 import 'package:mandalart/screen/calendar/calendar_bottom_sheet_screen.dart';
 import 'package:mandalart/screen/calendar/calendar_screen.dart';
 import 'package:mandalart/screen/calendar/task_bottom_sheet_screen.dart';
-import 'package:mandalart/screen/home/detailed_plan_bottom_sheet_screen.dart';
+import 'package:mandalart/screen/home/goal_bottom_sheet_screen.dart';
+import 'package:mandalart/screen/home/goal_screen.dart';
 import 'package:mandalart/screen/home/home_screen.dart';
 import 'package:mandalart/screen/home/plan_bottom_sheet_screen.dart';
-import 'package:mandalart/screen/home/plan_screen.dart';
-import 'package:mandalart/screen/project/project_create_screen.dart';
-import 'package:mandalart/screen/project/project_start_screen.dart';
 import 'package:mandalart/screen/setting/setting_screen.dart';
 import 'package:mandalart/screen/setting/setting_storage_screen.dart';
 import 'package:mandalart/screen/task/task_screen.dart';
+import 'package:mandalart/screen/vision/vision_create_screen.dart';
+import 'package:mandalart/screen/vision/vision_start_screen.dart';
 import 'package:mandalart/widget/layout/bottom_navigation_layout.dart';
 
 final screenPathMap = {
@@ -45,12 +45,12 @@ final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
           },
           routes: [
             GoRoute(
-              path: ':planId',
+              path: ':goalId',
               pageBuilder: (BuildContext context, GoRouterState state) {
                 return getPage(
                   state: state,
-                  child: PlanScreen(
-                    planId: state.pathParameters['planId'],
+                  child: GoalScreen(
+                    goalId: state.pathParameters['goalId'],
                   ),
                 );
               },
@@ -126,11 +126,11 @@ final GoRouter router = GoRouter(
   routes: <RouteBase>[
     bottomNavigationRoutes,
     GoRoute(
-      path: '/project',
+      path: '/vision',
       pageBuilder: (BuildContext context, GoRouterState state) {
         return getPage(
           state: state,
-          child: const ProjectStartScreen(),
+          child: const VisionStartScreen(),
         );
       },
       routes: [
@@ -139,30 +139,30 @@ final GoRouter router = GoRouter(
           pageBuilder: (BuildContext context, GoRouterState state) {
             return slideTransitionPage(
               state: state,
-              child: const ProjectCreateScreen(),
+              child: const VisionCreateScreen(),
             );
           },
         ),
       ],
     ),
     GoRoute(
-      path: '/sheet/plan/:planId',
+      path: '/sheet/goal/:goalId',
       pageBuilder: (BuildContext context, GoRouterState state) {
         return BottomSheetPage(
-          child: PlanBottomSheetScreen(
-            planId: state.pathParameters['planId'],
+          child: GoalBottomSheetScreen(
+            goalId: state.pathParameters['goalId'],
           ),
         );
       },
     ),
     GoRoute(
-      path: '/sheet/detailed/:mode/:planId/:detailedId',
+      path: '/sheet/plan/:mode/:goalId/:planId',
       pageBuilder: (BuildContext context, GoRouterState state) {
         return BottomSheetPage(
-          child: DetailedPlanBottomSheetScreen(
+          child: PlanBottomSheetScreen(
             mode: state.pathParameters['mode'],
+            goalId: state.pathParameters['goalId'],
             planId: state.pathParameters['planId'],
-            detailedPlanId: state.pathParameters['detailedId'],
           ),
         );
       },

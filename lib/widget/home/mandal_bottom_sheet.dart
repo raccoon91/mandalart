@@ -7,25 +7,25 @@ import 'package:mandalart/widget/base/color_picker.dart';
 import 'package:mandalart/widget/base/input.dart';
 import 'package:mandalart/widget/home/card_widget.dart';
 
-class PlanBottomSheet extends StatefulWidget {
+class MandalBottomSheet extends StatefulWidget {
   final String type;
+  final int? goalId;
   final int? planId;
-  final int? detailedPlanId;
   final Future<void> Function(String name, Color color)? create;
 
-  const PlanBottomSheet({
+  const MandalBottomSheet({
     super.key,
     required this.type,
+    this.goalId,
     this.planId,
-    this.detailedPlanId,
     this.create,
   });
 
   @override
-  State<PlanBottomSheet> createState() => _PlanBottomSheetState();
+  State<MandalBottomSheet> createState() => _MandalBottomSheetState();
 }
 
-class _PlanBottomSheetState extends State<PlanBottomSheet> {
+class _MandalBottomSheetState extends State<MandalBottomSheet> {
   final nameController = TextEditingController();
   Color color = ColorClass.blue;
   bool enabled = false;

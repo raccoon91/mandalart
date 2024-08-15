@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mandalart/provider/calendar_provider.dart';
-import 'package:mandalart/widget/calendar/task_bottom_sheet.dart';
+import 'package:mandalart/widget/calendar/schedule_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 class TaskBottomSheetScreen extends StatefulWidget {
@@ -36,7 +36,7 @@ class _TaskBottomSheetScreenState extends State<TaskBottomSheetScreen> {
     await Provider.of<CalendarProvider>(
       context,
       listen: false,
-    ).getTask(int.parse(widget.taskId!));
+    ).getSchedule(int.parse(widget.taskId!));
   }
 
   Future<void> deleteTask() async {
@@ -45,14 +45,14 @@ class _TaskBottomSheetScreenState extends State<TaskBottomSheetScreen> {
     await Provider.of<CalendarProvider>(
       context,
       listen: false,
-    ).deleteTask(int.parse(widget.taskId!));
+    ).deleteSchedule(int.parse(widget.taskId!));
 
     if (!mounted) return;
 
     await Provider.of<CalendarProvider>(
       context,
       listen: false,
-    ).getTasks(null, null);
+    ).getSchedules(null, null);
 
     if (!mounted) return;
 
@@ -65,14 +65,14 @@ class _TaskBottomSheetScreenState extends State<TaskBottomSheetScreen> {
     await Provider.of<CalendarProvider>(
       context,
       listen: false,
-    ).stopTask(int.parse(widget.taskId!), DateTime.parse(widget.to!));
+    ).stopSchedule(int.parse(widget.taskId!), DateTime.parse(widget.to!));
 
     if (!mounted) return;
 
     await Provider.of<CalendarProvider>(
       context,
       listen: false,
-    ).getTasks(null, null);
+    ).getSchedules(null, null);
 
     if (!mounted) return;
 
@@ -83,10 +83,10 @@ class _TaskBottomSheetScreenState extends State<TaskBottomSheetScreen> {
   Widget build(BuildContext context) {
     return Consumer<CalendarProvider>(
       builder: (context, state, child) {
-        if (state.task == null) return Container();
+        if (state.schedule == null) return Container();
 
-        return TaskBottomSheet(
-          task: state.task,
+        return ScheduleBottomSheet(
+          schedule: state.schedule,
           from: widget.from != null ? DateTime.parse(widget.from!) : null,
           to: widget.to != null ? DateTime.parse(widget.to!) : null,
           onDelete: deleteTask,

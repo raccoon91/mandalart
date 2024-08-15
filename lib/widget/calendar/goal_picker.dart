@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mandalart/provider/calendar_provider.dart';
-import 'package:mandalart/widget/calendar/calendar_plan_widget.dart';
+import 'package:mandalart/widget/calendar/subject_widget.dart';
 import 'package:provider/provider.dart';
 
-class CalendarPlanPicker extends StatelessWidget {
-  final int? selectedPlanId;
-  final void Function(int planId)? onChanged;
+class GoalPicker extends StatelessWidget {
+  final int? selectedGoalId;
+  final void Function(int goalId)? onChanged;
 
-  const CalendarPlanPicker({
+  const GoalPicker({
     super.key,
-    this.selectedPlanId,
+    this.selectedGoalId,
     this.onChanged,
   });
 
@@ -30,7 +30,7 @@ class CalendarPlanPicker extends StatelessWidget {
             ),
             SizedBox(height: 10.h),
             Consumer<CalendarProvider>(builder: (context, state, child) {
-              if (state.plans == null || state.plans?.isEmpty == true) {
+              if (state.goals == null || state.goals?.isEmpty == true) {
                 return Padding(
                   padding: EdgeInsets.symmetric(vertical: 10.h),
                   child: const Text(
@@ -48,19 +48,19 @@ class CalendarPlanPicker extends StatelessWidget {
                   child: Wrap(
                     spacing: 10.w,
                     runSpacing: 10.w,
-                    children: state.plans?.map((plan) {
-                          return CalendarPlanWidget(
-                            id: plan?.id,
-                            name: plan?.name,
-                            color: plan?.color,
+                    children: state.goals?.map((goal) {
+                          return SubjectWidget(
+                            id: goal?.id,
+                            name: goal?.name,
+                            color: goal?.color,
                             width: (constraints.maxWidth - 22.w) / 2,
-                            selected: selectedPlanId == plan?.id,
+                            selected: selectedGoalId == goal?.id,
                             onTap: () {
-                              if (plan?.id == null || onChanged == null) {
+                              if (goal?.id == null || onChanged == null) {
                                 return;
                               }
 
-                              onChanged!(plan!.id);
+                              onChanged!(goal!.id);
                             },
                           );
                         }).toList() ??

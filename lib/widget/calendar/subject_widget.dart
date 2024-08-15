@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mandalart/theme/color.dart';
 
-class CalendarPlanWidget extends StatelessWidget {
+class SubjectWidget extends StatelessWidget {
   final int? id;
   final String? name;
   final Color? color;
@@ -10,7 +10,7 @@ class CalendarPlanWidget extends StatelessWidget {
   final bool? selected;
   final void Function()? onTap;
 
-  const CalendarPlanWidget({
+  const SubjectWidget({
     super.key,
     this.id,
     this.name,

@@ -1,48 +1,51 @@
-import 'package:flutter/material.dart';
-import 'package:mandalart/model/detailed_plan_model.dart';
-import 'package:mandalart/schema/detailed_plan_schema.dart';
+import 'package:mandalart/extension/number_format_extension.dart';
+import 'package:mandalart/model/schedule_model.dart';
+import 'package:mandalart/schema/schedule_schema.dart';
 import 'package:mandalart/schema/task_schema.dart';
+import 'package:mandalart/theme/color.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-class TaskModel {
-  int id;
-  int detailedPlanId;
-  DetailedPlanModel detailedPlan;
-  DateTime from;
-  DateTime to;
-  DateTime? terminate;
-  Color? color;
-  bool allDay;
-  String? repeat;
+class TaskModel extends Appointment {
+  int taskId;
+  DateTime completed;
 
   TaskModel({
-    required this.id,
-    required this.detailedPlanId,
-    required this.detailedPlan,
-    required this.from,
-    required this.to,
-    this.terminate,
-    this.color,
-    required this.allDay,
-    this.repeat,
+    required super.subject,
+    required super.startTime,
+    required super.endTime,
+    required super.isAllDay,
+    required super.color,
+    required this.taskId,
+    required this.completed,
   });
 
-  factory TaskModel.fromSchema(
-    Task taskSchema,
-    DetailedPlan detailedPlanSchema,
-  ) {
-    Color? color = taskSchema.color != null ? Color(taskSchema.color!) : null;
-    var detailedPlan = DetailedPlanModel.fromSchema(detailedPlanSchema);
+  factory TaskModel.fromSchema(Task taskSchema, Schedule scheduleSchema) {
+    var from = DateTime(
+      scheduleSchema.year,
+      scheduleSchema.month,
+      scheduleSchema.day,
+      scheduleSchema.start.toHour(),
+      scheduleSchema.start.toMinute(),
+    );
+
+    var to = DateTime(
+      scheduleSchema.year,
+      scheduleSchema.month,
+      scheduleSchema.day,
+      scheduleSchema.end.toHour(),
+      scheduleSchema.end.toMinute(),
+    );
+
+    ScheduleModel schdule = ScheduleModel.fromSchema(scheduleSchema, from, to);
 
     return TaskModel(
-      id: taskSchema.id,
-      detailedPlanId: taskSchema.detailedPlanId,
-      detailedPlan: detailedPlan,
-      from: taskSchema.from,
-      to: taskSchema.to,
-      terminate: taskSchema.terminate,
-      color: color,
-      allDay: taskSchema.allDay,
-      repeat: taskSchema.repeat,
+      taskId: taskSchema.id,
+      completed: taskSchema.completed,
+      subject: schdule.plan?.name ?? '',
+      startTime: schdule.from,
+      endTime: schdule.to,
+      isAllDay: schdule.isAllDay,
+      color: schdule.color ?? ColorClass.under,
     );
   }
 }

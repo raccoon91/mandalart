@@ -1,4 +1,5 @@
 import 'package:isar/isar.dart';
+import 'package:mandalart/schema/schedule_schema.dart';
 
 part 'task_schema.g.dart';
 
@@ -6,33 +7,9 @@ part 'task_schema.g.dart';
 class Task {
   Id id = Isar.autoIncrement;
 
-  late int detailedPlanId;
+  late int visionId;
 
-  late DateTime from;
+  late DateTime completed;
 
-  late DateTime to;
-
-  bool allDay = false;
-
-  String? repeat;
-
-  bool weekday = false;
-
-  bool weekend = false;
-
-  bool everyDay = false;
-
-  int? everyWeek;
-
-  int? everyMonth;
-
-  DateTime? terminate;
-
-  String? description;
-
-  int? color;
-
-  String? style;
-
-  bool delete = false;
+  final schedule = IsarLink<Schedule>();
 }

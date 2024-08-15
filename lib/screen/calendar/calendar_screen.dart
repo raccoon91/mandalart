@@ -23,23 +23,19 @@ class _CalendarScreenState extends State<CalendarScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      getPlans();
+      Provider.of<CalendarProvider>(
+        context,
+        listen: false,
+      ).getGoals();
     });
   }
 
-  void getPlans() {
-    Provider.of<CalendarProvider>(
-      context,
-      listen: false,
-    ).getPlans();
-  }
-
-  void getTasks(DateTime from, DateTime to) {
+  void getSchedules(DateTime from, DateTime to) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<CalendarProvider>(
         context,
         listen: false,
-      ).getTasks(from, to);
+      ).getSchedules(from, to);
     });
   }
 
@@ -100,13 +96,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   color: ColorClass.black,
                   fontSize: 14.sp,
                 ),
-                dataSource: state.tasks,
+                dataSource: state.appointments,
                 onTap: onTapCell,
                 onViewChanged: (view) {
                   weekFrom = view.visibleDates.first;
                   weekTo = view.visibleDates.last;
 
-                  getTasks(weekFrom, weekTo);
+                  getSchedules(weekFrom, weekTo);
                 },
               ),
             ),

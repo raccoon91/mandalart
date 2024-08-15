@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mandalart/model/task_model.dart';
+import 'package:mandalart/model/schedule_model.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/calendar/calendar_date_time_range.dart';
-import 'package:mandalart/widget/calendar/calendar_detailed_plan_picker.dart';
-import 'package:mandalart/widget/calendar/calendar_plan_picker.dart';
-import 'package:mandalart/widget/calendar/calendar_repeat_picker.dart';
+import 'package:mandalart/widget/calendar/goal_picker.dart';
+import 'package:mandalart/widget/calendar/plan_picker.dart';
+import 'package:mandalart/widget/calendar/repeat_picker.dart';
 
-class TaskBottomSheet extends StatelessWidget {
-  final TaskModel? task;
+class ScheduleBottomSheet extends StatelessWidget {
+  final ScheduleModel? schedule;
   final DateTime? from;
   final DateTime? to;
   final Future<void> Function()? onDelete;
   final Future<void> Function()? onStop;
 
-  const TaskBottomSheet({
+  const ScheduleBottomSheet({
     super.key,
-    this.task,
+    this.schedule,
     this.from,
     this.to,
     this.onDelete,
@@ -45,19 +45,17 @@ class TaskBottomSheet extends StatelessWidget {
                   CalendarDateTimeRange(
                     from: from ?? DateTime.now(),
                     to: to ?? DateTime.now(),
-                    allDay: task?.allDay ?? false,
+                    isAllDay: schedule?.isAllDay ?? false,
                   ),
                   const Divider(),
-                  CalendarRepeatPicker(value: task?.repeat),
+                  RepeatPicker(value: schedule?.repeat),
                   const Divider(),
-                  CalendarPlanPicker(
-                    selectedPlanId: task?.detailedPlan.planId,
-                  ),
-                  ...(task?.detailedPlan.planId != null
+                  GoalPicker(selectedGoalId: schedule?.plan?.goalId),
+                  ...(schedule?.plan?.goalId != null
                       ? [
                           const Divider(),
-                          CalendarDetailedPlanPicker(
-                            selectedDetailedPlanId: task?.detailedPlan.id,
+                          PlanPicker(
+                            selectedPlanId: schedule?.plan?.id,
                           )
                         ]
                       : [])

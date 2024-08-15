@@ -28,10 +28,10 @@ class _HomeScreenState extends State<HomeScreen> {
     bool isEmpty = await Provider.of<HomeProvider>(
       context,
       listen: false,
-    ).getProjectWithPlans();
+    ).getInProgressVision();
 
     if (mounted && isEmpty) {
-      context.go('/project');
+      context.go('/vision');
     }
 
     FlutterNativeSplash.remove();
@@ -41,14 +41,16 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Consumer<HomeProvider>(
       builder: (context, state, child) => MandalLayout(
-        isEmpty: state.isEmpty,
+        isEmpty: state.vision == null ||
+            state.vision?.goals == null ||
+            state.vision?.goals?.isEmpty == true,
         emptyMessage: '목표를 설정하세요',
         title: MandalTitle(
-          projectName: state.project?.name,
+          visionName: state.vision?.name,
         ),
         body: MandalartWidget(
           mode: state.mode,
-          project: state.project,
+          vision: state.vision,
         ),
       ),
     );

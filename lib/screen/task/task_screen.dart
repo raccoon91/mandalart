@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mandalart/model/todo_model.dart';
+import 'package:mandalart/model/task_model.dart';
 import 'package:mandalart/provider/task_provider.dart';
 import 'package:mandalart/theme/color.dart';
-import 'package:mandalart/utils/todo_data_source.dart';
 import 'package:mandalart/widget/base/banner_ad.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -19,26 +18,26 @@ class _TaskScreenState extends State<TaskScreen> {
   late DateTime weekFrom;
   late DateTime weekTo;
 
-  void getTodayTasks(DateTime date) {
+  void getTasks(DateTime date) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<TaskProvider>(
         context,
         listen: false,
-      ).getTodayTasks(date);
+      ).getTasks(date);
     });
   }
 
   onTapCell(CalendarTapDetails? calendar) async {
     if (calendar?.appointments == null) return;
 
-    TodoModel? todo = calendar?.appointments?.first;
+    TaskModel? todo = calendar?.appointments?.first;
 
     if (todo == null || calendar?.date == null) return;
 
     await Provider.of<TaskProvider>(
       context,
       listen: false,
-    ).toggleTodo(todo.doneId, todo.taskId, todo.startTime);
+    ).toggleTodo(todo.taskId, todo.startTime);
 
     if (!mounted) return;
 
@@ -47,7 +46,7 @@ class _TaskScreenState extends State<TaskScreen> {
     Provider.of<TaskProvider>(
       context,
       listen: false,
-    ).updateTodayTasks(todo.taskId, date);
+    ).updateTask(todo.taskId, date);
   }
 
   @override
@@ -110,11 +109,11 @@ class _TaskScreenState extends State<TaskScreen> {
                     }).toList(),
                   );
                 },
-                dataSource: TodoDataSource(state.tasks),
+                dataSource: state.tasks,
                 onViewChanged: (view) {
                   DateTime date = view.visibleDates.first;
 
-                  getTodayTasks(date);
+                  getTasks(date);
                 },
                 onTap: onTapCell,
               ),

@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mandalart/model/detailed_plan_model.dart';
+import 'package:mandalart/model/plan_model.dart';
 import 'package:mandalart/theme/color.dart';
 
-class DetailedEmptyWidget extends StatelessWidget {
+class PlanEmptyWidget extends StatelessWidget {
   final String? mode;
   final String? type;
-  final DetailedPlanModel? detailedPlan;
+  final PlanModel? plan;
   final double? size;
 
-  const DetailedEmptyWidget({
+  const PlanEmptyWidget({
     super.key,
     this.mode,
     this.type,
-    this.detailedPlan,
+    this.plan,
     this.size,
   });
 
@@ -25,16 +25,16 @@ class DetailedEmptyWidget extends StatelessWidget {
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {
-          if (detailedPlan?.planId == null || detailedPlan?.id == null) return;
+          if (plan?.goalId == null || plan?.id == null) return;
 
           context.push(
-            '/sheet/detailed/$mode/${detailedPlan!.planId}/${detailedPlan!.id}',
+            '/sheet/plan/$mode/${plan!.goalId}/${plan!.id}',
           );
         },
         child: Container(
           width: size ?? double.infinity,
           margin: EdgeInsets.all(3.w),
-          decoration: type == 'plan'
+          decoration: type == 'goal'
               ? BoxDecoration(
                   color: ColorClass.under,
                   borderRadius: BorderRadius.circular(4.r),
@@ -45,7 +45,7 @@ class DetailedEmptyWidget extends StatelessWidget {
                 ),
           child: Icon(
             Icons.add,
-            size: type == 'plan' ? 30.sp : 16.sp,
+            size: type == 'goal' ? 30.sp : 16.sp,
             color: ColorClass.gray,
           ),
         ),

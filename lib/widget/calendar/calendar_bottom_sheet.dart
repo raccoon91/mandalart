@@ -4,19 +4,19 @@ import 'package:mandalart/provider/calendar_provider.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/base/button.dart';
 import 'package:mandalart/widget/calendar/calendar_date_time_range.dart';
-import 'package:mandalart/widget/calendar/calendar_detailed_plan_picker.dart';
-import 'package:mandalart/widget/calendar/calendar_plan_picker.dart';
-import 'package:mandalart/widget/calendar/calendar_repeat_picker.dart';
+import 'package:mandalart/widget/calendar/goal_picker.dart';
+import 'package:mandalart/widget/calendar/plan_picker.dart';
+import 'package:mandalart/widget/calendar/repeat_picker.dart';
 import 'package:provider/provider.dart';
 
 class CalendarBottomSheet extends StatefulWidget {
   final DateTime from;
   final DateTime to;
   final Future<void> Function(
-    int detailedPlanId,
+    int planId,
     DateTime from,
     DateTime to,
-    bool? allDay,
+    bool? isAllDay,
     String? repeat,
   )? onCreate;
 
@@ -32,11 +32,11 @@ class CalendarBottomSheet extends StatefulWidget {
 }
 
 class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
+  int? selectedGoalId;
   int? selectedPlanId;
-  int? selectedDetailedPlanId;
   late DateTime fromDate;
   late DateTime toDate;
-  bool allDay = false;
+  bool isAllDay = false;
   String? repeat;
   bool enabled = false;
 
@@ -49,7 +49,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
   }
 
   checkEnabled() {
-    enabled = selectedPlanId != null && selectedDetailedPlanId != null;
+    enabled = selectedGoalId != null && selectedPlanId != null;
   }
 
   fromDateChanged(DateTime date) {
@@ -78,7 +78,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
   }
 
   allDayChanged(bool value) {
-    allDay = value;
+    isAllDay = value;
 
     checkEnabled();
 
@@ -95,30 +95,30 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
     setState(() {});
   }
 
-  planChanged(int planId) {
-    if (selectedPlanId == planId) {
-      selectedPlanId = null;
+  goalChanged(int goalId) {
+    if (selectedGoalId == goalId) {
+      selectedGoalId = null;
     } else {
-      selectedPlanId = planId;
+      selectedGoalId = goalId;
     }
 
-    selectedDetailedPlanId = null;
+    selectedPlanId = null;
 
     Provider.of<CalendarProvider>(
       context,
       listen: false,
-    ).getDetailedPlans(selectedPlanId);
+    ).getPlans(selectedGoalId);
 
     checkEnabled();
 
     setState(() {});
   }
 
-  detailedPlanChanged(int detailedPlanId) {
-    if (selectedDetailedPlanId == detailedPlanId) {
-      selectedDetailedPlanId = null;
+  planChanged(int planId) {
+    if (selectedPlanId == planId) {
+      selectedPlanId = null;
     } else {
-      selectedDetailedPlanId = detailedPlanId;
+      selectedPlanId = planId;
     }
 
     checkEnabled();
@@ -127,9 +127,9 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
   }
 
   createTapped() {
-    if (widget.onCreate == null || selectedDetailedPlanId == null) return;
+    if (widget.onCreate == null || selectedPlanId == null) return;
 
-    widget.onCreate!(selectedDetailedPlanId!, fromDate, toDate, allDay, repeat);
+    widget.onCreate!(selectedPlanId!, fromDate, toDate, isAllDay, repeat);
   }
 
   @override
@@ -154,27 +154,22 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
                   CalendarDateTimeRange(
                     from: fromDate,
                     to: toDate,
-                    allDay: allDay,
+                    isAllDay: isAllDay,
                     fromChanged: fromDateChanged,
                     toChanged: toDateChanged,
                     allDayChanged: allDayChanged,
                   ),
                   const Divider(),
-                  CalendarRepeatPicker(
-                    value: repeat,
-                    onChanged: repeatChanged,
-                  ),
+                  RepeatPicker(value: repeat, onChanged: repeatChanged),
                   const Divider(),
-                  CalendarPlanPicker(
-                    selectedPlanId: selectedPlanId,
-                    onChanged: planChanged,
-                  ),
-                  ...(selectedPlanId != null
+                  GoalPicker(
+                      selectedGoalId: selectedGoalId, onChanged: goalChanged),
+                  ...(selectedGoalId != null
                       ? [
                           const Divider(),
-                          CalendarDetailedPlanPicker(
-                            selectedDetailedPlanId: selectedDetailedPlanId,
-                            onChanged: detailedPlanChanged,
+                          PlanPicker(
+                            selectedPlanId: selectedPlanId,
+                            onChanged: planChanged,
                           )
                         ]
                       : [])

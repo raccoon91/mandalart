@@ -3,15 +3,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mandalart/theme/color.dart';
 
-class EmptyWidget extends StatelessWidget {
+class GoalEmptyWidget extends StatelessWidget {
   final String? mode;
-  final int? planId;
+  final int? goalId;
   final double? size;
 
-  const EmptyWidget({
+  const GoalEmptyWidget({
     super.key,
     this.mode,
-    this.planId,
+    this.goalId,
     this.size,
   });
 
@@ -22,7 +22,7 @@ class EmptyWidget extends StatelessWidget {
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {
-          context.push('/sheet/plan/$planId');
+          context.push('/sheet/goal/$goalId');
         },
         child: Container(
           width: size ?? double.infinity,
