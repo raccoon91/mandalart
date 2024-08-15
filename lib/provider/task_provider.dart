@@ -1,35 +1,39 @@
 import 'package:flutter/foundation.dart';
 import 'package:mandalart/model/task_model.dart';
+import 'package:mandalart/model/todo_model.dart';
 import 'package:mandalart/repository/task_repository.dart';
+import 'package:mandalart/repository/todo_repository.dart';
 import 'package:mandalart/theme/color.dart';
-import 'package:mandalart/utils/task_data_source.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class TaskProvider with ChangeNotifier, DiagnosticableTreeMixin {
   bool _isLoading = false;
 
   TaskModel? _task;
-  List<Appointment> _tasks = [];
+  List<TodoModel> _tasks = [];
 
   bool get isLoading => _isLoading;
 
   TaskModel? get task => _task;
-  TaskDataSource get tasks => TaskDataSource(_tasks);
+  List<TodoModel> get tasks => (_tasks);
 
   Future<void> getTodayTasks(DateTime date) async {
     try {
       _isLoading = true;
 
+      DateTime start = date.subtract(Duration(
+        days: date.weekday == 7 ? 0 : date.weekday,
+      ));
+
       notifyListeners();
 
-      List<Appointment> appointments = [];
+      List<TodoModel> appointments = [];
 
-      var weekDayTasks = await TaskRepository().getWeekDayTasks(date);
-      var weekendTasks = await TaskRepository().getWeekendTasks(date);
-      var weekTasks = await TaskRepository().getWeekTasks(date);
-      var everyDayTasks = await TaskRepository().getEveryDayTask(date);
-      var everyWeekTasks = await TaskRepository().getEveryWeekTask(date);
-      var everyMonthTasks = await TaskRepository().getEveryMonthTask(date);
+      var weekDayTasks = await TaskRepository().getWeekDayTasks(start);
+      var weekendTasks = await TaskRepository().getWeekendTasks(start);
+      var weekTasks = await TaskRepository().getWeekTasks(start);
+      var everyDayTasks = await TaskRepository().getEveryDayTask(start);
+      var everyWeekTasks = await TaskRepository().getEveryWeekTask(start);
+      var everyMonthTasks = await TaskRepository().getEveryMonthTask(start);
 
       List<TaskModel> tasks = [
         ...(weekDayTasks ?? []),
@@ -41,15 +45,18 @@ class TaskProvider with ChangeNotifier, DiagnosticableTreeMixin {
       ];
 
       for (TaskModel task in tasks) {
-        appointments.add(Appointment(
+        if (task.from.day != date.day) continue;
+
+        var doneSchema = await TodoRepository().getTodo(task.id, task.from);
+
+        appointments.add(TodoModel(
+          taskId: task.id,
+          doneId: doneSchema?.id,
           subject: task.detailedPlan.name ?? '',
           startTime: task.from,
           endTime: task.to,
           isAllDay: task.allDay,
           color: task.detailedPlan.color ?? ColorClass.under,
-          resourceIds: [
-            {"taskId": task.id}
-          ],
         ));
       }
 
@@ -63,9 +70,53 @@ class TaskProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
+  Future<void> updateTodayTasks(int taskId, DateTime date) async {
+    try {
+      _isLoading = true;
+
+      notifyListeners();
+
+      List<TodoModel> appointments = [];
+
+      for (var task in _tasks) {
+        if (task.taskId == taskId) {
+          var doneSchema = await TodoRepository().getTodo(taskId, date);
+
+          task.doneId = doneSchema?.id;
+        }
+
+        appointments.add(task);
+      }
+
+      _tasks = appointments;
+    } catch (error) {
+      rethrow;
+    } finally {
+      _isLoading = false;
+
+      notifyListeners();
+    }
+  }
+
+  Future<void> toggleTodo(int? doneId, int taskId, DateTime? date) async {
+    try {
+      if (doneId == null) {
+        await TodoRepository().createTodo(taskId, date);
+      } else {
+        await TodoRepository().deleteTodo(doneId);
+      }
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  void clearTodo() {
+    _tasks = [];
+  }
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<List<Appointment>>('tasks', _tasks));
+    properties.add(DiagnosticsProperty<List<TodoModel>>('tasks', _tasks));
   }
 }

@@ -1,5 +1,6 @@
 import 'package:isar/isar.dart';
 import 'package:mandalart/schema/detailed_plan_schema.dart';
+import 'package:mandalart/schema/done_schema.dart';
 import 'package:mandalart/schema/plan_schema.dart';
 import 'package:mandalart/schema/project_schema.dart';
 import 'package:mandalart/schema/task_schema.dart';
@@ -13,7 +14,7 @@ class IsarDB {
 
     isar = await Isar.open(
       name: 'mandalart',
-      [ProjectSchema, PlanSchema, DetailedPlanSchema, TaskSchema],
+      [ProjectSchema, PlanSchema, DetailedPlanSchema, TaskSchema, DoneSchema],
       directory: dir.path,
     );
 

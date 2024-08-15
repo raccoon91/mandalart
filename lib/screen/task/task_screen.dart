@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mandalart/provider/calendar_provider.dart';
+import 'package:mandalart/model/todo_model.dart';
 import 'package:mandalart/provider/task_provider.dart';
 import 'package:mandalart/theme/color.dart';
+import 'package:mandalart/utils/todo_data_source.dart';
 import 'package:mandalart/widget/base/banner_ad.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -27,16 +28,26 @@ class _TaskScreenState extends State<TaskScreen> {
     });
   }
 
-  onTapCell(CalendarTapDetails? calendar) {
-    if (calendar?.appointments == null) {
-      if (calendar?.date == null) return;
-    } else {
-      Appointment appointment = calendar?.appointments?.first;
-      dynamic task = appointment.resourceIds
-          ?.firstWhere((dynamic resource) => resource?['taskId'] != null);
+  onTapCell(CalendarTapDetails? calendar) async {
+    if (calendar?.appointments == null) return;
 
-      if (task == null) return;
-    }
+    TodoModel? todo = calendar?.appointments?.first;
+
+    if (todo == null || calendar?.date == null) return;
+
+    await Provider.of<TaskProvider>(
+      context,
+      listen: false,
+    ).toggleTodo(todo.doneId, todo.taskId, todo.startTime);
+
+    if (!mounted) return;
+
+    DateTime date = calendar!.date!;
+
+    Provider.of<TaskProvider>(
+      context,
+      listen: false,
+    ).updateTodayTasks(todo.taskId, date);
   }
 
   @override
@@ -48,7 +59,7 @@ class _TaskScreenState extends State<TaskScreen> {
           const BannerAD(),
           SizedBox(height: 10.h),
           Expanded(
-            child: Consumer<CalendarProvider>(
+            child: Consumer<TaskProvider>(
               builder: (context, state, child) => SfCalendar(
                 view: CalendarView.day,
                 timeZone: 'Asia/Seoul',
@@ -73,33 +84,39 @@ class _TaskScreenState extends State<TaskScreen> {
                   color: ColorClass.black,
                   fontSize: 14.sp,
                 ),
-                appointmentBuilder: (context, calendarAppointmentDetails) {
+                appointmentBuilder: (context, calendar) {
                   return Row(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: calendarAppointmentDetails.appointments
-                        .map((appointment) {
+                    children: calendar.appointments.map((todo) {
                       return Expanded(
                         child: Container(
                           margin: EdgeInsets.all(2.sp),
                           padding: EdgeInsets.all(4.sp),
                           decoration: BoxDecoration(
-                            color: appointment?.color,
+                            color: todo?.doneId != null
+                                ? todo?.color
+                                : ColorClass.white,
+                            border: Border.all(
+                              color: todo?.color,
+                              width: 2.w,
+                            ),
                             borderRadius: BorderRadius.all(
                               Radius.circular(4.r),
                             ),
                           ),
-                          child: Text(appointment?.subject),
+                          child: Text(todo?.subject),
                         ),
                       );
                     }).toList(),
                   );
                 },
-                dataSource: state.tasks,
+                dataSource: TodoDataSource(state.tasks),
                 onViewChanged: (view) {
                   DateTime date = view.visibleDates.first;
 
                   getTodayTasks(date);
                 },
+                onTap: onTapCell,
               ),
             ),
           ),
