@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mandalart/model/todo_model.dart';
 import 'package:mandalart/provider/todo_provider.dart';
 import 'package:mandalart/theme/color.dart';
-import 'package:mandalart/utils/todo_data_source.dart';
 import 'package:mandalart/widget/base/banner_ad.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -112,7 +111,7 @@ class _TaskScreenState extends State<TaskScreen> {
                     }).toList(),
                   );
                 },
-                dataSource: TodoDataSource(state.todos),
+                dataSource: state.todos,
                 onViewChanged: (view) {
                   DateTime date = view.visibleDates.first;
 

@@ -4,48 +4,49 @@ import 'package:mandalart/provider/calendar_provider.dart';
 import 'package:mandalart/widget/calendar/schedule_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
-class TaskBottomSheetScreen extends StatefulWidget {
-  final String? taskId;
+class ScheduleBottomSheetScreen extends StatefulWidget {
+  final String? scheduleId;
   final String? from;
   final String? to;
 
-  const TaskBottomSheetScreen({
+  const ScheduleBottomSheetScreen({
     super.key,
-    this.taskId,
+    this.scheduleId,
     this.from,
     this.to,
   });
 
   @override
-  State<TaskBottomSheetScreen> createState() => _TaskBottomSheetScreenState();
+  State<ScheduleBottomSheetScreen> createState() =>
+      _ScheduleBottomSheetScreenState();
 }
 
-class _TaskBottomSheetScreenState extends State<TaskBottomSheetScreen> {
+class _ScheduleBottomSheetScreenState extends State<ScheduleBottomSheetScreen> {
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      getTask();
+      getSchedule();
     });
   }
 
-  void getTask() async {
-    if (widget.taskId == null) return;
+  void getSchedule() async {
+    if (widget.scheduleId == null) return;
 
     await Provider.of<CalendarProvider>(
       context,
       listen: false,
-    ).getSchedule(int.parse(widget.taskId!));
+    ).getSchedule(int.parse(widget.scheduleId!));
   }
 
-  Future<void> deleteTask() async {
-    if (widget.taskId == null) return;
+  Future<void> deleteSchedule() async {
+    if (widget.scheduleId == null) return;
 
     await Provider.of<CalendarProvider>(
       context,
       listen: false,
-    ).deleteSchedule(int.parse(widget.taskId!));
+    ).deleteSchedule(int.parse(widget.scheduleId!));
 
     if (!mounted) return;
 
@@ -59,13 +60,13 @@ class _TaskBottomSheetScreenState extends State<TaskBottomSheetScreen> {
     context.pop();
   }
 
-  Future<void> stopTask() async {
-    if (widget.taskId == null || widget.to == null) return;
+  Future<void> stopSchedule() async {
+    if (widget.scheduleId == null || widget.to == null) return;
 
     await Provider.of<CalendarProvider>(
       context,
       listen: false,
-    ).stopSchedule(int.parse(widget.taskId!), DateTime.parse(widget.to!));
+    ).stopSchedule(int.parse(widget.scheduleId!), DateTime.parse(widget.to!));
 
     if (!mounted) return;
 
@@ -89,8 +90,8 @@ class _TaskBottomSheetScreenState extends State<TaskBottomSheetScreen> {
           schedule: state.schedule,
           from: widget.from != null ? DateTime.parse(widget.from!) : null,
           to: widget.to != null ? DateTime.parse(widget.to!) : null,
-          onDelete: deleteTask,
-          onStop: stopTask,
+          onDelete: deleteSchedule,
+          onStop: stopSchedule,
         );
       },
     );

@@ -4,6 +4,7 @@ import 'package:mandalart/model/todo_model.dart';
 import 'package:mandalart/repository/schedule_repository.dart';
 import 'package:mandalart/repository/task_repository.dart';
 import 'package:mandalart/repository/vision_repository.dart';
+import 'package:mandalart/utils/todo_data_source.dart';
 
 class TodoProvider with ChangeNotifier, DiagnosticableTreeMixin {
   ScheduleModel? _schedule;
@@ -12,7 +13,7 @@ class TodoProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
   ScheduleModel? get schedule => _schedule;
   List<ScheduleModel> get schedules => _schedules;
-  List<TodoModel> get todos => _todos;
+  TodoDataSource get todos => TodoDataSource(_todos);
 
   Future<void> getTasks(DateTime date) async {
     try {
@@ -65,9 +66,6 @@ class TodoProvider with ChangeNotifier, DiagnosticableTreeMixin {
         if (schedule.from.day != date.day) continue;
 
         var task = await TaskRepository.get(schedule.id, schedule.from);
-
-        print(schedule.plan?.name);
-        print(task?.id);
 
         var todo = TodoModel.fromSchema(schedule, task);
 
