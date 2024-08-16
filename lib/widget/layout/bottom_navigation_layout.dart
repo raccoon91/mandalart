@@ -9,14 +9,12 @@ import 'package:mandalart/widget/layout/screen_layout.dart';
 class BottomNavigationLayout extends StatefulWidget {
   final String? title;
   final int? branchIndex;
-  final String? screenName;
   final StatefulNavigationShell child;
 
   const BottomNavigationLayout({
     super.key,
     this.title,
     this.branchIndex,
-    this.screenName,
     required this.child,
   });
 
@@ -51,12 +49,16 @@ class _BottomNavigationLayoutState extends State<BottomNavigationLayout> {
 
   @override
   Widget build(BuildContext context) {
+    bool isHome =
+        GoRouter.of(context).routeInformationProvider.value.uri.toString() ==
+            "/home";
+
     return PopScope(
       canPop: false,
       onPopInvoked: onPopInvoked,
       child: ScreenLayout(
         title: widget.title,
-        showFloatingAction: widget.screenName == 'home',
+        showFloatingAction: isHome,
         bottomNavigationBar: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           height: widget.branchIndex == 0 ? 80.h : 60.h,

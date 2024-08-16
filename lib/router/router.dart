@@ -17,12 +17,6 @@ import 'package:mandalart/screen/vision/vision_create_screen.dart';
 import 'package:mandalart/screen/vision/vision_start_screen.dart';
 import 'package:mandalart/widget/layout/bottom_navigation_layout.dart';
 
-final screenPathMap = {
-  '/home': 'home',
-  '/calendar': 'calendar',
-  '/setting': 'setting',
-};
-
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _homeTabNavigatorKey = GlobalKey<NavigatorState>();
 final _calendarTabNavigatorKey = GlobalKey<NavigatorState>();
@@ -36,6 +30,7 @@ final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
       navigatorKey: _homeTabNavigatorKey,
       routes: [
         GoRoute(
+          name: "home",
           path: '/home',
           pageBuilder: (BuildContext context, GoRouterState state) {
             return getPage(
@@ -45,6 +40,7 @@ final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
           },
           routes: [
             GoRoute(
+              name: "goal",
               path: ':goalId',
               pageBuilder: (BuildContext context, GoRouterState state) {
                 return getPage(
@@ -107,12 +103,9 @@ final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
     GoRouterState state,
     StatefulNavigationShell navigationShell,
   ) {
-    String? screenName = screenPathMap[state.fullPath];
-
     return getPage(
       state: state,
       child: BottomNavigationLayout(
-        screenName: screenName,
         branchIndex: navigationShell.currentIndex,
         child: navigationShell,
       ),
