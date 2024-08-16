@@ -1,6 +1,5 @@
 import 'package:isar/isar.dart';
 import 'package:mandalart/db/isar_db.dart';
-import 'package:mandalart/model/task_model.dart';
 import 'package:mandalart/schema/schedule_schema.dart';
 import 'package:mandalart/schema/task_schema.dart';
 
@@ -18,22 +17,17 @@ class TaskRepository {
     }
   }
 
-  static Future<TaskModel?> get(
-    int? scheduleId,
-    DateTime date,
-  ) async {
+  static Future<Task?> get(int? scheduleId, DateTime date) async {
     try {
       if (scheduleId == null) return null;
 
       var taskSchema = await IsarDB.isar.tasks
           .filter()
-          .schedule((query) => query.idEqualTo(scheduleId))
+          .scheduleIdEqualTo(scheduleId)
           .completedEqualTo(date)
           .findFirst();
 
-      if (taskSchema == null || taskSchema.schedule.value == null) return null;
-
-      return TaskModel.fromSchema(taskSchema, taskSchema.schedule.value!);
+      return taskSchema;
     } catch (error) {
       rethrow;
     }
@@ -54,12 +48,11 @@ class TaskRepository {
 
       var taskSchema = Task()
         ..visionId = visionId
-        ..schedule.value = schedule
+        ..scheduleId = scheduleId
         ..completed = date;
 
       await IsarDB.isar.writeTxn(() async {
         await IsarDB.isar.tasks.put(taskSchema);
-        await taskSchema.schedule.save();
       });
 
       return schedule;

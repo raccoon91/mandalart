@@ -22,8 +22,13 @@ const TaskSchema = CollectionSchema(
       name: r'completed',
       type: IsarType.dateTime,
     ),
-    r'visionId': PropertySchema(
+    r'scheduleId': PropertySchema(
       id: 1,
+      name: r'scheduleId',
+      type: IsarType.long,
+    ),
+    r'visionId': PropertySchema(
+      id: 2,
       name: r'visionId',
       type: IsarType.long,
     )
@@ -34,14 +39,7 @@ const TaskSchema = CollectionSchema(
   deserializeProp: _taskDeserializeProp,
   idName: r'id',
   indexes: {},
-  links: {
-    r'schedule': LinkSchema(
-      id: 2357111614775385033,
-      name: r'schedule',
-      target: r'Schedule',
-      single: true,
-    )
-  },
+  links: {},
   embeddedSchemas: {},
   getId: _taskGetId,
   getLinks: _taskGetLinks,
@@ -65,7 +63,8 @@ void _taskSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeDateTime(offsets[0], object.completed);
-  writer.writeLong(offsets[1], object.visionId);
+  writer.writeLong(offsets[1], object.scheduleId);
+  writer.writeLong(offsets[2], object.visionId);
 }
 
 Task _taskDeserialize(
@@ -77,7 +76,8 @@ Task _taskDeserialize(
   final object = Task();
   object.completed = reader.readDateTime(offsets[0]);
   object.id = id;
-  object.visionId = reader.readLong(offsets[1]);
+  object.scheduleId = reader.readLong(offsets[1]);
+  object.visionId = reader.readLong(offsets[2]);
   return object;
 }
 
@@ -92,6 +92,8 @@ P _taskDeserializeProp<P>(
       return (reader.readDateTime(offset)) as P;
     case 1:
       return (reader.readLong(offset)) as P;
+    case 2:
+      return (reader.readLong(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -102,12 +104,11 @@ Id _taskGetId(Task object) {
 }
 
 List<IsarLinkBase<dynamic>> _taskGetLinks(Task object) {
-  return [object.schedule];
+  return [];
 }
 
 void _taskAttach(IsarCollection<dynamic> col, Id id, Task object) {
   object.id = id;
-  object.schedule.attach(col, col.isar.collection<Schedule>(), r'schedule', id);
 }
 
 extension TaskQueryWhereSort on QueryBuilder<Task, Task, QWhere> {
@@ -291,6 +292,58 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Task, Task, QAfterFilterCondition> scheduleIdEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'scheduleId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterFilterCondition> scheduleIdGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'scheduleId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterFilterCondition> scheduleIdLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'scheduleId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterFilterCondition> scheduleIdBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'scheduleId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Task, Task, QAfterFilterCondition> visionIdEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -346,20 +399,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
 
 extension TaskQueryObject on QueryBuilder<Task, Task, QFilterCondition> {}
 
-extension TaskQueryLinks on QueryBuilder<Task, Task, QFilterCondition> {
-  QueryBuilder<Task, Task, QAfterFilterCondition> schedule(
-      FilterQuery<Schedule> q) {
-    return QueryBuilder.apply(this, (query) {
-      return query.link(q, r'schedule');
-    });
-  }
-
-  QueryBuilder<Task, Task, QAfterFilterCondition> scheduleIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'schedule', 0, true, 0, true);
-    });
-  }
-}
+extension TaskQueryLinks on QueryBuilder<Task, Task, QFilterCondition> {}
 
 extension TaskQuerySortBy on QueryBuilder<Task, Task, QSortBy> {
   QueryBuilder<Task, Task, QAfterSortBy> sortByCompleted() {
@@ -371,6 +411,18 @@ extension TaskQuerySortBy on QueryBuilder<Task, Task, QSortBy> {
   QueryBuilder<Task, Task, QAfterSortBy> sortByCompletedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'completed', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterSortBy> sortByScheduleId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'scheduleId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterSortBy> sortByScheduleIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'scheduleId', Sort.desc);
     });
   }
 
@@ -412,6 +464,18 @@ extension TaskQuerySortThenBy on QueryBuilder<Task, Task, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Task, Task, QAfterSortBy> thenByScheduleId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'scheduleId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterSortBy> thenByScheduleIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'scheduleId', Sort.desc);
+    });
+  }
+
   QueryBuilder<Task, Task, QAfterSortBy> thenByVisionId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'visionId', Sort.asc);
@@ -432,6 +496,12 @@ extension TaskQueryWhereDistinct on QueryBuilder<Task, Task, QDistinct> {
     });
   }
 
+  QueryBuilder<Task, Task, QDistinct> distinctByScheduleId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'scheduleId');
+    });
+  }
+
   QueryBuilder<Task, Task, QDistinct> distinctByVisionId() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'visionId');
@@ -449,6 +519,12 @@ extension TaskQueryProperty on QueryBuilder<Task, Task, QQueryProperty> {
   QueryBuilder<Task, DateTime, QQueryOperations> completedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'completed');
+    });
+  }
+
+  QueryBuilder<Task, int, QQueryOperations> scheduleIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'scheduleId');
     });
   }
 

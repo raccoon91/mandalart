@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mandalart/model/task_model.dart';
-import 'package:mandalart/provider/task_provider.dart';
+import 'package:mandalart/model/todo_model.dart';
+import 'package:mandalart/provider/todo_provider.dart';
 import 'package:mandalart/theme/color.dart';
+import 'package:mandalart/utils/todo_data_source.dart';
 import 'package:mandalart/widget/base/banner_ad.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -20,7 +21,7 @@ class _TaskScreenState extends State<TaskScreen> {
 
   void getTasks(DateTime date) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<TaskProvider>(
+      Provider.of<TodoProvider>(
         context,
         listen: false,
       ).getTasks(date);
@@ -30,23 +31,27 @@ class _TaskScreenState extends State<TaskScreen> {
   onTapCell(CalendarTapDetails? calendar) async {
     if (calendar?.appointments == null) return;
 
-    TaskModel? todo = calendar?.appointments?.first;
+    TodoModel? todo = calendar?.appointments?.first;
 
     if (todo == null || calendar?.date == null) return;
 
-    await Provider.of<TaskProvider>(
+    await Provider.of<TodoProvider>(
       context,
       listen: false,
-    ).toggleTodo(todo.taskId, todo.startTime);
+    ).toggleTodo(
+      todo.taskId,
+      todo.scheduleId,
+      todo.startTime,
+    );
 
     if (!mounted) return;
 
     DateTime date = calendar!.date!;
 
-    Provider.of<TaskProvider>(
+    await Provider.of<TodoProvider>(
       context,
       listen: false,
-    ).updateTask(todo.taskId, date);
+    ).updateTask(todo.scheduleId, date);
   }
 
   @override
@@ -58,7 +63,7 @@ class _TaskScreenState extends State<TaskScreen> {
           const BannerAD(),
           SizedBox(height: 10.h),
           Expanded(
-            child: Consumer<TaskProvider>(
+            child: Consumer<TodoProvider>(
               builder: (context, state, child) => SfCalendar(
                 view: CalendarView.day,
                 timeZone: 'Asia/Seoul',
@@ -92,11 +97,9 @@ class _TaskScreenState extends State<TaskScreen> {
                           margin: EdgeInsets.all(2.sp),
                           padding: EdgeInsets.all(4.sp),
                           decoration: BoxDecoration(
-                            color: todo?.doneId != null
-                                ? todo?.color
-                                : ColorClass.white,
+                            color: todo?.color,
                             border: Border.all(
-                              color: todo?.color,
+                              color: todo?.borderColor,
                               width: 2.w,
                             ),
                             borderRadius: BorderRadius.all(
@@ -109,7 +112,7 @@ class _TaskScreenState extends State<TaskScreen> {
                     }).toList(),
                   );
                 },
-                dataSource: state.tasks,
+                dataSource: TodoDataSource(state.todos),
                 onViewChanged: (view) {
                   DateTime date = view.visibleDates.first;
 

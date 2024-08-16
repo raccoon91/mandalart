@@ -1,5 +1,4 @@
 import 'package:isar/isar.dart';
-import 'package:mandalart/schema/schedule_schema.dart';
 
 part 'task_schema.g.dart';
 
@@ -9,7 +8,7 @@ class Task {
 
   late int visionId;
 
-  late DateTime completed;
+  late int scheduleId;
 
-  final schedule = IsarLink<Schedule>();
+  late DateTime completed;
 }

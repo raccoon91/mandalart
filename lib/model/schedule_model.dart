@@ -26,7 +26,9 @@ class ScheduleModel {
     DateTime from,
     DateTime to,
   ) {
-    Color? color = schema.color != null ? Color(schema.color!) : null;
+    Color? color = schema.plan.value?.color != null
+        ? Color(schema.plan.value!.color!)
+        : null;
 
     return ScheduleModel(
       id: schema.id,
