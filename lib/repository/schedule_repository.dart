@@ -103,7 +103,7 @@ class ScheduleRepository {
     try {
       final scheduleSchemaList = await IsarDB.isar.schedules
           .filter()
-          .repeatEqualTo("weekdays")
+          .repeatEqualTo('weekdays')
           .isDeleteEqualTo(false)
           .findAll();
 
@@ -140,7 +140,7 @@ class ScheduleRepository {
     try {
       final scheduleSchemaList = await IsarDB.isar.schedules
           .filter()
-          .repeatEqualTo("weekend")
+          .repeatEqualTo('weekend')
           .isDeleteEqualTo(false)
           .findAll();
 
@@ -177,7 +177,7 @@ class ScheduleRepository {
     try {
       final scheduleSchemaList = await IsarDB.isar.schedules
           .filter()
-          .repeatEqualTo("day")
+          .repeatEqualTo('day')
           .isDeleteEqualTo(false)
           .findAll();
 
@@ -214,7 +214,7 @@ class ScheduleRepository {
     try {
       final scheduleSchemaList = await IsarDB.isar.schedules
           .filter()
-          .repeatEqualTo("week")
+          .repeatEqualTo('week')
           .isDeleteEqualTo(false)
           .findAll();
 
@@ -249,7 +249,7 @@ class ScheduleRepository {
     try {
       final scheduleSchemaList = await IsarDB.isar.schedules
           .filter()
-          .repeatEqualTo("month")
+          .repeatEqualTo('month')
           .isDeleteEqualTo(false)
           .findAll();
 

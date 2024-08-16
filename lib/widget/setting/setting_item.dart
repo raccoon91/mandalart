@@ -43,7 +43,7 @@ class _SettingItemState extends State<SettingItem> {
             widget.child != null
                 ? Expanded(child: widget.child!)
                 : Text(
-                    widget.name ?? "",
+                    widget.name ?? '',
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.w700,

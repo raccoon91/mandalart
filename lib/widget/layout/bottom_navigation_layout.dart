@@ -39,7 +39,7 @@ class _BottomNavigationLayoutState extends State<BottomNavigationLayout> {
     if (now.difference(currentBackPressTime) > requiredSeconds) {
       currentBackPressTime = now;
 
-      Fluttertoast.showToast(msg: "한 번 더 누르면 앱이 종료됩니다");
+      Fluttertoast.showToast(msg: '한 번 더 누르면 앱이 종료됩니다');
 
       setState(() {});
     } else {
@@ -51,7 +51,7 @@ class _BottomNavigationLayoutState extends State<BottomNavigationLayout> {
   Widget build(BuildContext context) {
     bool isHome =
         GoRouter.of(context).routeInformationProvider.value.uri.toString() ==
-            "/home";
+            '/home';
 
     return PopScope(
       canPop: false,

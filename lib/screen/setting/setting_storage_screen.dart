@@ -181,7 +181,7 @@ class _SettingStorageScreenState extends State<SettingStorageScreen> {
                           const Icon(Icons.cleaning_services),
                           SizedBox(height: 8.w),
                           Text(
-                            "전체 삭제",
+                            '전체 삭제',
                             style: TextStyle(
                               fontSize: 18.sp,
                               fontWeight: FontWeight.w700,

@@ -30,7 +30,7 @@ final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
       navigatorKey: _homeTabNavigatorKey,
       routes: [
         GoRoute(
-          name: "home",
+          name: 'home',
           path: '/home',
           pageBuilder: (BuildContext context, GoRouterState state) {
             return getPage(
@@ -40,7 +40,7 @@ final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
           },
           routes: [
             GoRoute(
-              name: "goal",
+              name: 'goal',
               path: ':goalId',
               pageBuilder: (BuildContext context, GoRouterState state) {
                 return getPage(

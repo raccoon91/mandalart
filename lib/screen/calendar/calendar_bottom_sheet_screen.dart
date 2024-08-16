@@ -25,7 +25,7 @@ class _CalendarBottomSheetScreenState extends State<CalendarBottomSheetScreen> {
   void initState() {
     super.initState();
 
-    from = DateTime.parse(widget.date ?? "");
+    from = DateTime.parse(widget.date ?? '');
     to = from.add(const Duration(hours: 1));
   }
 

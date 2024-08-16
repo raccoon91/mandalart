@@ -75,7 +75,7 @@ class ScheduleBottomSheet extends StatelessWidget {
                     children: [
                       Icon(Icons.clear, size: 36.sp),
                       SizedBox(height: 6.h),
-                      Text("삭제", style: TextStyle(fontSize: 16.sp)),
+                      Text('삭제', style: TextStyle(fontSize: 16.sp)),
                     ],
                   ),
                 ),
@@ -88,7 +88,7 @@ class ScheduleBottomSheet extends StatelessWidget {
                     children: [
                       Icon(Icons.block, size: 36.sp),
                       SizedBox(height: 6.h),
-                      Text("종료", style: TextStyle(fontSize: 16.sp)),
+                      Text('종료', style: TextStyle(fontSize: 16.sp)),
                     ],
                   ),
                 ),

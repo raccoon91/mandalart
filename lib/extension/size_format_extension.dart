@@ -19,10 +19,10 @@ extension FileSizeExtensions on num {
         (runningPreviousDivider == 0 ? size : size / runningPreviousDivider)
             .toStringAsFixed(round);
 
-    if (result.endsWith("0" * round)) {
+    if (result.endsWith('0' * round)) {
       result = result.substring(0, result.length - round - 1);
     }
 
-    return "$result ${affixes[affix]}";
+    return '$result ${affixes[affix]}';
   }
 }
