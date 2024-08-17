@@ -46,7 +46,7 @@ class PlanMandalartWidget extends StatelessWidget {
                       onTap: () {
                         if (type == 'goal' || goal?.id == null) return;
 
-                        context.push('/home/${goal?.id}');
+                        context.push('/home/goal/${goal?.id}');
                       },
                     ),
                   ),

@@ -41,7 +41,7 @@ final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
           routes: [
             GoRoute(
               name: 'goal',
-              path: ':goalId',
+              path: 'goal/:goalId',
               pageBuilder: (BuildContext context, GoRouterState state) {
                 return slideTransitionPage(
                   state: state,

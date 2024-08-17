@@ -43,7 +43,7 @@ class GoalWidget extends StatelessWidget {
         onTap: () {
           if (goal?.id == null) return;
 
-          context.push('/home/${goal?.id}');
+          context.push('/home/goal/${goal?.id}');
         },
       ),
     );
