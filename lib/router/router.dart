@@ -19,7 +19,7 @@ import 'package:mandalart/widget/layout/bottom_navigation_layout.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _homeTabNavigatorKey = GlobalKey<NavigatorState>();
-final _calendarTabNavigatorKey = GlobalKey<NavigatorState>();
+final _scheduleTabNavigatorKey = GlobalKey<NavigatorState>();
 final _taskTabNavigatorKey = GlobalKey<NavigatorState>();
 final _settingTabNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -43,7 +43,7 @@ final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
               name: 'goal',
               path: ':goalId',
               pageBuilder: (BuildContext context, GoRouterState state) {
-                return getPage(
+                return slideTransitionPage(
                   state: state,
                   child: GoalScreen(
                     goalId: state.pathParameters['goalId'],
@@ -56,10 +56,10 @@ final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
       ],
     ),
     StatefulShellBranch(
-      navigatorKey: _calendarTabNavigatorKey,
+      navigatorKey: _scheduleTabNavigatorKey,
       routes: [
         GoRoute(
-          path: '/calendar',
+          path: '/schedule',
           pageBuilder: (BuildContext context, GoRouterState state) {
             return getPage(
               state: state,
