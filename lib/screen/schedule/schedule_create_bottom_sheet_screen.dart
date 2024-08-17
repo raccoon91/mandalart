@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mandalart/provider/calendar_provider.dart';
-import 'package:mandalart/widget/calendar/calendar_bottom_sheet.dart';
+import 'package:mandalart/provider/schedule_provider.dart';
+import 'package:mandalart/widget/schedule/schedule_create_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
-class CalendarBottomSheetScreen extends StatefulWidget {
+class ScheduleCreateBottomSheetScreen extends StatefulWidget {
   final String? date;
 
-  const CalendarBottomSheetScreen({
+  const ScheduleCreateBottomSheetScreen({
     super.key,
     this.date,
   });
 
   @override
-  State<CalendarBottomSheetScreen> createState() =>
-      _CalendarBottomSheetScreenState();
+  State<ScheduleCreateBottomSheetScreen> createState() =>
+      _ScheduleCreateBottomSheetScreenState();
 }
 
-class _CalendarBottomSheetScreenState extends State<CalendarBottomSheetScreen> {
+class _ScheduleCreateBottomSheetScreenState
+    extends State<ScheduleCreateBottomSheetScreen> {
   late DateTime from;
   late DateTime to;
 
@@ -36,7 +37,7 @@ class _CalendarBottomSheetScreenState extends State<CalendarBottomSheetScreen> {
     bool? allDay,
     String? repeat,
   ) async {
-    bool success = await Provider.of<CalendarProvider>(
+    bool success = await Provider.of<ScheduleProvider>(
       context,
       listen: false,
     ).createSchedule(
@@ -49,7 +50,7 @@ class _CalendarBottomSheetScreenState extends State<CalendarBottomSheetScreen> {
 
     if (!mounted || success == false) return;
 
-    await Provider.of<CalendarProvider>(
+    await Provider.of<ScheduleProvider>(
       context,
       listen: false,
     ).getSchedules(null, null);
@@ -61,7 +62,7 @@ class _CalendarBottomSheetScreenState extends State<CalendarBottomSheetScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return CalendarBottomSheet(
+    return ScheduleCreateBottomSheet(
       from: from,
       to: to,
       onCreate: createTask,

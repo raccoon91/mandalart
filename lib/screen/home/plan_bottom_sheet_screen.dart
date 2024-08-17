@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mandalart/provider/calendar_provider.dart';
 import 'package:mandalart/provider/goal_provider.dart';
 import 'package:mandalart/provider/home_provider.dart';
+import 'package:mandalart/provider/schedule_provider.dart';
 import 'package:mandalart/widget/home/mandal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
@@ -56,7 +56,7 @@ class PlanBottomSheetScreen extends StatelessWidget {
         if (!context.mounted) return;
 
         if (goalId != null) {
-          Provider.of<CalendarProvider>(context, listen: false).getPlans(
+          Provider.of<ScheduleProvider>(context, listen: false).getPlans(
             int.parse(goalId!),
           );
         }

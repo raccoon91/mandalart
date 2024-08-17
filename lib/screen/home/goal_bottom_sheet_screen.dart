@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mandalart/provider/calendar_provider.dart';
 import 'package:mandalart/provider/home_provider.dart';
+import 'package:mandalart/provider/schedule_provider.dart';
 import 'package:mandalart/widget/home/mandal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +26,7 @@ class GoalBottomSheetScreen extends StatelessWidget {
 
         if (!context.mounted) return;
 
-        Provider.of<CalendarProvider>(context, listen: false).getGoals();
+        Provider.of<ScheduleProvider>(context, listen: false).getGoals();
       },
     );
   }

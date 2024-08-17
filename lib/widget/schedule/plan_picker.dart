@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mandalart/provider/calendar_provider.dart';
-import 'package:mandalart/widget/calendar/subject_widget.dart';
+import 'package:mandalart/provider/schedule_provider.dart';
+import 'package:mandalart/widget/schedule/schedule_picker_widget.dart';
 import 'package:provider/provider.dart';
 
 class PlanPicker extends StatelessWidget {
@@ -28,7 +28,7 @@ class PlanPicker extends StatelessWidget {
             ],
           ),
           SizedBox(height: 10.h),
-          Consumer<CalendarProvider>(builder: (context, state, child) {
+          Consumer<ScheduleProvider>(builder: (context, state, child) {
             if (state.plans == null || state.plans?.isEmpty == true) {
               return Padding(
                 padding: EdgeInsets.symmetric(vertical: 10.h),
@@ -48,7 +48,7 @@ class PlanPicker extends StatelessWidget {
                   spacing: 10.w,
                   runSpacing: 10.w,
                   children: state.plans?.map((plan) {
-                        return SubjectWidget(
+                        return SchedulePickerWidget(
                           id: plan?.id,
                           name: plan?.name,
                           color: plan?.color,

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mandalart/provider/calendar_provider.dart';
+import 'package:mandalart/provider/schedule_provider.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/base/button.dart';
-import 'package:mandalart/widget/calendar/calendar_date_time_range.dart';
-import 'package:mandalart/widget/calendar/goal_picker.dart';
-import 'package:mandalart/widget/calendar/plan_picker.dart';
-import 'package:mandalart/widget/calendar/repeat_picker.dart';
+import 'package:mandalart/widget/schedule/calendar_date_time_range.dart';
+import 'package:mandalart/widget/schedule/goal_picker.dart';
+import 'package:mandalart/widget/schedule/plan_picker.dart';
+import 'package:mandalart/widget/schedule/repeat_picker.dart';
 import 'package:provider/provider.dart';
 
-class CalendarBottomSheet extends StatefulWidget {
+class ScheduleCreateBottomSheet extends StatefulWidget {
   final DateTime from;
   final DateTime to;
   final Future<void> Function(
@@ -20,7 +20,7 @@ class CalendarBottomSheet extends StatefulWidget {
     String? repeat,
   )? onCreate;
 
-  const CalendarBottomSheet({
+  const ScheduleCreateBottomSheet({
     super.key,
     required this.from,
     required this.to,
@@ -28,10 +28,11 @@ class CalendarBottomSheet extends StatefulWidget {
   });
 
   @override
-  State<CalendarBottomSheet> createState() => _CalendarBottomSheetState();
+  State<ScheduleCreateBottomSheet> createState() =>
+      _ScheduleCreateBottomSheetState();
 }
 
-class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
+class _ScheduleCreateBottomSheetState extends State<ScheduleCreateBottomSheet> {
   int? selectedGoalId;
   int? selectedPlanId;
   late DateTime fromDate;
@@ -104,7 +105,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
 
     selectedPlanId = null;
 
-    Provider.of<CalendarProvider>(
+    Provider.of<ScheduleProvider>(
       context,
       listen: false,
     ).getPlans(selectedGoalId);

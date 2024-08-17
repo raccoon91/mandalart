@@ -3,13 +3,13 @@ import 'package:go_router/go_router.dart';
 import 'package:mandalart/router/bottom_sheet_page.dart';
 import 'package:mandalart/router/get_page.dart';
 import 'package:mandalart/router/slide_transition_page.dart';
-import 'package:mandalart/screen/calendar/calendar_bottom_sheet_screen.dart';
-import 'package:mandalart/screen/calendar/calendar_screen.dart';
-import 'package:mandalart/screen/calendar/schedule_bottom_sheet_screen.dart';
 import 'package:mandalart/screen/home/goal_bottom_sheet_screen.dart';
 import 'package:mandalart/screen/home/goal_screen.dart';
 import 'package:mandalart/screen/home/home_screen.dart';
 import 'package:mandalart/screen/home/plan_bottom_sheet_screen.dart';
+import 'package:mandalart/screen/schedule/schedule_bottom_sheet_screen.dart';
+import 'package:mandalart/screen/schedule/schedule_create_bottom_sheet_screen.dart';
+import 'package:mandalart/screen/schedule/schedule_screen.dart';
 import 'package:mandalart/screen/setting/setting_screen.dart';
 import 'package:mandalart/screen/setting/setting_storage_screen.dart';
 import 'package:mandalart/screen/task/task_screen.dart';
@@ -63,7 +63,7 @@ final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
           pageBuilder: (BuildContext context, GoRouterState state) {
             return getPage(
               state: state,
-              child: const CalendarScreen(),
+              child: const ScheduleScreen(),
             );
           },
         ),
@@ -161,10 +161,10 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/sheet/calendar/:date',
+      path: '/sheet/schedule/create/:date',
       pageBuilder: (BuildContext context, GoRouterState state) {
         return BottomSheetPage(
-          child: CalendarBottomSheetScreen(
+          child: ScheduleCreateBottomSheetScreen(
             date: state.pathParameters['date'],
           ),
         );

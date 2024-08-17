@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mandalart/provider/calendar_provider.dart';
-import 'package:mandalart/widget/calendar/schedule_bottom_sheet.dart';
+import 'package:mandalart/provider/schedule_provider.dart';
+import 'package:mandalart/widget/schedule/schedule_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 class ScheduleBottomSheetScreen extends StatefulWidget {
@@ -34,7 +34,7 @@ class _ScheduleBottomSheetScreenState extends State<ScheduleBottomSheetScreen> {
   void getSchedule() async {
     if (widget.scheduleId == null) return;
 
-    await Provider.of<CalendarProvider>(
+    await Provider.of<ScheduleProvider>(
       context,
       listen: false,
     ).getSchedule(int.parse(widget.scheduleId!));
@@ -43,14 +43,14 @@ class _ScheduleBottomSheetScreenState extends State<ScheduleBottomSheetScreen> {
   Future<void> deleteSchedule() async {
     if (widget.scheduleId == null) return;
 
-    await Provider.of<CalendarProvider>(
+    await Provider.of<ScheduleProvider>(
       context,
       listen: false,
     ).deleteSchedule(int.parse(widget.scheduleId!));
 
     if (!mounted) return;
 
-    await Provider.of<CalendarProvider>(
+    await Provider.of<ScheduleProvider>(
       context,
       listen: false,
     ).getSchedules(null, null);
@@ -63,14 +63,14 @@ class _ScheduleBottomSheetScreenState extends State<ScheduleBottomSheetScreen> {
   Future<void> stopSchedule() async {
     if (widget.scheduleId == null || widget.to == null) return;
 
-    await Provider.of<CalendarProvider>(
+    await Provider.of<ScheduleProvider>(
       context,
       listen: false,
     ).stopSchedule(int.parse(widget.scheduleId!), DateTime.parse(widget.to!));
 
     if (!mounted) return;
 
-    await Provider.of<CalendarProvider>(
+    await Provider.of<ScheduleProvider>(
       context,
       listen: false,
     ).getSchedules(null, null);
@@ -82,7 +82,7 @@ class _ScheduleBottomSheetScreenState extends State<ScheduleBottomSheetScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CalendarProvider>(
+    return Consumer<ScheduleProvider>(
       builder: (context, state, child) {
         if (state.schedule == null) return Container();
 

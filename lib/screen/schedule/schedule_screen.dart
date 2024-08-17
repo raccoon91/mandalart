@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mandalart/model/appointment_model.dart';
-import 'package:mandalart/provider/calendar_provider.dart';
+import 'package:mandalart/provider/schedule_provider.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/base/banner_ad.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-class CalendarScreen extends StatefulWidget {
-  const CalendarScreen({super.key});
+class ScheduleScreen extends StatefulWidget {
+  const ScheduleScreen({super.key});
 
   @override
-  State<CalendarScreen> createState() => _CalendarScreenState();
+  State<ScheduleScreen> createState() => _ScheduleScreenState();
 }
 
-class _CalendarScreenState extends State<CalendarScreen> {
+class _ScheduleScreenState extends State<ScheduleScreen> {
   late DateTime weekFrom;
   late DateTime weekTo;
 
@@ -24,7 +24,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<CalendarProvider>(
+      Provider.of<ScheduleProvider>(
         context,
         listen: false,
       ).getGoals();
@@ -33,7 +33,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   void getSchedules(DateTime from, DateTime to) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<CalendarProvider>(
+      Provider.of<ScheduleProvider>(
         context,
         listen: false,
       ).getSchedules(from, to);
@@ -44,7 +44,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     if (calendar?.appointments == null) {
       if (calendar?.date == null) return;
 
-      context.push('/sheet/calendar/${calendar?.date.toString()}');
+      context.push('/sheet/schedule/create/${calendar?.date.toString()}');
     } else {
       AppointmentModel? appointment = calendar?.appointments?.first;
 
@@ -65,7 +65,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           const BannerAD(),
           SizedBox(height: 10.h),
           Expanded(
-            child: Consumer<CalendarProvider>(
+            child: Consumer<ScheduleProvider>(
               builder: (context, state, child) => SfCalendar(
                 view: CalendarView.week,
                 timeZone: 'Asia/Seoul',

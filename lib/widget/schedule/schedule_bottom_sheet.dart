@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mandalart/model/schedule_model.dart';
 import 'package:mandalart/theme/color.dart';
-import 'package:mandalart/widget/calendar/calendar_date_time_range.dart';
-import 'package:mandalart/widget/calendar/goal_picker.dart';
-import 'package:mandalart/widget/calendar/plan_picker.dart';
-import 'package:mandalart/widget/calendar/repeat_picker.dart';
+import 'package:mandalart/widget/schedule/calendar_date_time_range.dart';
+import 'package:mandalart/widget/schedule/goal_picker.dart';
+import 'package:mandalart/widget/schedule/plan_picker.dart';
+import 'package:mandalart/widget/schedule/repeat_picker.dart';
 
 class ScheduleBottomSheet extends StatelessWidget {
   final ScheduleModel? schedule;

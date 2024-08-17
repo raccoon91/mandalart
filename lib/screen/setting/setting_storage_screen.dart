@@ -71,7 +71,7 @@ class _SettingStorageScreenState extends State<SettingStorageScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              '프로젝트',
+                              '목표',
                               style: TextStyle(
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.w700,
@@ -121,7 +121,7 @@ class _SettingStorageScreenState extends State<SettingStorageScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              '상세계획',
+                              '실행계획',
                               style: TextStyle(
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.w700,
@@ -154,6 +154,31 @@ class _SettingStorageScreenState extends State<SettingStorageScreen> {
                             ),
                             Text(
                               '${state.scheduleSize?.toFileSize()}',
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 2.h),
+                      const Divider(color: ColorClass.border),
+                      SizedBox(height: 2.h),
+                      SettingItem(
+                        icon: Icons.task_alt,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '완료',
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            Text(
+                              '${state.completeSize?.toFileSize()}',
                               style: TextStyle(
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.w700,

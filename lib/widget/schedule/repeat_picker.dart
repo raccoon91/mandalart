@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mandalart/widget/calendar/repeat_widget.dart';
+import 'package:mandalart/widget/schedule/repeat_widget.dart';
 
 class RepeatPicker extends StatelessWidget {
   final String? value;

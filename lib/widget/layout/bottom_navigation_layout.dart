@@ -94,7 +94,7 @@ class _BottomNavigationLayoutState extends State<BottomNavigationLayout> {
                       icon: Icon(Icons.home_filled),
                     ),
                     BottomNavigationBarItem(
-                      label: 'Calendar',
+                      label: 'Schedule',
                       icon: Icon(Icons.event_available),
                     ),
                     BottomNavigationBarItem(

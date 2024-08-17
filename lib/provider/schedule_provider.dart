@@ -10,7 +10,7 @@ import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/utils/calendar_data.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
+class ScheduleProvider with ChangeNotifier, DiagnosticableTreeMixin {
   DateTime? _start;
   DateTime? _end;
 
