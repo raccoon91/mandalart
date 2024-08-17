@@ -6,7 +6,6 @@ import 'package:mandalart/model/schedule_model.dart';
 import 'package:mandalart/model/vision_model.dart';
 import 'package:mandalart/repository/schedule_repository.dart';
 import 'package:mandalart/repository/vision_repository.dart';
-import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/utils/calendar_data.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -100,7 +99,7 @@ class ScheduleProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
       List<Appointment> appointments = [];
 
-      var weekSchedules = await ScheduleRepository.gets(_start!);
+      var weekSchedules = await ScheduleRepository.getThisWeek(_start!);
       var weekDaySchedules = await ScheduleRepository.getWeekDay(_start!);
       var weekendSchedules = await ScheduleRepository.getWeekend(_start!);
       var everyDaySchedules = await ScheduleRepository.getEveryDay(_start!);
@@ -159,13 +158,7 @@ class ScheduleProvider with ChangeNotifier, DiagnosticableTreeMixin {
       _schedules = schedules;
 
       _appointments = schedules.map((schedule) {
-        return Appointment(
-          subject: schedule.plan?.name ?? '',
-          startTime: schedule.from,
-          endTime: schedule.to,
-          isAllDay: schedule.isAllDay,
-          color: schedule.color ?? ColorClass.under,
-        );
+        return AppointmentModel.fromSchema(schedule);
       }).toList();
 
       return true;

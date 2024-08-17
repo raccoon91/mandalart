@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mandalart/provider/schedule_provider.dart';
+import 'package:mandalart/provider/task_provider.dart';
 import 'package:mandalart/widget/schedule/schedule_create_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
@@ -54,6 +55,13 @@ class _ScheduleCreateBottomSheetScreenState
       context,
       listen: false,
     ).getSchedules(null, null);
+
+    if (!mounted) return;
+
+    await Provider.of<TaskProvider>(
+      context,
+      listen: false,
+    ).getTasks(DateTime.now());
 
     if (!mounted) return;
 

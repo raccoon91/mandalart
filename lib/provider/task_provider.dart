@@ -22,7 +22,7 @@ class TaskProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
       List<TaskModel> tasks = [];
 
-      var weekSchedules = await ScheduleRepository.gets(start);
+      var weekSchedules = await ScheduleRepository.getThisWeek(start);
       var weekDaySchedules = await ScheduleRepository.getWeekDay(start);
       var weekendSchedules = await ScheduleRepository.getWeekend(start);
       var everyDaySchedules = await ScheduleRepository.getEveryDay(start);

@@ -60,7 +60,7 @@ class ScheduleRepository {
     }
   }
 
-  static Future<List<ScheduleModel>?> gets(DateTime date) async {
+  static Future<List<ScheduleModel>?> getThisWeek(DateTime date) async {
     try {
       var startDay = date.day;
       var endDay = startDay + 6;
@@ -247,9 +247,14 @@ class ScheduleRepository {
 
   static Future<List<ScheduleModel>?> getEveryMonth(DateTime date) async {
     try {
+      var startDay = date.day;
+      var endDay = startDay + 6;
+
       final scheduleSchemaList = await IsarDB.isar.schedules
           .filter()
           .repeatEqualTo('month')
+          .dayGreaterThan(startDay, include: true)
+          .dayLessThan(endDay, include: true)
           .isDeleteEqualTo(false)
           .findAll();
 
@@ -257,10 +262,12 @@ class ScheduleRepository {
 
       for (var schema in scheduleSchemaList) {
         var from = date.copyWith(
+          day: schema.day,
           hour: schema.start.toHour(),
           minute: schema.start.toMinute(),
         );
         var to = date.copyWith(
+          day: schema.day,
           hour: schema.end.toHour(),
           minute: schema.end.toMinute(),
         );
