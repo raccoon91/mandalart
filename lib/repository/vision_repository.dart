@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:mandalart/db/isar_db.dart';
 import 'package:mandalart/model/vision_model.dart';
+import 'package:mandalart/schema/complete_schema.dart';
 import 'package:mandalart/schema/goal_schema.dart';
 import 'package:mandalart/schema/plan_schema.dart';
 import 'package:mandalart/schema/schedule_schema.dart';
-import 'package:mandalart/schema/task_schema.dart';
 import 'package:mandalart/schema/vision_schema.dart';
 
 class VisionRepository {
@@ -140,13 +140,19 @@ class VisionRepository {
       List<int> scheduleIds =
           scheduleSchema.map((schedule) => schedule.id).toList();
 
-      List<Task> taskSchema =
-          await IsarDB.isar.tasks.filter().visionIdEqualTo(visionId).findAll();
+      List<Complete> completeSchema = await IsarDB.isar.completes
+          .filter()
+          .visionIdEqualTo(visionId)
+          .findAll();
 
-      List<int> taskIds = taskSchema.map((task) => task.id).toList();
+      List<int> completeIds = completeSchema
+          .map(
+            (complete) => complete.id,
+          )
+          .toList();
 
       await IsarDB.isar.writeTxn(() async {
-        await IsarDB.isar.tasks.deleteAll(taskIds);
+        await IsarDB.isar.completes.deleteAll(completeIds);
         await IsarDB.isar.schedules.deleteAll(scheduleIds);
         await IsarDB.isar.plans.deleteAll(planIds);
         await IsarDB.isar.goals.deleteAll(goalIds);

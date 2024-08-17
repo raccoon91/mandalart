@@ -1,9 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:mandalart/model/schedule_model.dart';
 import 'package:mandalart/model/todo_model.dart';
+import 'package:mandalart/repository/complete_repository.dart';
 import 'package:mandalart/repository/schedule_repository.dart';
-import 'package:mandalart/repository/task_repository.dart';
-import 'package:mandalart/repository/vision_repository.dart';
 import 'package:mandalart/utils/todo_data_source.dart';
 
 class TodoProvider with ChangeNotifier, DiagnosticableTreeMixin {
@@ -42,9 +41,9 @@ class TodoProvider with ChangeNotifier, DiagnosticableTreeMixin {
       for (ScheduleModel schedule in schedules) {
         if (schedule.from.day != date.day) continue;
 
-        var task = await TaskRepository.get(schedule.id, schedule.from);
+        var complete = await CompleteRepository.get(schedule.id, schedule.from);
 
-        var todo = TodoModel.fromSchema(schedule, task);
+        var todo = TodoModel.fromSchema(schedule, complete);
 
         todos.add(todo);
       }
@@ -65,9 +64,9 @@ class TodoProvider with ChangeNotifier, DiagnosticableTreeMixin {
       for (var schedule in _schedules) {
         if (schedule.from.day != date.day) continue;
 
-        var task = await TaskRepository.get(schedule.id, schedule.from);
+        var complete = await CompleteRepository.get(schedule.id, schedule.from);
 
-        var todo = TodoModel.fromSchema(schedule, task);
+        var todo = TodoModel.fromSchema(schedule, complete);
 
         todos.add(todo);
       }
@@ -80,16 +79,16 @@ class TodoProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
-  Future<void> toggleTodo(int? taskId, int? scheduleId, DateTime? date) async {
+  Future<void> toggleTodo(
+    int? completeId,
+    int? scheduleId,
+    DateTime? date,
+  ) async {
     try {
-      var vision = await VisionRepository.get();
-
-      if (vision == null) return;
-
-      if (taskId == null) {
-        await TaskRepository.create(vision.id, scheduleId, date);
+      if (completeId == null) {
+        await CompleteRepository.create(scheduleId, date);
       } else {
-        await TaskRepository.delete(taskId);
+        await CompleteRepository.delete(completeId);
       }
     } catch (error) {
       rethrow;

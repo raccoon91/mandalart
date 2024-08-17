@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mandalart/model/schedule_model.dart';
-import 'package:mandalart/schema/task_schema.dart';
+import 'package:mandalart/schema/complete_schema.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class TodoModel extends Appointment {
-  int? taskId;
+  int? completeId;
   int? scheduleId;
   DateTime? completed;
   Color borderColor;
@@ -16,22 +16,25 @@ class TodoModel extends Appointment {
     required super.endTime,
     required super.isAllDay,
     required super.color,
-    this.taskId,
+    this.completeId,
     this.scheduleId,
     this.completed,
     required this.borderColor,
   });
 
-  factory TodoModel.fromSchema(ScheduleModel schedule, Task? taskSchema) {
+  factory TodoModel.fromSchema(
+    ScheduleModel schedule,
+    Complete? completeSchema,
+  ) {
     return TodoModel(
-      taskId: taskSchema?.id,
+      completeId: completeSchema?.id,
       scheduleId: schedule.id,
-      completed: taskSchema?.completed,
+      completed: completeSchema?.completed,
       subject: schedule.plan?.name ?? '',
       startTime: schedule.from,
       endTime: schedule.to,
       isAllDay: schedule.isAllDay,
-      color: taskSchema?.completed == null
+      color: completeSchema?.completed == null
           ? ColorClass.white
           : schedule.color ?? ColorClass.under,
       borderColor: schedule.color ?? ColorClass.under,

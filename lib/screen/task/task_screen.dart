@@ -38,7 +38,7 @@ class _TaskScreenState extends State<TaskScreen> {
       context,
       listen: false,
     ).toggleTodo(
-      todo.taskId,
+      todo.completeId,
       todo.scheduleId,
       todo.startTime,
     );

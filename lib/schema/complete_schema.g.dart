@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'task_schema.dart';
+part of 'complete_schema.dart';
 
 // **************************************************************************
 // IsarCollectionGenerator
@@ -9,13 +9,13 @@ part of 'task_schema.dart';
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-extension GetTaskCollection on Isar {
-  IsarCollection<Task> get tasks => this.collection();
+extension GetCompleteCollection on Isar {
+  IsarCollection<Complete> get completes => this.collection();
 }
 
-const TaskSchema = CollectionSchema(
-  name: r'Task',
-  id: 2998003626758701373,
+const CompleteSchema = CollectionSchema(
+  name: r'Complete',
+  id: 7523497361042817977,
   properties: {
     r'completed': PropertySchema(
       id: 0,
@@ -33,22 +33,22 @@ const TaskSchema = CollectionSchema(
       type: IsarType.long,
     )
   },
-  estimateSize: _taskEstimateSize,
-  serialize: _taskSerialize,
-  deserialize: _taskDeserialize,
-  deserializeProp: _taskDeserializeProp,
+  estimateSize: _completeEstimateSize,
+  serialize: _completeSerialize,
+  deserialize: _completeDeserialize,
+  deserializeProp: _completeDeserializeProp,
   idName: r'id',
   indexes: {},
   links: {},
   embeddedSchemas: {},
-  getId: _taskGetId,
-  getLinks: _taskGetLinks,
-  attach: _taskAttach,
+  getId: _completeGetId,
+  getLinks: _completeGetLinks,
+  attach: _completeAttach,
   version: '3.1.0+1',
 );
 
-int _taskEstimateSize(
-  Task object,
+int _completeEstimateSize(
+  Complete object,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -56,8 +56,8 @@ int _taskEstimateSize(
   return bytesCount;
 }
 
-void _taskSerialize(
-  Task object,
+void _completeSerialize(
+  Complete object,
   IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
@@ -67,13 +67,13 @@ void _taskSerialize(
   writer.writeLong(offsets[2], object.visionId);
 }
 
-Task _taskDeserialize(
+Complete _completeDeserialize(
   Id id,
   IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = Task();
+  final object = Complete();
   object.completed = reader.readDateTime(offsets[0]);
   object.id = id;
   object.scheduleId = reader.readLong(offsets[1]);
@@ -81,7 +81,7 @@ Task _taskDeserialize(
   return object;
 }
 
-P _taskDeserializeProp<P>(
+P _completeDeserializeProp<P>(
   IsarReader reader,
   int propertyId,
   int offset,
@@ -99,28 +99,28 @@ P _taskDeserializeProp<P>(
   }
 }
 
-Id _taskGetId(Task object) {
+Id _completeGetId(Complete object) {
   return object.id;
 }
 
-List<IsarLinkBase<dynamic>> _taskGetLinks(Task object) {
+List<IsarLinkBase<dynamic>> _completeGetLinks(Complete object) {
   return [];
 }
 
-void _taskAttach(IsarCollection<dynamic> col, Id id, Task object) {
+void _completeAttach(IsarCollection<dynamic> col, Id id, Complete object) {
   object.id = id;
 }
 
-extension TaskQueryWhereSort on QueryBuilder<Task, Task, QWhere> {
-  QueryBuilder<Task, Task, QAfterWhere> anyId() {
+extension CompleteQueryWhereSort on QueryBuilder<Complete, Complete, QWhere> {
+  QueryBuilder<Complete, Complete, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
     });
   }
 }
 
-extension TaskQueryWhere on QueryBuilder<Task, Task, QWhereClause> {
-  QueryBuilder<Task, Task, QAfterWhereClause> idEqualTo(Id id) {
+extension CompleteQueryWhere on QueryBuilder<Complete, Complete, QWhereClause> {
+  QueryBuilder<Complete, Complete, QAfterWhereClause> idEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
         lower: id,
@@ -129,7 +129,7 @@ extension TaskQueryWhere on QueryBuilder<Task, Task, QWhereClause> {
     });
   }
 
-  QueryBuilder<Task, Task, QAfterWhereClause> idNotEqualTo(Id id) {
+  QueryBuilder<Complete, Complete, QAfterWhereClause> idNotEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -151,7 +151,7 @@ extension TaskQueryWhere on QueryBuilder<Task, Task, QWhereClause> {
     });
   }
 
-  QueryBuilder<Task, Task, QAfterWhereClause> idGreaterThan(Id id,
+  QueryBuilder<Complete, Complete, QAfterWhereClause> idGreaterThan(Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -160,7 +160,7 @@ extension TaskQueryWhere on QueryBuilder<Task, Task, QWhereClause> {
     });
   }
 
-  QueryBuilder<Task, Task, QAfterWhereClause> idLessThan(Id id,
+  QueryBuilder<Complete, Complete, QAfterWhereClause> idLessThan(Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -169,7 +169,7 @@ extension TaskQueryWhere on QueryBuilder<Task, Task, QWhereClause> {
     });
   }
 
-  QueryBuilder<Task, Task, QAfterWhereClause> idBetween(
+  QueryBuilder<Complete, Complete, QAfterWhereClause> idBetween(
     Id lowerId,
     Id upperId, {
     bool includeLower = true,
@@ -186,8 +186,9 @@ extension TaskQueryWhere on QueryBuilder<Task, Task, QWhereClause> {
   }
 }
 
-extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
-  QueryBuilder<Task, Task, QAfterFilterCondition> completedEqualTo(
+extension CompleteQueryFilter
+    on QueryBuilder<Complete, Complete, QFilterCondition> {
+  QueryBuilder<Complete, Complete, QAfterFilterCondition> completedEqualTo(
       DateTime value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -197,7 +198,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Task, Task, QAfterFilterCondition> completedGreaterThan(
+  QueryBuilder<Complete, Complete, QAfterFilterCondition> completedGreaterThan(
     DateTime value, {
     bool include = false,
   }) {
@@ -210,7 +211,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Task, Task, QAfterFilterCondition> completedLessThan(
+  QueryBuilder<Complete, Complete, QAfterFilterCondition> completedLessThan(
     DateTime value, {
     bool include = false,
   }) {
@@ -223,7 +224,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Task, Task, QAfterFilterCondition> completedBetween(
+  QueryBuilder<Complete, Complete, QAfterFilterCondition> completedBetween(
     DateTime lower,
     DateTime upper, {
     bool includeLower = true,
@@ -240,7 +241,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Task, Task, QAfterFilterCondition> idEqualTo(Id value) {
+  QueryBuilder<Complete, Complete, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'id',
@@ -249,7 +250,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Task, Task, QAfterFilterCondition> idGreaterThan(
+  QueryBuilder<Complete, Complete, QAfterFilterCondition> idGreaterThan(
     Id value, {
     bool include = false,
   }) {
@@ -262,7 +263,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Task, Task, QAfterFilterCondition> idLessThan(
+  QueryBuilder<Complete, Complete, QAfterFilterCondition> idLessThan(
     Id value, {
     bool include = false,
   }) {
@@ -275,7 +276,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Task, Task, QAfterFilterCondition> idBetween(
+  QueryBuilder<Complete, Complete, QAfterFilterCondition> idBetween(
     Id lower,
     Id upper, {
     bool includeLower = true,
@@ -292,7 +293,8 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Task, Task, QAfterFilterCondition> scheduleIdEqualTo(int value) {
+  QueryBuilder<Complete, Complete, QAfterFilterCondition> scheduleIdEqualTo(
+      int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'scheduleId',
@@ -301,7 +303,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Task, Task, QAfterFilterCondition> scheduleIdGreaterThan(
+  QueryBuilder<Complete, Complete, QAfterFilterCondition> scheduleIdGreaterThan(
     int value, {
     bool include = false,
   }) {
@@ -314,7 +316,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Task, Task, QAfterFilterCondition> scheduleIdLessThan(
+  QueryBuilder<Complete, Complete, QAfterFilterCondition> scheduleIdLessThan(
     int value, {
     bool include = false,
   }) {
@@ -327,7 +329,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Task, Task, QAfterFilterCondition> scheduleIdBetween(
+  QueryBuilder<Complete, Complete, QAfterFilterCondition> scheduleIdBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -344,7 +346,8 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Task, Task, QAfterFilterCondition> visionIdEqualTo(int value) {
+  QueryBuilder<Complete, Complete, QAfterFilterCondition> visionIdEqualTo(
+      int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'visionId',
@@ -353,7 +356,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Task, Task, QAfterFilterCondition> visionIdGreaterThan(
+  QueryBuilder<Complete, Complete, QAfterFilterCondition> visionIdGreaterThan(
     int value, {
     bool include = false,
   }) {
@@ -366,7 +369,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Task, Task, QAfterFilterCondition> visionIdLessThan(
+  QueryBuilder<Complete, Complete, QAfterFilterCondition> visionIdLessThan(
     int value, {
     bool include = false,
   }) {
@@ -379,7 +382,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Task, Task, QAfterFilterCondition> visionIdBetween(
+  QueryBuilder<Complete, Complete, QAfterFilterCondition> visionIdBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -397,138 +400,143 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
   }
 }
 
-extension TaskQueryObject on QueryBuilder<Task, Task, QFilterCondition> {}
+extension CompleteQueryObject
+    on QueryBuilder<Complete, Complete, QFilterCondition> {}
 
-extension TaskQueryLinks on QueryBuilder<Task, Task, QFilterCondition> {}
+extension CompleteQueryLinks
+    on QueryBuilder<Complete, Complete, QFilterCondition> {}
 
-extension TaskQuerySortBy on QueryBuilder<Task, Task, QSortBy> {
-  QueryBuilder<Task, Task, QAfterSortBy> sortByCompleted() {
+extension CompleteQuerySortBy on QueryBuilder<Complete, Complete, QSortBy> {
+  QueryBuilder<Complete, Complete, QAfterSortBy> sortByCompleted() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'completed', Sort.asc);
     });
   }
 
-  QueryBuilder<Task, Task, QAfterSortBy> sortByCompletedDesc() {
+  QueryBuilder<Complete, Complete, QAfterSortBy> sortByCompletedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'completed', Sort.desc);
     });
   }
 
-  QueryBuilder<Task, Task, QAfterSortBy> sortByScheduleId() {
+  QueryBuilder<Complete, Complete, QAfterSortBy> sortByScheduleId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'scheduleId', Sort.asc);
     });
   }
 
-  QueryBuilder<Task, Task, QAfterSortBy> sortByScheduleIdDesc() {
+  QueryBuilder<Complete, Complete, QAfterSortBy> sortByScheduleIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'scheduleId', Sort.desc);
     });
   }
 
-  QueryBuilder<Task, Task, QAfterSortBy> sortByVisionId() {
+  QueryBuilder<Complete, Complete, QAfterSortBy> sortByVisionId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'visionId', Sort.asc);
     });
   }
 
-  QueryBuilder<Task, Task, QAfterSortBy> sortByVisionIdDesc() {
+  QueryBuilder<Complete, Complete, QAfterSortBy> sortByVisionIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'visionId', Sort.desc);
     });
   }
 }
 
-extension TaskQuerySortThenBy on QueryBuilder<Task, Task, QSortThenBy> {
-  QueryBuilder<Task, Task, QAfterSortBy> thenByCompleted() {
+extension CompleteQuerySortThenBy
+    on QueryBuilder<Complete, Complete, QSortThenBy> {
+  QueryBuilder<Complete, Complete, QAfterSortBy> thenByCompleted() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'completed', Sort.asc);
     });
   }
 
-  QueryBuilder<Task, Task, QAfterSortBy> thenByCompletedDesc() {
+  QueryBuilder<Complete, Complete, QAfterSortBy> thenByCompletedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'completed', Sort.desc);
     });
   }
 
-  QueryBuilder<Task, Task, QAfterSortBy> thenById() {
+  QueryBuilder<Complete, Complete, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
     });
   }
 
-  QueryBuilder<Task, Task, QAfterSortBy> thenByIdDesc() {
+  QueryBuilder<Complete, Complete, QAfterSortBy> thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
     });
   }
 
-  QueryBuilder<Task, Task, QAfterSortBy> thenByScheduleId() {
+  QueryBuilder<Complete, Complete, QAfterSortBy> thenByScheduleId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'scheduleId', Sort.asc);
     });
   }
 
-  QueryBuilder<Task, Task, QAfterSortBy> thenByScheduleIdDesc() {
+  QueryBuilder<Complete, Complete, QAfterSortBy> thenByScheduleIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'scheduleId', Sort.desc);
     });
   }
 
-  QueryBuilder<Task, Task, QAfterSortBy> thenByVisionId() {
+  QueryBuilder<Complete, Complete, QAfterSortBy> thenByVisionId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'visionId', Sort.asc);
     });
   }
 
-  QueryBuilder<Task, Task, QAfterSortBy> thenByVisionIdDesc() {
+  QueryBuilder<Complete, Complete, QAfterSortBy> thenByVisionIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'visionId', Sort.desc);
     });
   }
 }
 
-extension TaskQueryWhereDistinct on QueryBuilder<Task, Task, QDistinct> {
-  QueryBuilder<Task, Task, QDistinct> distinctByCompleted() {
+extension CompleteQueryWhereDistinct
+    on QueryBuilder<Complete, Complete, QDistinct> {
+  QueryBuilder<Complete, Complete, QDistinct> distinctByCompleted() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'completed');
     });
   }
 
-  QueryBuilder<Task, Task, QDistinct> distinctByScheduleId() {
+  QueryBuilder<Complete, Complete, QDistinct> distinctByScheduleId() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'scheduleId');
     });
   }
 
-  QueryBuilder<Task, Task, QDistinct> distinctByVisionId() {
+  QueryBuilder<Complete, Complete, QDistinct> distinctByVisionId() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'visionId');
     });
   }
 }
 
-extension TaskQueryProperty on QueryBuilder<Task, Task, QQueryProperty> {
-  QueryBuilder<Task, int, QQueryOperations> idProperty() {
+extension CompleteQueryProperty
+    on QueryBuilder<Complete, Complete, QQueryProperty> {
+  QueryBuilder<Complete, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
     });
   }
 
-  QueryBuilder<Task, DateTime, QQueryOperations> completedProperty() {
+  QueryBuilder<Complete, DateTime, QQueryOperations> completedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'completed');
     });
   }
 
-  QueryBuilder<Task, int, QQueryOperations> scheduleIdProperty() {
+  QueryBuilder<Complete, int, QQueryOperations> scheduleIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'scheduleId');
     });
   }
 
-  QueryBuilder<Task, int, QQueryOperations> visionIdProperty() {
+  QueryBuilder<Complete, int, QQueryOperations> visionIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'visionId');
     });

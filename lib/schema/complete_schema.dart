@@ -1,9 +1,9 @@
 import 'package:isar/isar.dart';
 
-part 'task_schema.g.dart';
+part 'complete_schema.g.dart';
 
 @collection
-class Task {
+class Complete {
   Id id = Isar.autoIncrement;
 
   late int visionId;
