@@ -2,10 +2,10 @@ import 'package:mandalart/model/schedule_model.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-class CalendarScheduleModel extends Appointment {
+class AppointmentModel extends Appointment {
   int? scheduleId;
 
-  CalendarScheduleModel({
+  AppointmentModel({
     required super.subject,
     required super.startTime,
     required super.endTime,
@@ -14,8 +14,8 @@ class CalendarScheduleModel extends Appointment {
     this.scheduleId,
   });
 
-  factory CalendarScheduleModel.fromSchema(ScheduleModel schedule) {
-    return CalendarScheduleModel(
+  factory AppointmentModel.fromSchema(ScheduleModel schedule) {
+    return AppointmentModel(
       scheduleId: schedule.id,
       subject: schedule.plan?.name ?? '',
       startTime: schedule.from,

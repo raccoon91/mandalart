@@ -4,13 +4,13 @@ import 'package:mandalart/schema/complete_schema.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-class TodoModel extends Appointment {
+class TaskModel extends Appointment {
   int? completeId;
   int? scheduleId;
   DateTime? completed;
   Color borderColor;
 
-  TodoModel({
+  TaskModel({
     required super.subject,
     required super.startTime,
     required super.endTime,
@@ -22,11 +22,11 @@ class TodoModel extends Appointment {
     required this.borderColor,
   });
 
-  factory TodoModel.fromSchema(
+  factory TaskModel.fromSchema(
     ScheduleModel schedule,
     Complete? completeSchema,
   ) {
-    return TodoModel(
+    return TaskModel(
       completeId: completeSchema?.id,
       scheduleId: schedule.id,
       completed: completeSchema?.completed,

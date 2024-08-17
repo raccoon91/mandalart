@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:mandalart/model/calendar_schedule_model.dart';
+import 'package:mandalart/model/appointment_model.dart';
 import 'package:mandalart/model/goal_model.dart';
 import 'package:mandalart/model/plan_model.dart';
 import 'package:mandalart/model/schedule_model.dart';
@@ -7,7 +7,7 @@ import 'package:mandalart/model/vision_model.dart';
 import 'package:mandalart/repository/schedule_repository.dart';
 import 'package:mandalart/repository/vision_repository.dart';
 import 'package:mandalart/theme/color.dart';
-import 'package:mandalart/utils/schedule_data_source.dart';
+import 'package:mandalart/utils/calendar_data.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
@@ -19,15 +19,15 @@ class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
   ScheduleModel? _schedule;
   List<ScheduleModel> _schedules = [];
-  List<Appointment> _calendarSchedules = [];
+  List<Appointment> _appointments = [];
 
   List<GoalModel?>? get goals => _goals;
   List<PlanModel?>? get plans => _plans;
 
   ScheduleModel? get schedule => _schedule;
   List<ScheduleModel> get schedules => _schedules;
-  ScheduleDataSource get calendarSchedules =>
-      ScheduleDataSource(_calendarSchedules);
+
+  CalendarData get appointments => CalendarData(_appointments);
 
   Future<void> getGoals() async {
     try {
@@ -98,7 +98,7 @@ class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
       if (_start == null || _end == null) return;
 
-      List<Appointment> calendarSchedules = [];
+      List<Appointment> appointments = [];
 
       var weekSchedules = await ScheduleRepository.gets(_start!);
       var weekDaySchedules = await ScheduleRepository.getWeekDay(_start!);
@@ -117,11 +117,11 @@ class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
       ];
 
       for (ScheduleModel schedule in schedules) {
-        calendarSchedules.add(CalendarScheduleModel.fromSchema(schedule));
+        appointments.add(AppointmentModel.fromSchema(schedule));
       }
 
       _schedules = schedules;
-      _calendarSchedules = calendarSchedules;
+      _appointments = appointments;
     } catch (error) {
       rethrow;
     } finally {
@@ -158,7 +158,7 @@ class CalendarProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
       _schedules = schedules;
 
-      _calendarSchedules = schedules.map((schedule) {
+      _appointments = schedules.map((schedule) {
         return Appointment(
           subject: schedule.plan?.name ?? '',
           startTime: schedule.from,

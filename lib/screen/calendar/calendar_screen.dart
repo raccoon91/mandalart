@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mandalart/model/calendar_schedule_model.dart';
+import 'package:mandalart/model/appointment_model.dart';
 import 'package:mandalart/provider/calendar_provider.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/base/banner_ad.dart';
@@ -46,12 +46,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
       context.push('/sheet/calendar/${calendar?.date.toString()}');
     } else {
-      CalendarScheduleModel? schedule = calendar?.appointments?.first;
+      AppointmentModel? appointment = calendar?.appointments?.first;
 
-      if (schedule == null) return;
+      if (appointment == null) return;
 
       context.push(
-        '/sheet/schedule/${schedule.scheduleId}/${schedule.startTime.toString()}/${schedule.endTime.toString()}',
+        '/sheet/schedule/${appointment.scheduleId}/${appointment.startTime.toString()}/${appointment.endTime.toString()}',
       );
     }
   }
@@ -95,7 +95,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   color: ColorClass.black,
                   fontSize: 14.sp,
                 ),
-                dataSource: state.calendarSchedules,
+                dataSource: state.appointments,
                 onTap: onTapCell,
                 onViewChanged: (view) {
                   weekFrom = view.visibleDates.first;

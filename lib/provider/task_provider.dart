@@ -1,18 +1,18 @@
 import 'package:flutter/foundation.dart';
 import 'package:mandalart/model/schedule_model.dart';
-import 'package:mandalart/model/todo_model.dart';
+import 'package:mandalart/model/task_model.dart';
 import 'package:mandalart/repository/complete_repository.dart';
 import 'package:mandalart/repository/schedule_repository.dart';
-import 'package:mandalart/utils/todo_data_source.dart';
+import 'package:mandalart/utils/calendar_data.dart';
 
-class TodoProvider with ChangeNotifier, DiagnosticableTreeMixin {
+class TaskProvider with ChangeNotifier, DiagnosticableTreeMixin {
   ScheduleModel? _schedule;
   List<ScheduleModel> _schedules = [];
-  List<TodoModel> _todos = [];
+  List<TaskModel> _tasks = [];
 
   ScheduleModel? get schedule => _schedule;
   List<ScheduleModel> get schedules => _schedules;
-  TodoDataSource get todos => TodoDataSource(_todos);
+  CalendarData get tasks => CalendarData(_tasks);
 
   Future<void> getTasks(DateTime date) async {
     try {
@@ -20,7 +20,7 @@ class TodoProvider with ChangeNotifier, DiagnosticableTreeMixin {
         days: date.weekday == 7 ? 0 : date.weekday,
       ));
 
-      List<TodoModel> todos = [];
+      List<TaskModel> tasks = [];
 
       var weekSchedules = await ScheduleRepository.gets(start);
       var weekDaySchedules = await ScheduleRepository.getWeekDay(start);
@@ -43,13 +43,13 @@ class TodoProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
         var complete = await CompleteRepository.get(schedule.id, schedule.from);
 
-        var todo = TodoModel.fromSchema(schedule, complete);
+        var task = TaskModel.fromSchema(schedule, complete);
 
-        todos.add(todo);
+        tasks.add(task);
       }
 
       _schedules = schedules;
-      _todos = todos;
+      _tasks = tasks;
     } catch (error) {
       rethrow;
     } finally {
@@ -59,19 +59,19 @@ class TodoProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
   Future<void> updateTask(int? scheduleId, DateTime date) async {
     try {
-      List<TodoModel> todos = [];
+      List<TaskModel> tasks = [];
 
       for (var schedule in _schedules) {
         if (schedule.from.day != date.day) continue;
 
         var complete = await CompleteRepository.get(schedule.id, schedule.from);
 
-        var todo = TodoModel.fromSchema(schedule, complete);
+        var task = TaskModel.fromSchema(schedule, complete);
 
-        todos.add(todo);
+        tasks.add(task);
       }
 
-      _todos = todos;
+      _tasks = tasks;
     } catch (error) {
       rethrow;
     } finally {

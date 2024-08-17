@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mandalart/model/todo_model.dart';
-import 'package:mandalart/provider/todo_provider.dart';
+import 'package:mandalart/model/task_model.dart';
+import 'package:mandalart/provider/task_provider.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/base/banner_ad.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +20,7 @@ class _TaskScreenState extends State<TaskScreen> {
 
   void getTasks(DateTime date) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<TodoProvider>(
+      Provider.of<TaskProvider>(
         context,
         listen: false,
       ).getTasks(date);
@@ -30,27 +30,27 @@ class _TaskScreenState extends State<TaskScreen> {
   onTapCell(CalendarTapDetails? calendar) async {
     if (calendar?.appointments == null) return;
 
-    TodoModel? todo = calendar?.appointments?.first;
+    TaskModel? task = calendar?.appointments?.first;
 
-    if (todo == null || calendar?.date == null) return;
+    if (task == null || calendar?.date == null) return;
 
-    await Provider.of<TodoProvider>(
+    await Provider.of<TaskProvider>(
       context,
       listen: false,
     ).toggleTodo(
-      todo.completeId,
-      todo.scheduleId,
-      todo.startTime,
+      task.completeId,
+      task.scheduleId,
+      task.startTime,
     );
 
     if (!mounted) return;
 
     DateTime date = calendar!.date!;
 
-    await Provider.of<TodoProvider>(
+    await Provider.of<TaskProvider>(
       context,
       listen: false,
-    ).updateTask(todo.scheduleId, date);
+    ).updateTask(task.scheduleId, date);
   }
 
   @override
@@ -62,7 +62,7 @@ class _TaskScreenState extends State<TaskScreen> {
           const BannerAD(),
           SizedBox(height: 10.h),
           Expanded(
-            child: Consumer<TodoProvider>(
+            child: Consumer<TaskProvider>(
               builder: (context, state, child) => SfCalendar(
                 view: CalendarView.day,
                 timeZone: 'Asia/Seoul',
@@ -90,28 +90,28 @@ class _TaskScreenState extends State<TaskScreen> {
                 appointmentBuilder: (context, calendar) {
                   return Row(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: calendar.appointments.map((todo) {
+                    children: calendar.appointments.map((task) {
                       return Expanded(
                         child: Container(
                           margin: EdgeInsets.all(2.sp),
                           padding: EdgeInsets.all(4.sp),
                           decoration: BoxDecoration(
-                            color: todo?.color,
+                            color: task?.color,
                             border: Border.all(
-                              color: todo?.borderColor,
+                              color: task?.borderColor,
                               width: 2.w,
                             ),
                             borderRadius: BorderRadius.all(
                               Radius.circular(4.r),
                             ),
                           ),
-                          child: Text(todo?.subject),
+                          child: Text(task?.subject),
                         ),
                       );
                     }).toList(),
                   );
                 },
-                dataSource: state.todos,
+                dataSource: state.tasks,
                 onViewChanged: (view) {
                   DateTime date = view.visibleDates.first;
 
