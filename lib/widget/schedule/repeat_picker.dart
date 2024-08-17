@@ -4,11 +4,13 @@ import 'package:mandalart/widget/schedule/repeat_widget.dart';
 
 class RepeatPicker extends StatelessWidget {
   final String? value;
+  final DateTime? date;
   final void Function(String? value)? onChanged;
 
   const RepeatPicker({
     super.key,
     this.value,
+    this.date,
     this.onChanged,
   });
 
@@ -33,6 +35,9 @@ class RepeatPicker extends StatelessWidget {
                 value: 'weekdays',
                 name: '주중',
                 selected: value == 'weekdays',
+                disabled: date == null
+                    ? false
+                    : date?.weekday == 6 || date?.weekday == 7,
                 onChanged: onChanged,
               ),
               SizedBox(width: 10.w),
@@ -40,6 +45,9 @@ class RepeatPicker extends StatelessWidget {
                 value: 'weekend',
                 name: '주말',
                 selected: value == 'weekend',
+                disabled: date == null
+                    ? false
+                    : date?.weekday != 6 && date?.weekday != 7,
                 onChanged: onChanged,
               ),
               SizedBox(width: 10.w),

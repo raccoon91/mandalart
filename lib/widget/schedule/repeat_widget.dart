@@ -6,6 +6,7 @@ class RepeatWidget extends StatelessWidget {
   final String value;
   final String name;
   final bool selected;
+  final bool disabled;
   final void Function(String value)? onChanged;
 
   const RepeatWidget({
@@ -13,6 +14,7 @@ class RepeatWidget extends StatelessWidget {
     required this.value,
     required this.name,
     this.selected = false,
+    this.disabled = false,
     this.onChanged,
   });
 
@@ -21,7 +23,7 @@ class RepeatWidget extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        if (onChanged == null) return;
+        if (disabled == true || onChanged == null) return;
 
         onChanged!(value);
       },
@@ -30,13 +32,18 @@ class RepeatWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: selected ? ColorClass.border : ColorClass.white,
           border: Border.all(
-            color: selected ? ColorClass.border : ColorClass.gray,
+            color: disabled
+                ? ColorClass.under
+                : selected
+                    ? ColorClass.border
+                    : ColorClass.gray,
           ),
           borderRadius: BorderRadius.all(Radius.circular(4.r)),
         ),
         child: Text(
           name,
           style: TextStyle(
+            color: disabled ? ColorClass.under : ColorClass.black,
             fontWeight: selected ? FontWeight.w700 : FontWeight.w400,
           ),
         ),

@@ -161,10 +161,16 @@ class _ScheduleCreateBottomSheetState extends State<ScheduleCreateBottomSheet> {
                     allDayChanged: allDayChanged,
                   ),
                   const Divider(),
-                  RepeatPicker(value: repeat, onChanged: repeatChanged),
+                  RepeatPicker(
+                    value: repeat,
+                    date: fromDate,
+                    onChanged: repeatChanged,
+                  ),
                   const Divider(),
                   GoalPicker(
-                      selectedGoalId: selectedGoalId, onChanged: goalChanged),
+                    selectedGoalId: selectedGoalId,
+                    onChanged: goalChanged,
+                  ),
                   ...(selectedGoalId != null
                       ? [
                           const Divider(),
