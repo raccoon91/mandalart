@@ -50,6 +50,12 @@ class ScheduleProvider with ChangeNotifier, DiagnosticableTreeMixin {
         return;
       }
 
+      VisionModel? vision = await VisionRepository.get();
+
+      _goals = vision?.goals
+          ?.where((goal) => goal?.name?.isNotEmpty ?? false)
+          .toList();
+
       GoalModel? goal = _goals?.where((goal) => goal?.id == goalId).first;
 
       if (goal != null) {
