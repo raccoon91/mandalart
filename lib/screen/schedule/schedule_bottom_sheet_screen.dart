@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mandalart/provider/schedule_provider.dart';
+import 'package:mandalart/provider/task_provider.dart';
 import 'package:mandalart/widget/schedule/schedule_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
@@ -57,6 +58,13 @@ class _ScheduleBottomSheetScreenState extends State<ScheduleBottomSheetScreen> {
 
     if (!mounted) return;
 
+    await Provider.of<TaskProvider>(
+      context,
+      listen: false,
+    ).getTasks(null);
+
+    if (!mounted) return;
+
     context.pop();
   }
 
@@ -74,6 +82,13 @@ class _ScheduleBottomSheetScreenState extends State<ScheduleBottomSheetScreen> {
       context,
       listen: false,
     ).getSchedules(null, null);
+
+    if (!mounted) return;
+
+    await Provider.of<TaskProvider>(
+      context,
+      listen: false,
+    ).getTasks(null);
 
     if (!mounted) return;
 

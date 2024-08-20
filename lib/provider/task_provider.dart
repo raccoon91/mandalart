@@ -6,6 +6,9 @@ import 'package:mandalart/repository/schedule_repository.dart';
 import 'package:mandalart/utils/calendar_data.dart';
 
 class TaskProvider with ChangeNotifier, DiagnosticableTreeMixin {
+  DateTime _target = DateTime.now();
+  DateTime? _start;
+
   ScheduleModel? _schedule;
   List<ScheduleModel> _schedules = [];
   List<TaskModel> _tasks = [];
@@ -14,20 +17,25 @@ class TaskProvider with ChangeNotifier, DiagnosticableTreeMixin {
   List<ScheduleModel> get schedules => _schedules;
   CalendarData get tasks => CalendarData(_tasks);
 
-  Future<void> getTasks(DateTime date) async {
+  Future<void> getTasks(DateTime? date) async {
     try {
-      DateTime start = date.subtract(Duration(
-        days: date.weekday == 7 ? 0 : date.weekday,
-      ));
+      if (date != null) {
+        _target = date;
+        _start = date.subtract(Duration(
+          days: date.weekday == 7 ? 0 : date.weekday,
+        ));
+      }
+
+      if (_start == null) return;
 
       List<TaskModel> tasks = [];
 
-      var weekSchedules = await ScheduleRepository.getThisWeek(start);
-      var weekDaySchedules = await ScheduleRepository.getWeekDay(start);
-      var weekendSchedules = await ScheduleRepository.getWeekend(start);
-      var everyDaySchedules = await ScheduleRepository.getEveryDay(start);
-      var everyWeekSchedules = await ScheduleRepository.getEveryWeek(start);
-      var everyMonthSchedules = await ScheduleRepository.getEveryMonth(start);
+      var weekSchedules = await ScheduleRepository.getThisWeek(_start!);
+      var weekDaySchedules = await ScheduleRepository.getWeekDay(_start!);
+      var weekendSchedules = await ScheduleRepository.getWeekend(_start!);
+      var everyDaySchedules = await ScheduleRepository.getEveryDay(_start!);
+      var everyWeekSchedules = await ScheduleRepository.getEveryWeek(_start!);
+      var everyMonthSchedules = await ScheduleRepository.getEveryMonth(_start!);
 
       List<ScheduleModel> schedules = [
         ...(weekSchedules ?? []),
@@ -39,7 +47,7 @@ class TaskProvider with ChangeNotifier, DiagnosticableTreeMixin {
       ];
 
       for (ScheduleModel schedule in schedules) {
-        if (schedule.from.day != date.day) continue;
+        if (schedule.from.day != _target.day) continue;
 
         var complete = await CompleteRepository.get(schedule.id, schedule.from);
 
