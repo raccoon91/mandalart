@@ -56,7 +56,10 @@ class PlanBottomSheetScreen extends StatelessWidget {
         if (!context.mounted) return;
 
         if (goalId != null) {
-          Provider.of<ScheduleProvider>(context, listen: false).getPlans(
+          Provider.of<ScheduleProvider>(
+            context,
+            listen: false,
+          ).getPlans(
             int.parse(goalId!),
           );
         }

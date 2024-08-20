@@ -39,7 +39,10 @@ class _VisionCreateScreenState extends State<VisionCreateScreen> {
   createTapped() async {
     if (visionController.text.isEmpty) return;
 
-    await Provider.of<HomeProvider>(context, listen: false).createVision(
+    await Provider.of<HomeProvider>(
+      context,
+      listen: false,
+    ).createVision(
       visionController.text,
       color,
     );
@@ -52,7 +55,10 @@ class _VisionCreateScreenState extends State<VisionCreateScreen> {
   submitted(String name) async {
     if (name.isEmpty) return;
 
-    await Provider.of<HomeProvider>(context, listen: false).createVision(
+    await Provider.of<HomeProvider>(
+      context,
+      listen: false,
+    ).createVision(
       name,
       color,
     );
