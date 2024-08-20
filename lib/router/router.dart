@@ -3,10 +3,10 @@ import 'package:go_router/go_router.dart';
 import 'package:mandalart/router/bottom_sheet_page.dart';
 import 'package:mandalart/router/get_page.dart';
 import 'package:mandalart/router/slide_transition_page.dart';
-import 'package:mandalart/screen/home/goal_bottom_sheet_screen.dart';
+import 'package:mandalart/screen/home/goal_create_bottom_sheet_screen.dart';
 import 'package:mandalart/screen/home/goal_screen.dart';
 import 'package:mandalart/screen/home/home_screen.dart';
-import 'package:mandalart/screen/home/plan_bottom_sheet_screen.dart';
+import 'package:mandalart/screen/home/plan_create_bottom_sheet_screen.dart';
 import 'package:mandalart/screen/schedule/schedule_bottom_sheet_screen.dart';
 import 'package:mandalart/screen/schedule/schedule_create_bottom_sheet_screen.dart';
 import 'package:mandalart/screen/schedule/schedule_screen.dart';
@@ -139,20 +139,20 @@ final GoRouter router = GoRouter(
       ],
     ),
     GoRoute(
-      path: '/sheet/goal/:goalId',
+      path: '/sheet/goal/create/:goalId',
       pageBuilder: (BuildContext context, GoRouterState state) {
         return BottomSheetPage(
-          child: GoalBottomSheetScreen(
+          child: GoalCreateBottomSheetScreen(
             goalId: state.pathParameters['goalId'],
           ),
         );
       },
     ),
     GoRoute(
-      path: '/sheet/plan/:mode/:goalId/:planId',
+      path: '/sheet/plan/create/:mode/:goalId/:planId',
       pageBuilder: (BuildContext context, GoRouterState state) {
         return BottomSheetPage(
-          child: PlanBottomSheetScreen(
+          child: PlanCreateBottomSheetScreen(
             mode: state.pathParameters['mode'],
             goalId: state.pathParameters['goalId'],
             planId: state.pathParameters['planId'],

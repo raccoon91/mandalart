@@ -4,10 +4,10 @@ import 'package:mandalart/provider/schedule_provider.dart';
 import 'package:mandalart/widget/home/mandal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
-class GoalBottomSheetScreen extends StatelessWidget {
+class GoalCreateBottomSheetScreen extends StatelessWidget {
   final String? goalId;
 
-  const GoalBottomSheetScreen({
+  const GoalCreateBottomSheetScreen({
     super.key,
     this.goalId,
   });
