@@ -18,6 +18,26 @@ class PlanRepository {
     }
   }
 
+  static Future<PlanModel?> get(int? planId) async {
+    try {
+      if (planId == null) return null;
+
+      final planSchema = await IsarDB.isar.plans
+          .filter()
+          .idEqualTo(planId)
+          .isDeleteEqualTo(false)
+          .findFirst();
+
+      if (planSchema == null) return null;
+
+      PlanModel plans = PlanModel.fromSchema(planSchema);
+
+      return plans;
+    } catch (error) {
+      rethrow;
+    }
+  }
+
   static Future<List<PlanModel>?> gets(int? goalId) async {
     try {
       if (goalId == null) return null;

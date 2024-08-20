@@ -29,6 +29,30 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
+  Future<GoalModel?> getGoal(int? goalId) async {
+    try {
+      if (goalId == null) return null;
+
+      var goal = GoalRepository.get(goalId);
+
+      return goal;
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  Future<PlanModel?> getPlan(int? planId) async {
+    try {
+      if (planId == null) return null;
+
+      var plan = PlanRepository.get(planId);
+
+      return plan;
+    } catch (error) {
+      rethrow;
+    }
+  }
+
   Future<void> createVision(String name, Color color) async {
     try {
       _vision = await VisionRepository.create(name, color);
@@ -69,7 +93,7 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
     Color? color,
   ) async {
     try {
-      if (_vision == null || goalId == null || planId == null) return;
+      if (_vision == null || planId == null) return;
 
       PlanModel? newPlan = await PlanRepository.update(planId, name, color);
 

@@ -26,6 +26,7 @@ class PlanMandalartWidget extends StatelessWidget {
             return PlanWidget(
               mode: mode,
               type: type,
+              goalId: goal?.id,
               plan: goal?.plans?[index],
             );
           }),
@@ -35,6 +36,7 @@ class PlanMandalartWidget extends StatelessWidget {
             PlanWidget(
               mode: mode,
               type: type,
+              goalId: goal?.id,
               plan: goal?.plans?[3],
             ),
             goal?.name == null
@@ -44,15 +46,20 @@ class PlanMandalartWidget extends StatelessWidget {
                       name: type == 'goal' ? goal?.name : null,
                       color: goal?.color,
                       onTap: () {
-                        if (type == 'goal' || goal?.id == null) return;
+                        if (goal?.id == null) return;
 
-                        context.push('/home/goal/${goal?.id}');
+                        if (type == 'goal') {
+                          context.push('/sheet/goal/update/${goal?.id}');
+                        } else if (type == 'plan') {
+                          context.push('/home/goal/${goal?.id}');
+                        }
                       },
                     ),
                   ),
             PlanWidget(
               mode: mode,
               type: type,
+              goalId: goal?.id,
               plan: goal?.plans?[4],
             ),
           ],
@@ -62,6 +69,7 @@ class PlanMandalartWidget extends StatelessWidget {
             return PlanWidget(
               mode: mode,
               type: type,
+              goalId: goal?.id,
               plan: goal?.plans?[index + 5],
             );
           }),
