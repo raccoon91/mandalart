@@ -27,53 +27,50 @@ class _MandalTitleState extends State<MandalTitle> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8.w),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Row(
-            children: [
-              Text(
-                '${widget.visionName?.split('\n')[0]}',
-                style: TextStyle(
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.w700,
-                ),
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Row(
+          children: [
+            Text(
+              '${widget.visionName?.split('\n')[0]}',
+              style: TextStyle(
+                fontSize: 24.sp,
+                fontWeight: FontWeight.w700,
               ),
-              ...(widget.goalName != null
-                  ? [
-                      const Icon(Icons.chevron_right),
-                      Text(
-                        '${widget.goalName?.split('\n')[0]}',
-                        style: TextStyle(
-                          fontSize: 24.sp,
-                          fontWeight: FontWeight.w700,
-                        ),
+            ),
+            ...(widget.goalName != null
+                ? [
+                    const Icon(Icons.chevron_right),
+                    Text(
+                      '${widget.goalName?.split('\n')[0]}',
+                      style: TextStyle(
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.w700,
                       ),
-                    ]
-                  : []),
-            ],
-          ),
-          ...(widget.showClose == true
-              ? [
-                  Positioned(
-                    right: 0,
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: closeTapped,
-                      child: Center(
-                        child: Icon(
-                          Icons.close,
-                          size: 30.w,
-                        ),
+                    ),
+                  ]
+                : []),
+          ],
+        ),
+        ...(widget.showClose == true
+            ? [
+                Positioned(
+                  right: 0,
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: closeTapped,
+                    child: Center(
+                      child: Icon(
+                        Icons.close,
+                        size: 40.w,
                       ),
                     ),
                   ),
-                ]
-              : [])
-        ],
-      ),
+                ),
+              ]
+            : [])
+      ],
     );
   }
 }
