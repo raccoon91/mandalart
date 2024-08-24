@@ -52,7 +52,7 @@ class TaskProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
         var complete = await CompleteRepository().getComplete(
           schedule.id,
-          schedule.from,
+          schedule.to,
         );
 
         var task = TaskModel.fromSchema(schedule, complete);

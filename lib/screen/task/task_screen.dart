@@ -18,10 +18,8 @@ class _TaskScreenState extends State<TaskScreen> {
   late DateTime weekFrom;
   late DateTime weekTo;
 
-  void getTasks(DateTime date) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<TaskProvider>(context, listen: false).getTasks(date);
-    });
+  Future<void> getTasks(DateTime? date) async {
+    await Provider.of<TaskProvider>(context, listen: false).getTasks(date);
   }
 
   onTapCell(CalendarTapDetails? calendar) async {
@@ -35,12 +33,7 @@ class _TaskScreenState extends State<TaskScreen> {
 
     if (!mounted) return;
 
-    DateTime date = calendar!.date!;
-
-    await Provider.of<TaskProvider>(context, listen: false).updateTask(
-      task.scheduleId,
-      date,
-    );
+    await getTasks(null);
   }
 
   @override
