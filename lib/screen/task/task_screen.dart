@@ -20,10 +20,7 @@ class _TaskScreenState extends State<TaskScreen> {
 
   void getTasks(DateTime date) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<TaskProvider>(
-        context,
-        listen: false,
-      ).getTasks(date);
+      Provider.of<TaskProvider>(context, listen: false).getTasks(date);
     });
   }
 
@@ -34,23 +31,16 @@ class _TaskScreenState extends State<TaskScreen> {
 
     if (task == null || calendar?.date == null) return;
 
-    await Provider.of<TaskProvider>(
-      context,
-      listen: false,
-    ).toggleTodo(
-      task.completeId,
-      task.scheduleId,
-      task.startTime,
-    );
+    await Provider.of<TaskProvider>(context, listen: false).toggleTask(task);
 
     if (!mounted) return;
 
     DateTime date = calendar!.date!;
 
-    await Provider.of<TaskProvider>(
-      context,
-      listen: false,
-    ).updateTask(task.scheduleId, date);
+    await Provider.of<TaskProvider>(context, listen: false).updateTask(
+      task.scheduleId,
+      date,
+    );
   }
 
   @override

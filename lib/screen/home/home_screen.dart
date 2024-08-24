@@ -25,10 +25,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> getProgressMandal() async {
-    bool isEmpty = await Provider.of<HomeProvider>(
-      context,
-      listen: false,
-    ).getInProgressVision();
+    bool isEmpty =
+        await Provider.of<HomeProvider>(context, listen: false).getVision();
 
     if (mounted && isEmpty) {
       context.go('/vision');

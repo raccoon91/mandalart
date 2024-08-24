@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mandalart/provider/goal_provider.dart';
 import 'package:mandalart/provider/home_provider.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/home/mandal_title.dart';
@@ -25,11 +24,14 @@ class _GoalScreenState extends State<GoalScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<GoalProvider>(
-        context,
-        listen: false,
-      ).getGoal(widget.goalId);
+      getGoal();
     });
+  }
+
+  Future<void> getGoal() async {
+    int? goalId = widget.goalId != null ? int.parse(widget.goalId!) : null;
+
+    await Provider.of<HomeProvider>(context, listen: false).getGoal(goalId);
   }
 
   @override
@@ -37,21 +39,19 @@ class _GoalScreenState extends State<GoalScreen> {
     return Container(
       color: ColorClass.white,
       child: Consumer<HomeProvider>(
-        builder: (context, homeState, child) => Consumer<GoalProvider>(
-          builder: (context, goalState, child) => MandalLayout(
-            isEmpty: goalState.goal == null ||
-                goalState.goal?.plans == null ||
-                goalState.goal?.plans?.isEmpty == true,
-            emptyMessage: '계획을 설정하세요',
-            title: MandalTitle(
-              showClose: true,
-              visionName: homeState.visionName,
-              goalName: goalState.goal?.name,
-            ),
-            body: PlanMandalartWidget(
-              type: 'goal',
-              goal: goalState.goal,
-            ),
+        builder: (context, state, child) => MandalLayout(
+          isEmpty: state.goal == null ||
+              state.plans == null ||
+              state.plans?.isEmpty == true,
+          emptyMessage: '계획을 설정하세요',
+          title: MandalTitle(
+            showClose: true,
+            visionName: state.visionName,
+            goalName: state.goal?.name,
+          ),
+          body: PlanMandalartWidget(
+            type: 'goal',
+            goal: state.goal,
           ),
         ),
       ),

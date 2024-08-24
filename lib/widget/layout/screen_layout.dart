@@ -24,10 +24,7 @@ class ScreenLayout extends StatefulWidget {
 
 class _ScreenLayoutState extends State<ScreenLayout> {
   modeTapped() {
-    Provider.of<HomeProvider>(
-      context,
-      listen: false,
-    ).changeMode();
+    Provider.of<HomeProvider>(context, listen: false).changeMode();
   }
 
   @override

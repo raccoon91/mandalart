@@ -105,10 +105,9 @@ class _ScheduleCreateBottomSheetState extends State<ScheduleCreateBottomSheet> {
 
     selectedPlanId = null;
 
-    Provider.of<ScheduleProvider>(
-      context,
-      listen: false,
-    ).getPlans(selectedGoalId);
+    Provider.of<ScheduleProvider>(context, listen: false).getPlans(
+      selectedGoalId,
+    );
 
     checkEnabled();
 

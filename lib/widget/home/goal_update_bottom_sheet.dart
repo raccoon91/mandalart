@@ -38,12 +38,11 @@ class _GoalUpdateBottomSheetState extends State<GoalUpdateBottomSheet> {
   }
 
   getGoal() async {
-    var goal = await Provider.of<HomeProvider>(
-      context,
-      listen: false,
-    ).getGoal(widget.goalId);
+    var goal = await Provider.of<HomeProvider>(context, listen: false).getGoal(
+      widget.goalId,
+    );
 
-    nameController.text = goal?.name ?? "";
+    nameController.text = goal?.name ?? '';
     color = goal?.color ?? ColorClass.blue;
 
     setState(() {});

@@ -5,19 +5,21 @@ import 'package:mandalart/theme/color.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class TaskModel extends Appointment {
-  int? completeId;
+  int? visionId;
   int? scheduleId;
+  int? completeId;
   DateTime? completed;
   Color borderColor;
 
   TaskModel({
+    this.visionId,
+    this.scheduleId,
+    this.completeId,
     required super.subject,
     required super.startTime,
     required super.endTime,
     required super.isAllDay,
     required super.color,
-    this.completeId,
-    this.scheduleId,
     this.completed,
     required this.borderColor,
   });
@@ -27,8 +29,9 @@ class TaskModel extends Appointment {
     Complete? completeSchema,
   ) {
     return TaskModel(
-      completeId: completeSchema?.id,
+      visionId: schedule.visionId,
       scheduleId: schedule.id,
+      completeId: completeSchema?.id,
       completed: completeSchema?.completed,
       subject: schedule.plan?.name ?? '',
       startTime: schedule.from,

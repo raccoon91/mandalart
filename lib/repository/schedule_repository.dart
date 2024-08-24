@@ -1,58 +1,29 @@
-import 'package:isar/isar.dart';
 import 'package:mandalart/db/isar_db.dart';
-import 'package:mandalart/extension/number_format_extension.dart';
-import 'package:mandalart/extension/time_format_extension.dart';
-import 'package:mandalart/extension/week_of_month_extension.dart';
+import 'package:mandalart/extension/datetime_extension.dart';
+import 'package:mandalart/extension/list_schedule_extension.dart';
+import 'package:mandalart/extension/schedule_extension.dart';
 import 'package:mandalart/model/schedule_model.dart';
+import 'package:mandalart/repository/repository.dart';
 import 'package:mandalart/schema/plan_schema.dart';
 import 'package:mandalart/schema/schedule_schema.dart';
 
-class ScheduleRepository {
-  static Future<int> getSize() async {
-    try {
-      final size = await IsarDB.isar.schedules.getSize(
-        includeIndexes: true,
-        includeLinks: true,
-      );
+class ScheduleRepository extends Repository<Schedule> {
+  ScheduleRepository() : super(db: IsarDB.isar.schedules);
 
-      return size;
-    } catch (error) {
-      rethrow;
-    }
-  }
-
-  static Future<ScheduleModel?> get(int? scheduleId) async {
+  Future<ScheduleModel?> getSchedule(int? scheduleId) async {
     try {
       if (scheduleId == null) return null;
 
-      final scheduleSchema = await IsarDB.isar.schedules
-          .filter()
-          .idEqualTo(scheduleId)
-          .isDeleteEqualTo(false)
-          .findFirst();
+      final scheduleSchema = await findOne((query) {
+        return query.idEqualTo(scheduleId).isDeleteEqualTo(false);
+      });
 
       if (scheduleSchema == null) return null;
 
-      var from = DateTime(
-        scheduleSchema.year,
-        scheduleSchema.month,
-        scheduleSchema.day,
-        scheduleSchema.start.toHour(),
-        scheduleSchema.start.toMinute(),
-      );
-      var to = DateTime(
-        scheduleSchema.year,
-        scheduleSchema.month,
-        scheduleSchema.day,
-        scheduleSchema.end.toHour(),
-        scheduleSchema.end.toMinute(),
-      );
+      var from = scheduleSchema.fromOfSchedule;
+      var to = scheduleSchema.toOfSchedule;
 
-      ScheduleModel schedule = ScheduleModel.fromSchema(
-        scheduleSchema,
-        from,
-        to,
-      );
+      var schedule = ScheduleModel.fromSchema(scheduleSchema, from, to);
 
       return schedule;
     } catch (error) {
@@ -60,38 +31,20 @@ class ScheduleRepository {
     }
   }
 
-  static Future<List<ScheduleModel>?> getThisWeek(DateTime date) async {
+  Future<List<ScheduleModel>> getThisWeek(DateTime start) async {
     try {
-      var startDay = date.day;
+      var startDay = start.day;
       var endDay = startDay + 6;
 
-      final scheduleSchemaList = await IsarDB.isar.schedules
-          .filter()
-          .repeatIsNull()
-          .dayGreaterThan(startDay, include: true)
-          .dayLessThan(endDay, include: true)
-          .findAll();
+      final scheduleSchemaList = await findAll((query) {
+        return query
+            .repeatIsNull()
+            .dayGreaterThan(startDay, include: true)
+            .dayLessThan(endDay, include: true)
+            .isDeleteEqualTo(false);
+      });
 
-      List<ScheduleModel> schedules = [];
-
-      for (var schema in scheduleSchemaList) {
-        var from = date.copyWith(
-          day: schema.day,
-          hour: schema.start.toHour(),
-          minute: schema.start.toMinute(),
-        );
-        var to = date.copyWith(
-          day: schema.day,
-          hour: schema.end.toHour(),
-          minute: schema.end.toMinute(),
-        );
-
-        if (schema.terminated != null && to.isAfter(schema.terminated!)) {
-          continue;
-        }
-
-        schedules.add(ScheduleModel.fromSchema(schema, from, to));
-      }
+      var schedules = scheduleSchemaList.filterAsSchedule(start);
 
       return schedules;
     } catch (error) {
@@ -99,36 +52,13 @@ class ScheduleRepository {
     }
   }
 
-  static Future<List<ScheduleModel>?> getWeekDay(DateTime date) async {
+  Future<List<ScheduleModel>?> getWeekDay(DateTime start) async {
     try {
-      final scheduleSchemaList = await IsarDB.isar.schedules
-          .filter()
-          .repeatEqualTo('weekdays')
-          .isDeleteEqualTo(false)
-          .findAll();
+      final scheduleSchemaList = await findAll((query) {
+        return query.repeatEqualTo('weekdays').isDeleteEqualTo(false);
+      });
 
-      List<ScheduleModel> schedules = [];
-
-      for (var schema in scheduleSchemaList) {
-        for (var calib = 1; calib < 6; calib++) {
-          var from = date.copyWith(
-            day: date.day + calib,
-            hour: schema.start.toHour(),
-            minute: schema.start.toMinute(),
-          );
-          var to = date.copyWith(
-            day: date.day + calib,
-            hour: schema.end.toHour(),
-            minute: schema.end.toMinute(),
-          );
-
-          if (schema.terminated != null && to.isAfter(schema.terminated!)) {
-            continue;
-          }
-
-          schedules.add(ScheduleModel.fromSchema(schema, from, to));
-        }
-      }
+      var schedules = scheduleSchemaList.filterAsWeekday(start);
 
       return schedules;
     } catch (error) {
@@ -136,36 +66,13 @@ class ScheduleRepository {
     }
   }
 
-  static Future<List<ScheduleModel>?> getWeekend(DateTime date) async {
+  Future<List<ScheduleModel>?> getWeekend(DateTime start) async {
     try {
-      final scheduleSchemaList = await IsarDB.isar.schedules
-          .filter()
-          .repeatEqualTo('weekend')
-          .isDeleteEqualTo(false)
-          .findAll();
+      final scheduleSchemaList = await findAll((query) {
+        return query.repeatEqualTo('weekend').isDeleteEqualTo(false);
+      });
 
-      List<ScheduleModel> schedules = [];
-
-      for (var schema in scheduleSchemaList) {
-        for (var calib in [0, 6]) {
-          var from = date.copyWith(
-            day: date.day + calib,
-            hour: schema.start.toHour(),
-            minute: schema.start.toMinute(),
-          );
-          var to = date.copyWith(
-            day: date.day + calib,
-            hour: schema.end.toHour(),
-            minute: schema.end.toMinute(),
-          );
-
-          if (schema.terminated != null && to.isAfter(schema.terminated!)) {
-            continue;
-          }
-
-          schedules.add(ScheduleModel.fromSchema(schema, from, to));
-        }
-      }
+      var schedules = scheduleSchemaList.filterAsWeekend(start);
 
       return schedules;
     } catch (error) {
@@ -173,36 +80,13 @@ class ScheduleRepository {
     }
   }
 
-  static Future<List<ScheduleModel>?> getEveryDay(DateTime date) async {
+  Future<List<ScheduleModel>?> getEveryDay(DateTime start) async {
     try {
-      final scheduleSchemaList = await IsarDB.isar.schedules
-          .filter()
-          .repeatEqualTo('day')
-          .isDeleteEqualTo(false)
-          .findAll();
+      final scheduleSchemaList = await findAll((query) {
+        return query.repeatEqualTo('day').isDeleteEqualTo(false);
+      });
 
-      List<ScheduleModel> schedules = [];
-
-      for (var schema in scheduleSchemaList) {
-        for (var calib = 0; calib < 7; calib++) {
-          var from = date.copyWith(
-            day: date.day + calib,
-            hour: schema.start.toHour(),
-            minute: schema.start.toMinute(),
-          );
-          var to = date.copyWith(
-            day: date.day + calib,
-            hour: schema.end.toHour(),
-            minute: schema.end.toMinute(),
-          );
-
-          if (schema.terminated != null && to.isAfter(schema.terminated!)) {
-            continue;
-          }
-
-          schedules.add(ScheduleModel.fromSchema(schema, from, to));
-        }
-      }
+      var schedules = scheduleSchemaList.filterAsEveryDay(start);
 
       return schedules;
     } catch (error) {
@@ -210,34 +94,13 @@ class ScheduleRepository {
     }
   }
 
-  static Future<List<ScheduleModel>?> getEveryWeek(DateTime date) async {
+  Future<List<ScheduleModel>?> getEveryWeek(DateTime start) async {
     try {
-      final scheduleSchemaList = await IsarDB.isar.schedules
-          .filter()
-          .repeatEqualTo('week')
-          .isDeleteEqualTo(false)
-          .findAll();
+      final scheduleSchemaList = await findAll((query) {
+        return query.repeatEqualTo('week').isDeleteEqualTo(false);
+      });
 
-      List<ScheduleModel> schedules = [];
-
-      for (var schema in scheduleSchemaList) {
-        var from = date.copyWith(
-          day: date.day + (schema.weekday == 7 ? 0 : schema.weekday),
-          hour: schema.start.toHour(),
-          minute: schema.start.toMinute(),
-        );
-        var to = date.copyWith(
-          day: date.day + (schema.weekday == 7 ? 0 : schema.weekday),
-          hour: schema.end.toHour(),
-          minute: schema.end.toMinute(),
-        );
-
-        if (schema.terminated != null && to.isAfter(schema.terminated!)) {
-          continue;
-        }
-
-        schedules.add(ScheduleModel.fromSchema(schema, from, to));
-      }
+      var schedules = scheduleSchemaList.filterAsEveryWeek(start);
 
       return schedules;
     } catch (error) {
@@ -245,39 +108,20 @@ class ScheduleRepository {
     }
   }
 
-  static Future<List<ScheduleModel>?> getEveryMonth(DateTime date) async {
+  Future<List<ScheduleModel>?> getEveryMonth(DateTime start) async {
     try {
-      var startDay = date.day;
+      var startDay = start.day;
       var endDay = startDay + 6;
 
-      final scheduleSchemaList = await IsarDB.isar.schedules
-          .filter()
-          .repeatEqualTo('month')
-          .dayGreaterThan(startDay, include: true)
-          .dayLessThan(endDay, include: true)
-          .isDeleteEqualTo(false)
-          .findAll();
+      final scheduleSchemaList = await findAll((query) {
+        return query
+            .repeatEqualTo('month')
+            .dayGreaterThan(startDay, include: true)
+            .dayLessThan(endDay, include: true)
+            .isDeleteEqualTo(false);
+      });
 
-      List<ScheduleModel> schedules = [];
-
-      for (var schema in scheduleSchemaList) {
-        var from = date.copyWith(
-          day: schema.day,
-          hour: schema.start.toHour(),
-          minute: schema.start.toMinute(),
-        );
-        var to = date.copyWith(
-          day: schema.day,
-          hour: schema.end.toHour(),
-          minute: schema.end.toMinute(),
-        );
-
-        if (schema.terminated != null && to.isAfter(schema.terminated!)) {
-          continue;
-        }
-
-        schedules.add(ScheduleModel.fromSchema(schema, from, to));
-      }
+      var schedules = scheduleSchemaList.filterAsEveryMonth(start);
 
       return schedules;
     } catch (error) {
@@ -285,22 +129,18 @@ class ScheduleRepository {
     }
   }
 
-  static Future<ScheduleModel?> create(
-    int visionId,
-    int planId,
+  Future<bool> createSchedule(
+    Plan? plan,
     DateTime from,
     DateTime to,
     bool? isAllDay,
     String? repeat,
   ) async {
     try {
-      Plan? plan =
-          await IsarDB.isar.plans.where().idEqualTo(planId).findFirst();
-
-      if (plan == null) return null;
+      if (plan == null) return false;
 
       final scheduleSchema = Schedule()
-        ..visionId = visionId
+        ..visionId = plan.visionId
         ..plan.value = plan
         ..year = from.year
         ..month = from.month
@@ -313,46 +153,61 @@ class ScheduleRepository {
         ..repeat = repeat;
 
       await IsarDB.isar.writeTxn(() async {
-        await IsarDB.isar.schedules.put(scheduleSchema);
+        await putOne(scheduleSchema);
+
         await scheduleSchema.plan.save();
       });
 
-      final schedule = ScheduleModel.fromSchema(scheduleSchema, from, to);
-
-      return schedule;
+      return true;
     } catch (error) {
       rethrow;
     }
   }
 
-  static Future<bool> delete(int scheduleId) async {
+  Future<bool> deleteSchedule(int scheduleId) async {
     try {
-      bool success = false;
-
       await IsarDB.isar.writeTxn(() async {
-        success = await IsarDB.isar.schedules.delete(scheduleId);
+        await deleteOne(scheduleId);
       });
 
-      return success;
+      return true;
     } catch (error) {
       rethrow;
     }
   }
 
-  static Future<bool> stop(int scheduleId, DateTime terminated) async {
+  Future<bool> stopSchedule(int scheduleId, DateTime terminated) async {
     try {
-      var schema = await IsarDB.isar.schedules
-          .filter()
-          .idEqualTo(scheduleId)
-          .isDeleteEqualTo(false)
-          .findFirst();
+      var schema = await findOne((query) {
+        return query.idEqualTo(scheduleId).isDeleteEqualTo(false);
+      });
 
       if (schema == null) return false;
 
       schema.terminated = terminated;
 
       await IsarDB.isar.writeTxn(() async {
-        await IsarDB.isar.schedules.put(schema);
+        await putOne(schema);
+      });
+
+      return true;
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  Future<bool> deleteAllSchedule(int? visionId) async {
+    try {
+      if (visionId == null) return false;
+
+      var scheduleSchemaList = await findAll((query) {
+        return query.visionIdEqualTo(visionId);
+      });
+
+      var scheduleIds = scheduleSchemaList.map((schema) => schema.id).toList();
+
+      await IsarDB.isar.writeTxn(() async {
+        await deleteAll(scheduleIds);
       });
 
       return true;

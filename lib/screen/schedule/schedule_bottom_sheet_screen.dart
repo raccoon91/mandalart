@@ -35,33 +35,28 @@ class _ScheduleBottomSheetScreenState extends State<ScheduleBottomSheetScreen> {
   void getSchedule() async {
     if (widget.scheduleId == null) return;
 
-    await Provider.of<ScheduleProvider>(
-      context,
-      listen: false,
-    ).getSchedule(int.parse(widget.scheduleId!));
+    await Provider.of<ScheduleProvider>(context, listen: false).getSchedule(
+      int.parse(widget.scheduleId!),
+    );
   }
 
   Future<void> deleteSchedule() async {
     if (widget.scheduleId == null) return;
 
-    await Provider.of<ScheduleProvider>(
-      context,
-      listen: false,
-    ).deleteSchedule(int.parse(widget.scheduleId!));
+    await Provider.of<ScheduleProvider>(context, listen: false).deleteSchedule(
+      int.parse(widget.scheduleId!),
+    );
 
     if (!mounted) return;
 
-    await Provider.of<ScheduleProvider>(
-      context,
-      listen: false,
-    ).getSchedules(null, null);
+    await Provider.of<ScheduleProvider>(context, listen: false).getSchedules(
+      null,
+      null,
+    );
 
     if (!mounted) return;
 
-    await Provider.of<TaskProvider>(
-      context,
-      listen: false,
-    ).getTasks(null);
+    await Provider.of<TaskProvider>(context, listen: false).getTasks(null);
 
     if (!mounted) return;
 
@@ -71,24 +66,21 @@ class _ScheduleBottomSheetScreenState extends State<ScheduleBottomSheetScreen> {
   Future<void> stopSchedule() async {
     if (widget.scheduleId == null || widget.to == null) return;
 
-    await Provider.of<ScheduleProvider>(
-      context,
-      listen: false,
-    ).stopSchedule(int.parse(widget.scheduleId!), DateTime.parse(widget.to!));
+    await Provider.of<ScheduleProvider>(context, listen: false).stopSchedule(
+      int.parse(widget.scheduleId!),
+      DateTime.parse(widget.to!),
+    );
 
     if (!mounted) return;
 
-    await Provider.of<ScheduleProvider>(
-      context,
-      listen: false,
-    ).getSchedules(null, null);
+    await Provider.of<ScheduleProvider>(context, listen: false).getSchedules(
+      null,
+      null,
+    );
 
     if (!mounted) return;
 
-    await Provider.of<TaskProvider>(
-      context,
-      listen: false,
-    ).getTasks(null);
+    await Provider.of<TaskProvider>(context, listen: false).getTasks(null);
 
     if (!mounted) return;
 

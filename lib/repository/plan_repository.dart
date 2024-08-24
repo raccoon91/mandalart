@@ -1,32 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
 import 'package:mandalart/db/isar_db.dart';
 import 'package:mandalart/model/plan_model.dart';
+import 'package:mandalart/repository/repository.dart';
+import 'package:mandalart/schema/goal_schema.dart';
 import 'package:mandalart/schema/plan_schema.dart';
+import 'package:mandalart/schema/vision_schema.dart';
 
-class PlanRepository {
-  static Future<int> getSize() async {
-    try {
-      final size = await IsarDB.isar.plans.getSize(
-        includeIndexes: true,
-        includeLinks: true,
-      );
+class PlanRepository extends Repository<Plan> {
+  PlanRepository() : super(db: IsarDB.isar.plans);
 
-      return size;
-    } catch (error) {
-      rethrow;
-    }
-  }
-
-  static Future<PlanModel?> get(int? planId) async {
+  Future<PlanModel?> getPlan(int? planId) async {
     try {
       if (planId == null) return null;
 
-      final planSchema = await IsarDB.isar.plans
-          .filter()
-          .idEqualTo(planId)
-          .isDeleteEqualTo(false)
-          .findFirst();
+      final planSchema = await findOne((query) {
+        return query.idEqualTo(planId).isDeleteEqualTo(false);
+      });
 
       if (planSchema == null) return null;
 
@@ -38,15 +27,27 @@ class PlanRepository {
     }
   }
 
-  static Future<List<PlanModel>?> gets(int? goalId) async {
+  Future<Plan?> getPlanSchema(int? planId) async {
+    try {
+      if (planId == null) return null;
+
+      final planSchema = await findOne((query) {
+        return query.idEqualTo(planId).isDeleteEqualTo(false);
+      });
+
+      return planSchema;
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  Future<List<PlanModel>?> getPlans(int? goalId) async {
     try {
       if (goalId == null) return null;
 
-      final planSchemaList = await IsarDB.isar.plans
-          .filter()
-          .goalIdEqualTo(goalId)
-          .isDeleteEqualTo(false)
-          .findAll();
+      final planSchemaList = await findAll((query) {
+        return query.goalIdEqualTo(goalId).isDeleteEqualTo(false);
+      });
 
       List<PlanModel> plans = planSchemaList.map(PlanModel.fromSchema).toList();
 
@@ -56,21 +57,51 @@ class PlanRepository {
     }
   }
 
-  static Future<PlanModel?> update(
-    int? planId,
-    String? name,
-    Color? color,
+  Future<List<Plan>?> createPlans(
+    Vision? visionSchema,
+    List<Goal>? goalSchemaList,
   ) async {
     try {
-      if (planId == null) return null;
+      if (visionSchema == null || goalSchemaList == null) return null;
 
-      final planSchema = await IsarDB.isar.plans
-          .filter()
-          .idEqualTo(planId)
-          .isDeleteEqualTo(false)
-          .findFirst();
+      List<Plan> schemaList = [];
 
-      if (planSchema == null) return null;
+      await IsarDB.isar.writeTxn(() async {
+        for (var goalSchema in goalSchemaList) {
+          var planSchemaList = List.generate(8, (index) {
+            final planSchema = Plan()
+              ..visionId = visionSchema.id
+              ..goalId = goalSchema.id
+              ..order = index;
+
+            return planSchema;
+          });
+
+          schemaList += planSchemaList;
+
+          await putAll(planSchemaList);
+
+          goalSchema.plans.addAll(planSchemaList);
+
+          await goalSchema.plans.save();
+        }
+      });
+
+      return schemaList;
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  Future<bool> updatePlan(int? planId, String? name, Color? color) async {
+    try {
+      if (planId == null) return false;
+
+      final planSchema = await findOne((query) {
+        return query.idEqualTo(planId).isDeleteEqualTo(false);
+      });
+
+      if (planSchema == null) return false;
 
       int? colorValue = color?.value;
 
@@ -78,14 +109,30 @@ class PlanRepository {
       planSchema.color = colorValue;
 
       await IsarDB.isar.writeTxn(() async {
-        planSchema.id = await IsarDB.isar.plans.put(
-          planSchema,
-        );
+        await putOne(planSchema);
       });
 
-      final plan = PlanModel.fromSchema(planSchema);
+      return true;
+    } catch (error) {
+      rethrow;
+    }
+  }
 
-      return plan;
+  Future<bool> deleteAllPlan(int? visionId) async {
+    try {
+      if (visionId == null) return false;
+
+      var planSchemaList = await findAll((query) {
+        return query.visionIdEqualTo(visionId);
+      });
+
+      var planIds = planSchemaList.map((schema) => schema.id).toList();
+
+      await IsarDB.isar.writeTxn(() async {
+        await deleteAll(planIds);
+      });
+
+      return true;
     } catch (error) {
       rethrow;
     }

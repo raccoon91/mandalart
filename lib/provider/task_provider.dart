@@ -30,15 +30,16 @@ class TaskProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
       List<TaskModel> tasks = [];
 
-      var weekSchedules = await ScheduleRepository.getThisWeek(_start!);
-      var weekDaySchedules = await ScheduleRepository.getWeekDay(_start!);
-      var weekendSchedules = await ScheduleRepository.getWeekend(_start!);
-      var everyDaySchedules = await ScheduleRepository.getEveryDay(_start!);
-      var everyWeekSchedules = await ScheduleRepository.getEveryWeek(_start!);
-      var everyMonthSchedules = await ScheduleRepository.getEveryMonth(_start!);
+      var weekSchedules = await ScheduleRepository().getThisWeek(_start!);
+      var weekDaySchedules = await ScheduleRepository().getWeekDay(_start!);
+      var weekendSchedules = await ScheduleRepository().getWeekend(_start!);
+      var everyDaySchedules = await ScheduleRepository().getEveryDay(_start!);
+      var everyWeekSchedules = await ScheduleRepository().getEveryWeek(_start!);
+      var everyMonthSchedules =
+          await ScheduleRepository().getEveryMonth(_start!);
 
       List<ScheduleModel> schedules = [
-        ...(weekSchedules ?? []),
+        ...(weekSchedules),
         ...(weekDaySchedules ?? []),
         ...(weekendSchedules ?? []),
         ...(everyDaySchedules ?? []),
@@ -49,7 +50,10 @@ class TaskProvider with ChangeNotifier, DiagnosticableTreeMixin {
       for (ScheduleModel schedule in schedules) {
         if (schedule.from.day != _target.day) continue;
 
-        var complete = await CompleteRepository.get(schedule.id, schedule.from);
+        var complete = await CompleteRepository().getComplete(
+          schedule.id,
+          schedule.from,
+        );
 
         var task = TaskModel.fromSchema(schedule, complete);
 
@@ -72,7 +76,10 @@ class TaskProvider with ChangeNotifier, DiagnosticableTreeMixin {
       for (var schedule in _schedules) {
         if (schedule.from.day != date.day) continue;
 
-        var complete = await CompleteRepository.get(schedule.id, schedule.from);
+        var complete = await CompleteRepository().getComplete(
+          schedule.id,
+          schedule.from,
+        );
 
         var task = TaskModel.fromSchema(schedule, complete);
 
@@ -87,31 +94,33 @@ class TaskProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
-  Future<void> toggleTodo(
-    int? completeId,
-    int? scheduleId,
-    DateTime? date,
-  ) async {
+  Future<void> toggleTask(TaskModel task) async {
     try {
-      if (completeId == null) {
-        await CompleteRepository.create(scheduleId, date);
+      if (task.completeId == null) {
+        await CompleteRepository().createComplete(
+          task.visionId,
+          task.scheduleId,
+          task.endTime,
+        );
       } else {
-        await CompleteRepository.delete(completeId);
+        await CompleteRepository().deleteComplete(task.completeId);
       }
     } catch (error) {
       rethrow;
     }
   }
 
-  void clearTodo() {
-    _schedules = [];
-  }
-
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(
+      DiagnosticsProperty<ScheduleModel>('schedule', _schedule),
+    );
+    properties.add(
       DiagnosticsProperty<List<ScheduleModel>>('schedules', _schedules),
+    );
+    properties.add(
+      DiagnosticsProperty<List<TaskModel>>('tasks', _tasks),
     );
   }
 }

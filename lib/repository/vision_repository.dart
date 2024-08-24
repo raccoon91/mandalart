@@ -1,50 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
 import 'package:mandalart/db/isar_db.dart';
 import 'package:mandalart/model/vision_model.dart';
-import 'package:mandalart/schema/complete_schema.dart';
-import 'package:mandalart/schema/goal_schema.dart';
-import 'package:mandalart/schema/plan_schema.dart';
-import 'package:mandalart/schema/schedule_schema.dart';
+import 'package:mandalart/repository/repository.dart';
 import 'package:mandalart/schema/vision_schema.dart';
 
-class VisionRepository {
-  static Future<int> getSize() async {
+class VisionRepository extends Repository<Vision> {
+  VisionRepository() : super(db: IsarDB.isar.visions);
+
+  Future<VisionModel?> getVision() async {
     try {
-      final size = await IsarDB.isar.visions.getSize(
-        includeIndexes: true,
-        includeLinks: true,
-      );
-
-      return size;
-    } catch (error) {
-      rethrow;
-    }
-  }
-
-  static Future<String?> getName() async {
-    try {
-      final visionSchema = await IsarDB.isar.visions
-          .filter()
-          .inProgressEqualTo(true)
-          .isDeleteEqualTo(false)
-          .findFirst();
-
-      if (visionSchema == null) return null;
-
-      return visionSchema.name;
-    } catch (error) {
-      rethrow;
-    }
-  }
-
-  static Future<VisionModel?> get() async {
-    try {
-      final visionSchema = await IsarDB.isar.visions
-          .filter()
-          .inProgressEqualTo(true)
-          .isDeleteEqualTo(false)
-          .findFirst();
+      final visionSchema = await findOne((query) {
+        return query.inProgressEqualTo(true).isDeleteEqualTo(false);
+      });
 
       if (visionSchema == null) return null;
 
@@ -56,10 +23,7 @@ class VisionRepository {
     }
   }
 
-  static Future<VisionModel> create(
-    String name,
-    Color color,
-  ) async {
+  Future<Vision> createVision(String name, Color color) async {
     try {
       int colorValue = color.value;
 
@@ -69,94 +33,21 @@ class VisionRepository {
         ..inProgress = true;
 
       await IsarDB.isar.writeTxn(() async {
-        int visionId = await IsarDB.isar.visions.put(visionSchema);
-
-        for (int index = 0; index < 8; index++) {
-          final goalSchema = Goal()
-            ..visionId = visionId
-            ..order = index;
-
-          visionSchema.goals.add(goalSchema);
-
-          int goalId = await IsarDB.isar.goals.put(goalSchema);
-
-          for (int index = 0; index < 8; index++) {
-            final planSchema = Plan()
-              ..visionId = visionId
-              ..goalId = goalId
-              ..order = index;
-
-            goalSchema.plans.add(planSchema);
-
-            await IsarDB.isar.plans.put(planSchema);
-          }
-
-          await goalSchema.plans.save();
-        }
-
-        await visionSchema.goals.save();
+        await putOne(visionSchema);
       });
 
-      final vision = VisionModel.fromSchema(visionSchema);
-
-      return vision;
+      return visionSchema;
     } catch (error) {
       rethrow;
     }
   }
 
-  static Future<bool> delete() async {
+  Future<bool> deleteVision(int? visionId) async {
     try {
-      final visionSchema = await IsarDB.isar.visions
-          .filter()
-          .inProgressEqualTo(true)
-          .isDeleteEqualTo(false)
-          .findFirst();
-
-      if (visionSchema == null) return false;
-
-      var visionId = visionSchema.id;
-
-      List<int> goalIds = visionSchema.goals.map((planShcema) {
-        return planShcema.id;
-      }).toList();
-
-      List<int> planIds = visionSchema.goals.fold(
-        [],
-        (acc, goalSchema) {
-          for (var planSchema in goalSchema.plans) {
-            acc.add(planSchema.id);
-          }
-
-          return acc;
-        },
-      );
-
-      List<Schedule> scheduleSchema = await IsarDB.isar.schedules
-          .filter()
-          .visionIdEqualTo(visionId)
-          .findAll();
-
-      List<int> scheduleIds =
-          scheduleSchema.map((schedule) => schedule.id).toList();
-
-      List<Complete> completeSchema = await IsarDB.isar.completes
-          .filter()
-          .visionIdEqualTo(visionId)
-          .findAll();
-
-      List<int> completeIds = completeSchema
-          .map(
-            (complete) => complete.id,
-          )
-          .toList();
+      if (visionId == null) return false;
 
       await IsarDB.isar.writeTxn(() async {
-        await IsarDB.isar.completes.deleteAll(completeIds);
-        await IsarDB.isar.schedules.deleteAll(scheduleIds);
-        await IsarDB.isar.plans.deleteAll(planIds);
-        await IsarDB.isar.goals.deleteAll(goalIds);
-        await IsarDB.isar.visions.delete(visionId);
+        await deleteOne(visionId);
       });
 
       return true;

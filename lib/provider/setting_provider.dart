@@ -20,11 +20,11 @@ class SettingProvider with ChangeNotifier {
 
   Future<void> getSizes() async {
     try {
-      _visionSize = await VisionRepository.getSize();
-      _goalSize = await GoalRepository.getSize();
-      _planSize = await PlanRepository.getSize();
-      _scheduleSize = await ScheduleRepository.getSize();
-      _completeSize = await CompleteRepository.getSize();
+      _visionSize = await VisionRepository().getSize();
+      _goalSize = await GoalRepository().getSize();
+      _planSize = await PlanRepository().getSize();
+      _scheduleSize = await ScheduleRepository().getSize();
+      _completeSize = await CompleteRepository().getSize();
     } catch (error) {
       rethrow;
     } finally {
@@ -34,9 +34,17 @@ class SettingProvider with ChangeNotifier {
 
   Future<bool> deleteDB() async {
     try {
-      bool success = await VisionRepository.delete();
+      var vision = await VisionRepository().getVision();
 
-      return success;
+      if (vision == null) return false;
+
+      await CompleteRepository().deleteAllComplete(vision.id);
+      await ScheduleRepository().deleteAllSchedule(vision.id);
+      await PlanRepository().deleteAllPlan(vision.id);
+      await GoalRepository().deleteAllGoal(vision.id);
+      await VisionRepository().deleteVision(vision.id);
+
+      return true;
     } catch (error) {
       rethrow;
     } finally {

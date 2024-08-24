@@ -38,10 +38,8 @@ class _ScheduleCreateBottomSheetScreenState
     bool? allDay,
     String? repeat,
   ) async {
-    bool success = await Provider.of<ScheduleProvider>(
-      context,
-      listen: false,
-    ).createSchedule(
+    bool success = await Provider.of<ScheduleProvider>(context, listen: false)
+        .createSchedule(
       planId,
       from,
       to,
@@ -51,17 +49,16 @@ class _ScheduleCreateBottomSheetScreenState
 
     if (!mounted || success == false) return;
 
-    await Provider.of<ScheduleProvider>(
-      context,
-      listen: false,
-    ).getSchedules(null, null);
+    await Provider.of<ScheduleProvider>(context, listen: false).getSchedules(
+      null,
+      null,
+    );
 
     if (!mounted) return;
 
-    await Provider.of<TaskProvider>(
-      context,
-      listen: false,
-    ).getTasks(DateTime.now());
+    await Provider.of<TaskProvider>(context, listen: false).getTasks(
+      DateTime.now(),
+    );
 
     if (!mounted) return;
 

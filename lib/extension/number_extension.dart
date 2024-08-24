@@ -1,4 +1,16 @@
-extension FileSizeExtensions on num {
+extension NumberExtension on num {
+  int get numToHour {
+    int hour = this ~/ 60;
+
+    return hour;
+  }
+
+  int get numToMinute {
+    int minute = this % 60 as int;
+
+    return minute;
+  }
+
   String toFileSize({int round = 2, bool useBase1024 = true}) {
     const List<String> affixes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
 

@@ -4,6 +4,7 @@ import 'package:mandalart/model/goal_model.dart';
 import 'package:mandalart/model/plan_model.dart';
 import 'package:mandalart/model/schedule_model.dart';
 import 'package:mandalart/model/vision_model.dart';
+import 'package:mandalart/repository/plan_repository.dart';
 import 'package:mandalart/repository/schedule_repository.dart';
 import 'package:mandalart/repository/vision_repository.dart';
 import 'package:mandalart/utils/calendar_data.dart';
@@ -30,11 +31,11 @@ class ScheduleProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
   Future<void> getGoals() async {
     try {
-      VisionModel? vision = await VisionRepository.get();
+      VisionModel? vision = await VisionRepository().getVision();
 
-      _goals = vision?.goals
-          ?.where((goal) => goal?.name?.isNotEmpty ?? false)
-          .toList();
+      _goals = vision?.goals?.where((goal) {
+        return goal?.name?.isNotEmpty ?? false;
+      }).toList();
     } catch (error) {
       rethrow;
     } finally {
@@ -50,18 +51,18 @@ class ScheduleProvider with ChangeNotifier, DiagnosticableTreeMixin {
         return;
       }
 
-      VisionModel? vision = await VisionRepository.get();
+      VisionModel? vision = await VisionRepository().getVision();
 
-      _goals = vision?.goals
-          ?.where((goal) => goal?.name?.isNotEmpty ?? false)
-          .toList();
+      _goals = vision?.goals?.where((goal) {
+        return goal?.name?.isNotEmpty ?? false;
+      }).toList();
 
       GoalModel? goal = _goals?.where((goal) => goal?.id == goalId).first;
 
       if (goal != null) {
-        _plans = goal.plans
-            ?.where((plan) => plan?.name?.isNotEmpty ?? false)
-            .toList();
+        _plans = goal.plans?.where((plan) {
+          return plan?.name?.isNotEmpty ?? false;
+        }).toList();
       } else {
         _plans = null;
       }
@@ -74,16 +75,16 @@ class ScheduleProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
   Future<void> getSchedule(int scheduleId) async {
     try {
-      var schedule = await ScheduleRepository.get(scheduleId);
+      var schedule = await ScheduleRepository().getSchedule(scheduleId);
 
       var goalId = schedule?.plan?.goalId;
 
       GoalModel? goal = _goals?.where((goal) => goal?.id == goalId).first;
 
       if (goal != null) {
-        _plans = goal.plans
-            ?.where((plan) => plan?.name?.isNotEmpty ?? false)
-            .toList();
+        _plans = goal.plans?.where((plan) {
+          return plan?.name?.isNotEmpty ?? false;
+        }).toList();
       } else {
         _plans = null;
       }
@@ -105,17 +106,18 @@ class ScheduleProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
       List<Appointment> appointments = [];
 
-      var weekSchedules = await ScheduleRepository.getThisWeek(_start!);
-      var weekDaySchedules = await ScheduleRepository.getWeekDay(_start!);
-      var weekendSchedules = await ScheduleRepository.getWeekend(_start!);
-      var everyDaySchedules = await ScheduleRepository.getEveryDay(_start!);
-      var everyWeekSchedules = await ScheduleRepository.getEveryWeek(_start!);
-      var everyMonthSchedules = await ScheduleRepository.getEveryMonth(_start!);
+      var weekSchedules = await ScheduleRepository().getThisWeek(_start!);
+      var weekDaySchedules = await ScheduleRepository().getWeekDay(_start!);
+      var weekendSchedules = await ScheduleRepository().getWeekend(_start!);
+      var everyDaySchedules = await ScheduleRepository().getEveryDay(_start!);
+      var everyWeekSchedules = await ScheduleRepository().getEveryWeek(_start!);
+      var everyMonthSchedules =
+          await ScheduleRepository().getEveryMonth(_start!);
 
       List<ScheduleModel> schedules = [
+        ...(weekSchedules),
         ...(weekDaySchedules ?? []),
         ...(weekendSchedules ?? []),
-        ...(weekSchedules ?? []),
         ...(everyDaySchedules ?? []),
         ...(everyWeekSchedules ?? []),
         ...(everyMonthSchedules ?? []),
@@ -142,30 +144,19 @@ class ScheduleProvider with ChangeNotifier, DiagnosticableTreeMixin {
     String? repeat,
   ) async {
     try {
-      var vision = await VisionRepository.get();
+      var vision = await VisionRepository().getVision();
 
       if (vision == null) return false;
 
-      var newSchedule = await ScheduleRepository.create(
-        vision.id,
-        planId,
+      var plan = await PlanRepository().getPlanSchema(planId);
+
+      await ScheduleRepository().createSchedule(
+        plan,
         from,
         to,
         isAllDay,
         repeat,
       );
-
-      List<ScheduleModel> schedules = [..._schedules];
-
-      if (newSchedule == null) return false;
-
-      schedules.add(newSchedule);
-
-      _schedules = schedules;
-
-      _appointments = schedules.map((schedule) {
-        return AppointmentModel.fromSchema(schedule);
-      }).toList();
 
       return true;
     } catch (error) {
@@ -177,7 +168,7 @@ class ScheduleProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
   Future<void> deleteSchedule(int scheduleId) async {
     try {
-      var success = await ScheduleRepository.delete(scheduleId);
+      var success = await ScheduleRepository().deleteSchedule(scheduleId);
 
       if (!success) return;
 
@@ -191,7 +182,10 @@ class ScheduleProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
   Future<void> stopSchedule(int scheduleId, DateTime terminated) async {
     try {
-      var success = await ScheduleRepository.stop(scheduleId, terminated);
+      var success = await ScheduleRepository().stopSchedule(
+        scheduleId,
+        terminated,
+      );
 
       if (!success) return;
 
@@ -212,9 +206,16 @@ class ScheduleProvider with ChangeNotifier, DiagnosticableTreeMixin {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<List<GoalModel?>>('goals', _goals));
     properties.add(DiagnosticsProperty<List<PlanModel?>>('plans', _plans));
     properties.add(
+      DiagnosticsProperty<ScheduleModel>('schedule', _schedule),
+    );
+    properties.add(
       DiagnosticsProperty<List<ScheduleModel>>('schedules', _schedules),
+    );
+    properties.add(
+      DiagnosticsProperty<List<Appointment>>('appointments', _appointments),
     );
   }
 }

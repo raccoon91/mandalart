@@ -24,19 +24,16 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ScheduleProvider>(
-        context,
-        listen: false,
-      ).getGoals();
+      Provider.of<ScheduleProvider>(context, listen: false).getGoals();
     });
   }
 
   void getSchedules(DateTime from, DateTime to) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ScheduleProvider>(
-        context,
-        listen: false,
-      ).getSchedules(from, to);
+      Provider.of<ScheduleProvider>(context, listen: false).getSchedules(
+        from,
+        to,
+      );
     });
   }
 

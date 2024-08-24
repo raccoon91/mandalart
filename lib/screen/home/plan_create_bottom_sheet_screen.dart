@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mandalart/provider/goal_provider.dart';
 import 'package:mandalart/provider/home_provider.dart';
 import 'package:mandalart/provider/schedule_provider.dart';
 import 'package:mandalart/widget/home/mandal_bottom_sheet.dart';
@@ -24,45 +23,21 @@ class PlanCreateBottomSheetScreen extends StatelessWidget {
       goalId: planId != null ? int.parse(planId!) : null,
       planId: goalId != null ? int.parse(goalId!) : null,
       create: (String name, Color color) async {
-        if (mode == 'maximize') {
-          await Provider.of<HomeProvider>(
-            context,
-            listen: false,
-          ).updatePlan(
-            goalId != null ? int.parse(goalId!) : null,
-            planId != null ? int.parse(planId!) : null,
-            name,
-            color,
-          );
-        } else {
-          await Provider.of<GoalProvider>(
-            context,
-            listen: false,
-          ).updatePlan(
-            goalId != null ? int.parse(goalId!) : null,
-            planId != null ? int.parse(planId!) : null,
-            name,
-            color,
-          );
+        int? intGoalId = goalId != null ? int.parse(goalId!) : null;
+        int? intPlanId = planId != null ? int.parse(planId!) : null;
 
-          if (context.mounted) {
-            await Provider.of<HomeProvider>(
-              context,
-              listen: false,
-            ).getInProgressVision();
-          }
-        }
+        await Provider.of<HomeProvider>(context, listen: false).updatePlan(
+          intGoalId,
+          intPlanId,
+          name,
+          color,
+        );
 
         if (!context.mounted) return;
 
-        if (goalId != null) {
-          Provider.of<ScheduleProvider>(
-            context,
-            listen: false,
-          ).getPlans(
-            int.parse(goalId!),
-          );
-        }
+        await Provider.of<ScheduleProvider>(context, listen: false).getPlans(
+          intGoalId,
+        );
       },
     );
   }

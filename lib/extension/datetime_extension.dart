@@ -1,4 +1,13 @@
-extension WeekOfMonthExtension on DateTime {
+extension DatetimeExtension on DateTime {
+  int get timeToNum {
+    var date = this;
+
+    int hour = date.hour;
+    int minute = date.minute;
+
+    return (hour * 60) + minute;
+  }
+
   int get weekOfMonth {
     var date = this;
 

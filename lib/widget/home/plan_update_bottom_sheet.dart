@@ -38,12 +38,11 @@ class _PlanUpdateBottomSheetState extends State<PlanUpdateBottomSheet> {
   }
 
   getGoal() async {
-    var plan = await Provider.of<HomeProvider>(
-      context,
-      listen: false,
-    ).getPlan(widget.planId);
+    var plan = await Provider.of<HomeProvider>(context, listen: false).getPlan(
+      widget.planId,
+    );
 
-    nameController.text = plan?.name ?? "";
+    nameController.text = plan?.name ?? '';
     color = plan?.color ?? ColorClass.border;
 
     setState(() {});

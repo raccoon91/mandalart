@@ -10,16 +10,25 @@ import 'package:mandalart/repository/vision_repository.dart';
 class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
   String _mode = 'minimize';
   VisionModel? _vision;
+  List<GoalModel?>? _goals;
+  GoalModel? _goal;
+  List<PlanModel?>? _plans;
+  PlanModel? _plan;
 
   String get mode => _mode;
   String? get visionName => _vision?.name;
   VisionModel? get vision => _vision;
+  List<GoalModel?>? get goals => _goals;
+  GoalModel? get goal => _goal;
+  List<PlanModel?>? get plans => _plans;
+  PlanModel? get plan => _plan;
 
-  Future<bool> getInProgressVision() async {
+  Future<bool> getVision() async {
     try {
-      VisionModel? vision = await VisionRepository.get();
+      var vision = await VisionRepository().getVision();
 
       _vision = vision;
+      _goals = vision?.goals;
 
       return vision == null;
     } catch (error) {
@@ -33,7 +42,10 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
     try {
       if (goalId == null) return null;
 
-      var goal = GoalRepository.get(goalId);
+      var goal = await GoalRepository().getGoal(goalId);
+
+      _goal = goal;
+      _plans = goal?.plans;
 
       return goal;
     } catch (error) {
@@ -45,7 +57,9 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
     try {
       if (planId == null) return null;
 
-      var plan = PlanRepository.get(planId);
+      var plan = await PlanRepository().getPlan(planId);
+
+      _plan = plan;
 
       return plan;
     } catch (error) {
@@ -53,9 +67,18 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
-  Future<void> createVision(String name, Color color) async {
+  Future<bool> createVision(String name, Color color) async {
     try {
-      _vision = await VisionRepository.create(name, color);
+      var visionSchema = await VisionRepository().createVision(name, color);
+      var goalSchemaList = await GoalRepository().createGoals(visionSchema);
+      await PlanRepository().createPlans(visionSchema, goalSchemaList);
+
+      var vision = await VisionRepository().getVision();
+
+      _vision = vision;
+      _goals = vision?.goals;
+
+      return vision == null;
     } catch (error) {
       rethrow;
     } finally {
@@ -63,22 +86,18 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
-  Future<void> updateGoal(
-    int? goalId,
-    String? name,
-    Color? color,
-  ) async {
+  Future<void> updateGoal(int? goalId, String? name, Color? color) async {
     try {
       if (_vision == null || goalId == null) return;
 
-      GoalModel? newGoal = await GoalRepository.update(goalId, name, color);
+      var success = await GoalRepository().updateGoal(goalId, name, color);
 
-      if (_vision?.goals == null) return;
+      if (!success) return;
 
-      _vision!.goals = _vision!.goals
-              ?.map((goal) => goal?.id == newGoal?.id ? newGoal : goal)
-              .toList() ??
-          [];
+      var vision = await VisionRepository().getVision();
+
+      _vision = vision;
+      _goals = vision?.goals;
     } catch (error) {
       rethrow;
     } finally {
@@ -95,23 +114,17 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
     try {
       if (_vision == null || planId == null) return;
 
-      PlanModel? newPlan = await PlanRepository.update(planId, name, color);
+      var success = await PlanRepository().updatePlan(planId, name, color);
 
-      if (_vision?.goals == null) return;
+      if (!success) return;
 
-      _vision!.goals = _vision!.goals?.map((goal) {
-            if (goal == null || goal.id != goalId || goal.plans == null) {
-              return goal;
-            }
+      var vision = await VisionRepository().getVision();
+      var goal = await GoalRepository().getGoal(goalId);
 
-            goal.plans = goal.plans
-                    ?.map((plan) => plan?.id == newPlan?.id ? newPlan : plan)
-                    .toList() ??
-                [];
-
-            return goal;
-          }).toList() ??
-          [];
+      _vision = vision;
+      _goals = vision?.goals;
+      _goal = goal;
+      _plans = goal?.plans;
     } catch (error) {
       rethrow;
     } finally {
@@ -137,5 +150,9 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
     super.debugFillProperties(properties);
     properties.add(StringProperty('mode', _mode));
     properties.add(DiagnosticsProperty<VisionModel>('vision', _vision));
+    properties.add(DiagnosticsProperty<List<GoalModel?>>('goals', _goals));
+    properties.add(DiagnosticsProperty<GoalModel>('goal', _goal));
+    properties.add(DiagnosticsProperty<List<PlanModel?>>('plans', _plans));
+    properties.add(DiagnosticsProperty<PlanModel>('plan', _plan));
   }
 }

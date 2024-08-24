@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mandalart/extension/size_format_extension.dart';
-import 'package:mandalart/provider/goal_provider.dart';
+import 'package:mandalart/extension/number_extension.dart';
 import 'package:mandalart/provider/home_provider.dart';
 import 'package:mandalart/provider/setting_provider.dart';
 import 'package:mandalart/theme/color.dart';
@@ -24,10 +23,7 @@ class _SettingStorageScreenState extends State<SettingStorageScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<SettingProvider>(
-        context,
-        listen: false,
-      ).getSizes();
+      Provider.of<SettingProvider>(context, listen: false).getSizes();
     });
   }
 
@@ -39,15 +35,7 @@ class _SettingStorageScreenState extends State<SettingStorageScreen> {
 
     if (!mounted || !success) return;
 
-    Provider.of<HomeProvider>(
-      context,
-      listen: false,
-    ).clearHome();
-
-    Provider.of<GoalProvider>(
-      context,
-      listen: false,
-    ).clearGoal();
+    Provider.of<HomeProvider>(context, listen: false).clearHome();
 
     context.go('/vision');
   }

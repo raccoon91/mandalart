@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mandalart/provider/goal_provider.dart';
 import 'package:mandalart/provider/home_provider.dart';
 import 'package:mandalart/provider/schedule_provider.dart';
 import 'package:mandalart/widget/home/plan_update_bottom_sheet.dart';
@@ -20,42 +19,21 @@ class PlanUpdateBottomSheetScreen extends StatelessWidget {
     return PlanUpdateBottomSheet(
       planId: planId != null ? int.parse(planId!) : null,
       create: (String name, Color color) async {
-        await Provider.of<HomeProvider>(
-          context,
-          listen: false,
-        ).updatePlan(
-          goalId != null ? int.parse(goalId!) : null,
-          planId != null ? int.parse(planId!) : null,
+        int? intGoalId = goalId != null ? int.parse(goalId!) : null;
+        int? intPlanId = planId != null ? int.parse(planId!) : null;
+
+        await Provider.of<HomeProvider>(context, listen: false).updatePlan(
+          intGoalId,
+          intPlanId,
           name,
           color,
         );
 
         if (!context.mounted) return;
 
-        await Provider.of<HomeProvider>(
-          context,
-          listen: false,
-        ).getInProgressVision();
-
-        if (!context.mounted) return;
-
-        await Provider.of<GoalProvider>(
-          context,
-          listen: false,
-        ).getGoal(
-          goalId,
+        await Provider.of<ScheduleProvider>(context, listen: false).getPlans(
+          intGoalId,
         );
-
-        if (!context.mounted) return;
-
-        if (goalId != null) {
-          Provider.of<ScheduleProvider>(
-            context,
-            listen: false,
-          ).getPlans(
-            int.parse(goalId!),
-          );
-        }
       },
     );
   }

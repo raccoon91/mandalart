@@ -18,10 +18,7 @@ class GoalCreateBottomSheetScreen extends StatelessWidget {
       type: 'goal',
       goalId: goalId != null ? int.parse(goalId!) : null,
       create: (String name, Color color) async {
-        await Provider.of<HomeProvider>(
-          context,
-          listen: false,
-        ).updateGoal(
+        await Provider.of<HomeProvider>(context, listen: false).updateGoal(
           goalId != null ? int.parse(goalId!) : null,
           name,
           color,
@@ -29,10 +26,7 @@ class GoalCreateBottomSheetScreen extends StatelessWidget {
 
         if (!context.mounted) return;
 
-        Provider.of<ScheduleProvider>(
-          context,
-          listen: false,
-        ).getGoals();
+        Provider.of<ScheduleProvider>(context, listen: false).getGoals();
       },
     );
   }
