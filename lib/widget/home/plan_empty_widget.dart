@@ -5,15 +5,15 @@ import 'package:mandalart/model/plan_model.dart';
 import 'package:mandalart/theme/color.dart';
 
 class PlanEmptyWidget extends StatelessWidget {
+  final String? route;
   final String? mode;
-  final String? type;
   final PlanModel? plan;
   final double? size;
 
   const PlanEmptyWidget({
     super.key,
+    this.route,
     this.mode,
-    this.type,
     this.plan,
     this.size,
   });
@@ -34,7 +34,7 @@ class PlanEmptyWidget extends StatelessWidget {
         child: Container(
           width: size ?? double.infinity,
           margin: EdgeInsets.all(3.w),
-          decoration: type == 'goal'
+          decoration: route == 'goal'
               ? BoxDecoration(
                   color: ColorClass.under,
                   borderRadius: BorderRadius.circular(4.r),
@@ -45,7 +45,7 @@ class PlanEmptyWidget extends StatelessWidget {
                 ),
           child: Icon(
             Icons.add,
-            size: type == 'goal' ? 30.sp : 16.sp,
+            size: route == 'goal' ? 30.sp : 16.sp,
             color: ColorClass.gray,
           ),
         ),

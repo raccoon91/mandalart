@@ -4,14 +4,14 @@ import 'package:go_router/go_router.dart';
 import 'package:mandalart/theme/color.dart';
 
 class GoalEmptyWidget extends StatelessWidget {
-  final String? mode;
   final int? goalId;
+  final String? mode;
   final double? size;
 
   const GoalEmptyWidget({
     super.key,
-    this.mode,
     this.goalId,
+    this.mode,
     this.size,
   });
 

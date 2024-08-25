@@ -29,8 +29,8 @@ class GoalWidget extends StatelessWidget {
     if (mode == 'maximize') {
       return Flexible(
         child: PlanMandalartWidget(
+          route: 'home',
           mode: mode,
-          type: 'plan',
           goal: goal,
         ),
       );

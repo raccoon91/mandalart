@@ -5,15 +5,15 @@ import 'package:mandalart/widget/home/card_widget.dart';
 import 'package:mandalart/widget/home/plan_empty_widget.dart';
 
 class PlanWidget extends StatelessWidget {
+  final String route;
   final String? mode;
-  final String type;
   final int? goalId;
   final PlanModel? plan;
 
   const PlanWidget({
     super.key,
+    required this.route,
     this.mode,
-    required this.type,
     this.goalId,
     this.plan,
   });
@@ -23,8 +23,8 @@ class PlanWidget extends StatelessWidget {
     if (plan == null || plan?.name == null) {
       return Flexible(
         child: PlanEmptyWidget(
+          route: route,
           mode: mode,
-          type: type,
           plan: plan,
         ),
       );
@@ -32,12 +32,12 @@ class PlanWidget extends StatelessWidget {
 
     return Flexible(
       child: CardWidget(
-        name: (mode == 'minimize' || type == 'plan') ? null : plan?.name,
+        name: (mode == 'minimize' || route == 'home') ? null : plan?.name,
         color: plan?.color,
         onTap: () {
           if (plan?.id == null) return;
 
-          if ((mode == 'maximize' && type == 'plan') || type == 'goal') {
+          if (((mode == 'maximize' && route == 'home')) || route == 'goal') {
             context.push('/sheet/plan/update/$goalId/${plan?.id}');
           }
         },

@@ -6,14 +6,14 @@ import 'package:mandalart/widget/home/plan_empty_widget.dart';
 import 'package:mandalart/widget/home/plan_widget.dart';
 
 class PlanMandalartWidget extends StatelessWidget {
+  final String route;
   final String? mode;
-  final String type;
   final GoalModel? goal;
 
   const PlanMandalartWidget({
     super.key,
+    required this.route,
     this.mode,
-    required this.type,
     this.goal,
   });
 
@@ -24,8 +24,8 @@ class PlanMandalartWidget extends StatelessWidget {
         Row(
           children: List.generate(3, (index) {
             return PlanWidget(
+              route: route,
               mode: mode,
-              type: type,
               goalId: goal?.id,
               plan: goal?.plans?[index],
             );
@@ -34,31 +34,32 @@ class PlanMandalartWidget extends StatelessWidget {
         Row(
           children: [
             PlanWidget(
+              route: route,
               mode: mode,
-              type: type,
               goalId: goal?.id,
               plan: goal?.plans?[3],
             ),
             goal?.name == null
-                ? Flexible(child: PlanEmptyWidget(type: type))
+                ? Flexible(child: PlanEmptyWidget(route: route))
                 : Flexible(
                     child: CardWidget(
-                      name: type == 'goal' ? goal?.name : null,
+                      name: route == 'home' ? null : goal?.name,
                       color: goal?.color,
                       onTap: () {
                         if (goal?.id == null) return;
 
-                        if (type == 'goal') {
+                        if ((mode == 'maximize' && route == 'home') ||
+                            route == 'goal') {
                           context.push('/sheet/goal/update/${goal?.id}');
-                        } else if (type == 'plan') {
+                        } else {
                           context.push('/home/goal/${goal?.id}');
                         }
                       },
                     ),
                   ),
             PlanWidget(
+              route: route,
               mode: mode,
-              type: type,
               goalId: goal?.id,
               plan: goal?.plans?[4],
             ),
@@ -67,8 +68,8 @@ class PlanMandalartWidget extends StatelessWidget {
         Row(
           children: List.generate(3, (index) {
             return PlanWidget(
+              route: route,
               mode: mode,
-              type: type,
               goalId: goal?.id,
               plan: goal?.plans?[index + 5],
             );

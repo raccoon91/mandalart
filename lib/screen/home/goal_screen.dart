@@ -50,7 +50,7 @@ class _GoalScreenState extends State<GoalScreen> {
             goalName: state.goal?.name,
           ),
           body: PlanMandalartWidget(
-            type: 'goal',
+            route: 'goal',
             goal: state.goal,
           ),
         ),
