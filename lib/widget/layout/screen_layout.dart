@@ -25,6 +25,7 @@ class ScreenLayout extends StatelessWidget {
         child: Scaffold(
           backgroundColor: ColorClass.white,
           bottomNavigationBar: bottomNavigationBar,
+          floatingActionButton: floatingActionButton,
           body: body,
         ),
       ),

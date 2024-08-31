@@ -56,11 +56,9 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       floatingActionButton: FloatingButton(
+        show: true,
         onPressed: () {
-          Provider.of<HomeProvider>(
-            context,
-            listen: false,
-          ).changeMode();
+          Provider.of<HomeProvider>(context, listen: false).changeMode();
         },
       ),
     );
