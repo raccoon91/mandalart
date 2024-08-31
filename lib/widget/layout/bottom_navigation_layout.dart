@@ -50,6 +50,7 @@ class _BottomNavigationLayoutState extends State<BottomNavigationLayout> {
       canPop: false,
       onPopInvokedWithResult: onPopInvoked,
       child: Scaffold(
+        backgroundColor: ColorClass.white,
         bottomNavigationBar: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           height: widget.branchIndex == 0 ? 80.h : 60.h,

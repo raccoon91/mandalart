@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mandalart/provider/home_provider.dart';
-import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/home/mandal_title.dart';
 import 'package:mandalart/widget/home/plan_mandalart_widget.dart';
 import 'package:mandalart/widget/layout/mandal_layout.dart';
+import 'package:mandalart/widget/layout/screen_layout.dart';
 import 'package:provider/provider.dart';
 
 class GoalScreen extends StatefulWidget {
@@ -36,9 +36,8 @@ class _GoalScreenState extends State<GoalScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: ColorClass.white,
-      child: Consumer<HomeProvider>(
+    return ScreenLayout(
+      body: Consumer<HomeProvider>(
         builder: (context, state, child) => MandalLayout(
           isEmpty: state.goal == null ||
               state.plans == null ||

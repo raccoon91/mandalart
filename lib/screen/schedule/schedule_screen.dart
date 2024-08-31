@@ -5,6 +5,7 @@ import 'package:mandalart/model/appointment_model.dart';
 import 'package:mandalart/provider/schedule_provider.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:mandalart/widget/base/banner_ad.dart';
+import 'package:mandalart/widget/layout/screen_layout.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -55,9 +56,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return ScreenLayout(
       padding: EdgeInsets.only(top: 10.h),
-      child: Column(
+      body: Column(
         children: [
           const BannerAD(),
           SizedBox(height: 10.h),

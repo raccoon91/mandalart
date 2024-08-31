@@ -66,65 +66,66 @@ class _VisionCreateScreenState extends State<VisionCreateScreen> {
   Widget build(BuildContext context) {
     return ScreenLayout(
       title: '목표',
-      body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(height: 10.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Flexible(
-                          flex: 1,
-                          child: SizedBox(),
+      padding: EdgeInsets.symmetric(
+        vertical: 20.h,
+        horizontal: 20.w,
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(height: 10.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Flexible(
+                        flex: 1,
+                        child: SizedBox(),
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: CardWidget(
+                          name: visionController.text,
+                          color: color,
                         ),
-                        Flexible(
-                          flex: 1,
-                          child: CardWidget(
-                            name: visionController.text,
-                            color: color,
-                          ),
-                        ),
-                        const Flexible(
-                          flex: 1,
-                          child: SizedBox(),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 40.h),
-                    ColorPicker(color: color, onTapped: colorTapped),
-                    SizedBox(height: 40.h),
-                    Input(
-                      autofocus: true,
-                      placeholder: '목표를 입력하세요',
-                      controller: visionController,
-                      maxLines: null,
-                      keyboardType: TextInputType.multiline,
-                      textInputAction: TextInputAction.done,
-                      onChanged: visionChanged,
-                      onSubmitted: enabled ? submitted : null,
-                    ),
-                    SizedBox(height: 10.h),
-                  ],
-                ),
+                      ),
+                      const Flexible(
+                        flex: 1,
+                        child: SizedBox(),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 40.h),
+                  ColorPicker(color: color, onTapped: colorTapped),
+                  SizedBox(height: 40.h),
+                  Input(
+                    autofocus: true,
+                    placeholder: '목표를 입력하세요',
+                    controller: visionController,
+                    maxLines: null,
+                    keyboardType: TextInputType.multiline,
+                    textInputAction: TextInputAction.done,
+                    onChanged: visionChanged,
+                    onSubmitted: enabled ? submitted : null,
+                  ),
+                  SizedBox(height: 10.h),
+                ],
               ),
             ),
-            SizedBox(height: 20.h),
-            SizedBox(
-              width: double.infinity,
-              height: 60.h,
-              child: Button(
-                text: '시작하기',
-                onPressed: enabled ? createTapped : null,
-              ),
+          ),
+          SizedBox(height: 20.h),
+          SizedBox(
+            width: double.infinity,
+            height: 60.h,
+            child: Button(
+              text: '시작하기',
+              onPressed: enabled ? createTapped : null,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mandalart/widget/base/banner_ad.dart';
+import 'package:mandalart/widget/layout/screen_layout.dart';
 import 'package:mandalart/widget/setting/setting_card.dart';
 import 'package:mandalart/widget/setting/setting_item.dart';
 
@@ -9,9 +10,12 @@ class SettingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
-      child: Column(
+    return ScreenLayout(
+      padding: EdgeInsets.symmetric(
+        vertical: 10.h,
+        horizontal: 20.w,
+      ),
+      body: Column(
         children: [
           const BannerAD(),
           SizedBox(height: 20.h),
