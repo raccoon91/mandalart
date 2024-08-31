@@ -50,6 +50,8 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
       return goal;
     } catch (error) {
       rethrow;
+    } finally {
+      notifyListeners();
     }
   }
 
@@ -64,6 +66,8 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
       return plan;
     } catch (error) {
       rethrow;
+    } finally {
+      notifyListeners();
     }
   }
 
