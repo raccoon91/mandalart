@@ -4,16 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mandalart/theme/color.dart';
-import 'package:mandalart/widget/layout/screen_layout.dart';
 
 class BottomNavigationLayout extends StatefulWidget {
-  final String? title;
   final int? branchIndex;
   final StatefulNavigationShell child;
 
   const BottomNavigationLayout({
     super.key,
-    this.title,
     this.branchIndex,
     required this.child,
   });
@@ -33,7 +30,7 @@ class _BottomNavigationLayoutState extends State<BottomNavigationLayout> {
     );
   }
 
-  void onPopInvoked(bool didPop) {
+  void onPopInvoked(bool didPop, dynamic result) {
     DateTime now = DateTime.now();
 
     if (now.difference(currentBackPressTime) > requiredSeconds) {
@@ -49,16 +46,10 @@ class _BottomNavigationLayoutState extends State<BottomNavigationLayout> {
 
   @override
   Widget build(BuildContext context) {
-    bool isHome =
-        GoRouter.of(context).routeInformationProvider.value.uri.toString() ==
-            '/home';
-
     return PopScope(
       canPop: false,
-      onPopInvoked: onPopInvoked,
-      child: ScreenLayout(
-        title: widget.title,
-        showFloatingAction: isHome,
+      onPopInvokedWithResult: onPopInvoked,
+      child: Scaffold(
         bottomNavigationBar: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           height: widget.branchIndex == 0 ? 80.h : 60.h,
@@ -95,15 +86,15 @@ class _BottomNavigationLayoutState extends State<BottomNavigationLayout> {
                     ),
                     BottomNavigationBarItem(
                       label: 'Schedule',
-                      icon: Icon(Icons.event_available),
+                      icon: Icon(Icons.event_available_rounded),
                     ),
                     BottomNavigationBarItem(
                       label: 'Task',
-                      icon: Icon(Icons.task_alt),
+                      icon: Icon(Icons.task_alt_rounded),
                     ),
                     BottomNavigationBarItem(
                       label: 'Setting',
-                      icon: Icon(Icons.settings),
+                      icon: Icon(Icons.settings_rounded),
                     ),
                   ],
                 ),
