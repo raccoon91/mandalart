@@ -5,6 +5,7 @@ class ColorClass {
   static const white = Color(0xFFFFFFFF);
   static const under = Color(0xFFF5F5F5);
   static const border = Color(0xFFC5C5C5);
+  static const disable = Color(0xFFE5E5E5);
   static const gray = Color(0xFFA5A5A5);
   static const red = Color(0xFFFFB3BA);
   static const orange = Color(0xFFFFDFBA);

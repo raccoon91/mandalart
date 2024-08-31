@@ -14,22 +14,15 @@ import 'package:mandalart/screen/schedule/schedule_create_bottom_sheet_screen.da
 import 'package:mandalart/screen/schedule/schedule_screen.dart';
 import 'package:mandalart/screen/setting/setting_screen.dart';
 import 'package:mandalart/screen/setting/setting_storage_screen.dart';
+import 'package:mandalart/screen/statistics/statistics_screen.dart';
 import 'package:mandalart/screen/task/task_screen.dart';
 import 'package:mandalart/screen/vision/vision_create_screen.dart';
 import 'package:mandalart/screen/vision/vision_start_screen.dart';
 import 'package:mandalart/widget/layout/bottom_navigation_layout.dart';
 
-final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _homeTabNavigatorKey = GlobalKey<NavigatorState>();
-final _scheduleTabNavigatorKey = GlobalKey<NavigatorState>();
-final _taskTabNavigatorKey = GlobalKey<NavigatorState>();
-final _settingTabNavigatorKey = GlobalKey<NavigatorState>();
-
 final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
-  parentNavigatorKey: _rootNavigatorKey,
   branches: [
     StatefulShellBranch(
-      navigatorKey: _homeTabNavigatorKey,
       routes: [
         GoRoute(
           name: 'home',
@@ -58,7 +51,6 @@ final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
       ],
     ),
     StatefulShellBranch(
-      navigatorKey: _scheduleTabNavigatorKey,
       routes: [
         GoRoute(
           path: '/schedule',
@@ -72,7 +64,6 @@ final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
       ],
     ),
     StatefulShellBranch(
-      navigatorKey: _taskTabNavigatorKey,
       routes: [
         GoRoute(
           path: '/task',
@@ -86,7 +77,19 @@ final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
       ],
     ),
     StatefulShellBranch(
-      navigatorKey: _settingTabNavigatorKey,
+      routes: [
+        GoRoute(
+          path: '/statistics',
+          pageBuilder: (BuildContext context, GoRouterState state) {
+            return getPage(
+              state: state,
+              child: const StatisticsScreen(),
+            );
+          },
+        ),
+      ],
+    ),
+    StatefulShellBranch(
       routes: [
         GoRoute(
           path: '/setting',
@@ -117,7 +120,6 @@ final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
 
 final GoRouter router = GoRouter(
   initialLocation: '/home',
-  navigatorKey: _rootNavigatorKey,
   routes: <RouteBase>[
     bottomNavigationRoutes,
     GoRoute(

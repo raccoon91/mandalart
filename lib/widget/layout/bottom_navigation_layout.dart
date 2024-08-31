@@ -24,6 +24,8 @@ class _BottomNavigationLayoutState extends State<BottomNavigationLayout> {
   final Duration requiredSeconds = const Duration(seconds: 2);
 
   bottomItemTapped(index) {
+    if (index == 3) return;
+
     widget.child.goBranch(
       index,
       initialLocation: index == widget.child.currentIndex,
@@ -92,6 +94,13 @@ class _BottomNavigationLayoutState extends State<BottomNavigationLayout> {
                     BottomNavigationBarItem(
                       label: 'Task',
                       icon: Icon(Icons.task_alt_rounded),
+                    ),
+                    BottomNavigationBarItem(
+                      label: 'Statistics',
+                      icon: Icon(
+                        Icons.bar_chart_rounded,
+                        color: ColorClass.disable,
+                      ),
                     ),
                     BottomNavigationBarItem(
                       label: 'Setting',
