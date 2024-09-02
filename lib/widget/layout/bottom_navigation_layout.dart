@@ -33,6 +33,10 @@ class _BottomNavigationLayoutState extends State<BottomNavigationLayout> {
   }
 
   void onPopInvoked(bool didPop, dynamic result) {
+    if (didPop) {
+      return;
+    }
+
     DateTime now = DateTime.now();
 
     if (now.difference(currentBackPressTime) > requiredSeconds) {
