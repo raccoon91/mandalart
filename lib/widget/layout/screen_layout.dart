@@ -19,15 +19,19 @@ class ScreenLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
+    return Scaffold(
+      appBar: title != null
+          ? AppBar(
+              title: Text(title!),
+              backgroundColor: ColorClass.under,
+            )
+          : null,
+      backgroundColor: ColorClass.white,
+      bottomNavigationBar: bottomNavigationBar,
+      floatingActionButton: floatingActionButton,
+      body: Container(
         padding: padding,
-        child: Scaffold(
-          backgroundColor: ColorClass.white,
-          bottomNavigationBar: bottomNavigationBar,
-          floatingActionButton: floatingActionButton,
-          body: body,
-        ),
+        child: body,
       ),
     );
   }

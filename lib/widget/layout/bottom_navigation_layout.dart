@@ -55,68 +55,70 @@ class _BottomNavigationLayoutState extends State<BottomNavigationLayout> {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: onPopInvoked,
-      child: Scaffold(
-        backgroundColor: ColorClass.white,
-        bottomNavigationBar: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          height: widget.branchIndex == 0 ? 80.h : 60.h,
-          child: AnimatedPadding(
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: ColorClass.white,
+          bottomNavigationBar: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
-            padding: widget.branchIndex == 0
-                ? EdgeInsets.only(right: 20.w, bottom: 20.h, left: 20.w)
-                : const EdgeInsets.all(0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.all(
-                widget.branchIndex == 0
-                    ? Radius.circular(50.r)
-                    : const Radius.circular(0),
-              ),
-              child: Theme(
-                data: Theme.of(context).copyWith(
-                  canvasColor: ColorClass.under,
-                  primaryColor: ColorClass.blue,
+            height: widget.branchIndex == 0 ? 80.h : 60.h,
+            child: AnimatedPadding(
+              duration: const Duration(milliseconds: 200),
+              padding: widget.branchIndex == 0
+                  ? EdgeInsets.only(right: 20.w, bottom: 20.h, left: 20.w)
+                  : const EdgeInsets.all(0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.all(
+                  widget.branchIndex == 0
+                      ? Radius.circular(50.r)
+                      : const Radius.circular(0),
                 ),
-                child: BottomNavigationBar(
-                  currentIndex: widget.child.currentIndex,
-                  selectedFontSize: 0,
-                  unselectedFontSize: 0,
-                  showSelectedLabels: false,
-                  showUnselectedLabels: false,
-                  backgroundColor: ColorClass.under,
-                  selectedItemColor: ColorClass.blue,
-                  unselectedItemColor: ColorClass.border,
-                  onTap: bottomItemTapped,
-                  items: const [
-                    BottomNavigationBarItem(
-                      label: 'Home',
-                      icon: Icon(Icons.home_filled),
-                    ),
-                    BottomNavigationBarItem(
-                      label: 'Schedule',
-                      icon: Icon(Icons.event_available_rounded),
-                    ),
-                    BottomNavigationBarItem(
-                      label: 'Task',
-                      icon: Icon(Icons.task_alt_rounded),
-                    ),
-                    BottomNavigationBarItem(
-                      label: 'Statistics',
-                      icon: Icon(
-                        Icons.bar_chart_rounded,
-                        color: ColorClass.disable,
+                child: Theme(
+                  data: Theme.of(context).copyWith(
+                    canvasColor: ColorClass.under,
+                    primaryColor: ColorClass.blue,
+                  ),
+                  child: BottomNavigationBar(
+                    currentIndex: widget.child.currentIndex,
+                    selectedFontSize: 0,
+                    unselectedFontSize: 0,
+                    showSelectedLabels: false,
+                    showUnselectedLabels: false,
+                    backgroundColor: ColorClass.under,
+                    selectedItemColor: ColorClass.blue,
+                    unselectedItemColor: ColorClass.border,
+                    onTap: bottomItemTapped,
+                    items: const [
+                      BottomNavigationBarItem(
+                        label: 'Home',
+                        icon: Icon(Icons.home_filled),
                       ),
-                    ),
-                    BottomNavigationBarItem(
-                      label: 'Setting',
-                      icon: Icon(Icons.settings_rounded),
-                    ),
-                  ],
+                      BottomNavigationBarItem(
+                        label: 'Schedule',
+                        icon: Icon(Icons.event_available_rounded),
+                      ),
+                      BottomNavigationBarItem(
+                        label: 'Task',
+                        icon: Icon(Icons.task_alt_rounded),
+                      ),
+                      BottomNavigationBarItem(
+                        label: 'Statistics',
+                        icon: Icon(
+                          Icons.bar_chart_rounded,
+                          color: ColorClass.disable,
+                        ),
+                      ),
+                      BottomNavigationBarItem(
+                        label: 'Setting',
+                        icon: Icon(Icons.settings_rounded),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
+          body: widget.child,
         ),
-        body: widget.child,
       ),
     );
   }
