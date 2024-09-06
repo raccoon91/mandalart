@@ -20,9 +20,17 @@ import 'package:mandalart/screen/vision/vision_create_screen.dart';
 import 'package:mandalart/screen/vision/vision_start_screen.dart';
 import 'package:mandalart/widget/layout/bottom_navigation_layout.dart';
 
+final _rootNavigatorKey = GlobalKey<NavigatorState>();
+final _homeNavigatorKey = GlobalKey<NavigatorState>();
+final _scheduleNavigatorKey = GlobalKey<NavigatorState>();
+final _taskNavigatorKey = GlobalKey<NavigatorState>();
+final _settingNavigatorKey = GlobalKey<NavigatorState>();
+
 final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
+  parentNavigatorKey: _rootNavigatorKey,
   branches: [
     StatefulShellBranch(
+      navigatorKey: _homeNavigatorKey,
       routes: [
         GoRoute(
           name: 'home',
@@ -51,6 +59,7 @@ final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
       ],
     ),
     StatefulShellBranch(
+      navigatorKey: _scheduleNavigatorKey,
       routes: [
         GoRoute(
           path: '/schedule',
@@ -64,6 +73,7 @@ final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
       ],
     ),
     StatefulShellBranch(
+      navigatorKey: _taskNavigatorKey,
       routes: [
         GoRoute(
           path: '/task',
@@ -77,6 +87,7 @@ final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
       ],
     ),
     StatefulShellBranch(
+      navigatorKey: _settingNavigatorKey,
       routes: [
         GoRoute(
           path: '/statistics',
@@ -120,9 +131,11 @@ final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
 
 final GoRouter router = GoRouter(
   initialLocation: '/home',
+  navigatorKey: _rootNavigatorKey,
   routes: <RouteBase>[
     bottomNavigationRoutes,
     GoRoute(
+      parentNavigatorKey: _rootNavigatorKey,
       path: '/vision',
       pageBuilder: (BuildContext context, GoRouterState state) {
         return getPage(
@@ -143,6 +156,7 @@ final GoRouter router = GoRouter(
       ],
     ),
     GoRoute(
+      parentNavigatorKey: _rootNavigatorKey,
       path: '/sheet/goal/create/:goalId',
       pageBuilder: (BuildContext context, GoRouterState state) {
         return BottomSheetPage(
@@ -153,6 +167,7 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
+      parentNavigatorKey: _rootNavigatorKey,
       path: '/sheet/goal/update/:goalId',
       pageBuilder: (BuildContext context, GoRouterState state) {
         return BottomSheetPage(
@@ -163,6 +178,7 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
+      parentNavigatorKey: _rootNavigatorKey,
       path: '/sheet/plan/create/:mode/:goalId/:planId',
       pageBuilder: (BuildContext context, GoRouterState state) {
         return BottomSheetPage(
@@ -175,6 +191,7 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
+      parentNavigatorKey: _rootNavigatorKey,
       path: '/sheet/plan/update/:goalId/:planId',
       pageBuilder: (BuildContext context, GoRouterState state) {
         return BottomSheetPage(
@@ -186,6 +203,7 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
+      parentNavigatorKey: _rootNavigatorKey,
       path: '/sheet/schedule/create/:date',
       pageBuilder: (BuildContext context, GoRouterState state) {
         return BottomSheetPage(
@@ -196,6 +214,7 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
+      parentNavigatorKey: _rootNavigatorKey,
       path: '/sheet/schedule/:scheduleId/:from/:to',
       pageBuilder: (BuildContext context, GoRouterState state) {
         return BottomSheetPage(
@@ -208,6 +227,7 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
+      parentNavigatorKey: _rootNavigatorKey,
       path: '/setting/storage',
       pageBuilder: (BuildContext context, GoRouterState state) {
         return slideTransitionPage(
