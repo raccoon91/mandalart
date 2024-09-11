@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mandalart/theme/color.dart';
 
 class ThemeClass {
@@ -9,6 +10,9 @@ class ThemeClass {
       cursorColor: ColorClass.blue,
       selectionColor: ColorClass.blue,
       selectionHandleColor: ColorClass.blue,
+    ),
+    appBarTheme: const AppBarTheme(
+      systemOverlayStyle: SystemUiOverlayStyle.light,
     ),
   );
 }
