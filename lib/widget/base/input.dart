@@ -36,10 +36,7 @@ class Input extends StatelessWidget {
       textInputAction: textInputAction,
       decoration: InputDecoration(
         hintText: placeholder,
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: 20.w,
-          vertical: 10.h,
-        ),
+        contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(8.r)),
           borderSide: const BorderSide(

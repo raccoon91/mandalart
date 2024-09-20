@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mandalart/theme/color.dart';
 
-class Button extends StatelessWidget {
+class ToggleButton extends StatelessWidget {
   final String text;
+  final Color? color;
+  final bool selected;
   final void Function()? onPressed;
 
-  const Button({
+  const ToggleButton({
     super.key,
     required this.text,
+    this.color,
+    this.selected = false,
     this.onPressed,
   });
 
@@ -16,18 +20,18 @@ class Button extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        padding: EdgeInsetsDirectional.symmetric(vertical: 12.h, horizontal: 24.w),
         foregroundColor: ColorClass.black,
-        backgroundColor: ColorClass.skyBlue,
-        disabledForegroundColor: ColorClass.black,
-        disabledBackgroundColor: ColorClass.under,
+        backgroundColor: selected ? color ?? ColorClass.border : ColorClass.under,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.r),
+          borderRadius: BorderRadius.circular(4),
         ),
       ),
       onPressed: onPressed,
       child: Text(
         text,
-        style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w700),
+        style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w700),
       ),
     );
   }

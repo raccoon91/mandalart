@@ -48,9 +48,8 @@ class PlanMandalartWidget extends StatelessWidget {
                       onTap: () {
                         if (goal?.id == null) return;
 
-                        if ((mode == 'maximize' && route == 'home') ||
-                            route == 'goal') {
-                          context.push('/sheet/goal/update/${goal?.id}');
+                        if ((mode == 'maximize' && route == 'home') || route == 'goal') {
+                          context.push('/template/goal/${goal?.id}');
                         } else {
                           context.push('/home/goal/${goal?.id}');
                         }

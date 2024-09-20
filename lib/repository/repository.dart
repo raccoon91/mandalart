@@ -17,7 +17,7 @@ class Repository<T> {
     }
   }
 
-  Future<T?> findOne(FilterQuery<T> builder) async {
+  Future<T?> findOne({required FilterQuery<T> builder}) async {
     try {
       var schema = await db.where().filter().group(builder).findFirst();
 
@@ -27,9 +27,15 @@ class Repository<T> {
     }
   }
 
-  Future<List<T>> findAll(FilterQuery<T> builder) async {
+  Future<List<T>> findAll({FilterQuery<T>? builder}) async {
     try {
-      var schemaList = await db.where().filter().group(builder).findAll();
+      late List<T> schemaList;
+
+      if (builder == null) {
+        schemaList = await db.where().findAll();
+      } else {
+        schemaList = await db.where().filter().group(builder).findAll();
+      }
 
       return schemaList;
     } catch (error) {
@@ -37,7 +43,7 @@ class Repository<T> {
     }
   }
 
-  Future<int> putOne(T schema) async {
+  Future<int> putOne({required T schema}) async {
     try {
       var id = await db.put(schema);
 
@@ -47,7 +53,7 @@ class Repository<T> {
     }
   }
 
-  Future<List<int>> putAll(List<T> schemaList) async {
+  Future<List<int>> putAll({required List<T> schemaList}) async {
     try {
       var ids = await db.putAll(schemaList);
 
@@ -57,7 +63,7 @@ class Repository<T> {
     }
   }
 
-  Future<bool> deleteOne(int id) async {
+  Future<bool> deleteOne({required int id}) async {
     try {
       var bool = await db.delete(id);
 
@@ -67,7 +73,7 @@ class Repository<T> {
     }
   }
 
-  Future<int> deleteAll(List<int> ids) async {
+  Future<int> deleteAll({required List<int> ids}) async {
     try {
       var count = await db.deleteAll(ids);
 

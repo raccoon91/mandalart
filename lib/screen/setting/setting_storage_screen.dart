@@ -22,16 +22,15 @@ class _SettingStorageScreenState extends State<SettingStorageScreen> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<SettingProvider>(context, listen: false).getSizes();
-    });
+    getSettingStorageScreenData();
+  }
+
+  getSettingStorageScreenData() {
+    Provider.of<SettingProvider>(context, listen: false).getSizes();
   }
 
   onTapClean() async {
-    bool success = await Provider.of<SettingProvider>(
-      context,
-      listen: false,
-    ).deleteDB();
+    bool success = await Provider.of<SettingProvider>(context, listen: false).deleteDB();
 
     if (!mounted || !success) return;
 
@@ -44,11 +43,7 @@ class _SettingStorageScreenState extends State<SettingStorageScreen> {
   Widget build(BuildContext context) {
     return ScreenLayout(
       title: '저장공간',
-      padding: EdgeInsets.only(
-        top: 60.h,
-        right: 20.w,
-        left: 20.w,
-      ),
+      padding: EdgeInsets.only(top: 60.h, right: 20.w, left: 20.w),
       body: Column(
         children: [
           Expanded(
@@ -63,17 +58,11 @@ class _SettingStorageScreenState extends State<SettingStorageScreen> {
                         children: [
                           Text(
                             '목표',
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w700,
-                            ),
+                            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w700),
                           ),
                           Text(
                             '${state.visionSize?.toFileSize()}',
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w700,
-                            ),
+                            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w700),
                           ),
                         ],
                       ),
@@ -88,17 +77,11 @@ class _SettingStorageScreenState extends State<SettingStorageScreen> {
                         children: [
                           Text(
                             '계획',
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w700,
-                            ),
+                            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w700),
                           ),
                           Text(
                             '${state.goalSize?.toFileSize()}',
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w700,
-                            ),
+                            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w700),
                           ),
                         ],
                       ),
@@ -113,17 +96,11 @@ class _SettingStorageScreenState extends State<SettingStorageScreen> {
                         children: [
                           Text(
                             '실행계획',
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w700,
-                            ),
+                            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w700),
                           ),
                           Text(
                             '${state.planSize?.toFileSize()}',
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w700,
-                            ),
+                            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w700),
                           ),
                         ],
                       ),
@@ -138,17 +115,11 @@ class _SettingStorageScreenState extends State<SettingStorageScreen> {
                         children: [
                           Text(
                             '스케줄',
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w700,
-                            ),
+                            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w700),
                           ),
                           Text(
                             '${state.scheduleSize?.toFileSize()}',
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w700,
-                            ),
+                            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w700),
                           ),
                         ],
                       ),
@@ -163,17 +134,11 @@ class _SettingStorageScreenState extends State<SettingStorageScreen> {
                         children: [
                           Text(
                             '완료',
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w700,
-                            ),
+                            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w700),
                           ),
                           Text(
                             '${state.completeSize?.toFileSize()}',
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w700,
-                            ),
+                            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w700),
                           ),
                         ],
                       ),
@@ -198,10 +163,7 @@ class _SettingStorageScreenState extends State<SettingStorageScreen> {
                         SizedBox(height: 8.w),
                         Text(
                           '전체 삭제',
-                          style: TextStyle(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w700,
-                          ),
+                          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w700),
                         )
                       ],
                     ),

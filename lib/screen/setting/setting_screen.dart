@@ -11,10 +11,7 @@ class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenLayout(
-      padding: EdgeInsets.symmetric(
-        vertical: 10.h,
-        horizontal: 20.w,
-      ),
+      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
       body: Column(
         children: [
           const BannerAD(),
@@ -25,10 +22,7 @@ class SettingScreen extends StatelessWidget {
               children: [
                 Text(
                   '설정',
-                  style: TextStyle(
-                    fontSize: 24.sp,
-                    fontWeight: FontWeight.w700,
-                  ),
+                  style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w700),
                 ),
               ],
             ),
@@ -39,11 +33,7 @@ class SettingScreen extends StatelessWidget {
               children: [
                 SettingCard(
                   children: [
-                    SettingItem(
-                      name: '저장공간',
-                      icon: Icons.storage,
-                      to: '/setting/storage',
-                    ),
+                    SettingItem(name: '저장공간', icon: Icons.storage, to: '/setting/storage'),
                   ],
                 ),
               ],

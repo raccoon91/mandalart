@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mandalart/model/schedule_model.dart';
 import 'package:mandalart/schema/complete_schema.dart';
+import 'package:mandalart/schema/plan_schema.dart';
+import 'package:mandalart/schema/plan_template_schema.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -28,18 +30,19 @@ class TaskModel extends Appointment {
     ScheduleModel schedule,
     Complete? completeSchema,
   ) {
+    Plan? plan = schedule.plan;
+    PlanTemplate? planTemplate = plan?.planTemplate.value;
+
     return TaskModel(
       visionId: schedule.visionId,
       scheduleId: schedule.id,
       completeId: completeSchema?.id,
       completed: completeSchema?.completed,
-      subject: schedule.plan?.name ?? '',
+      subject: planTemplate?.name ?? '',
       startTime: schedule.from,
       endTime: schedule.to,
       isAllDay: schedule.isAllDay,
-      color: completeSchema?.completed == null
-          ? ColorClass.white
-          : schedule.color ?? ColorClass.under,
+      color: completeSchema?.completed == null ? ColorClass.white : schedule.color ?? ColorClass.under,
       borderColor: schedule.color ?? ColorClass.under,
     );
   }

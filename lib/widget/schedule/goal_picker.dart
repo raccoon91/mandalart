@@ -35,9 +35,7 @@ class GoalPicker extends StatelessWidget {
                   padding: EdgeInsets.symmetric(vertical: 10.h),
                   child: const Text(
                     '계획을 설정하세요',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                    ),
+                    style: TextStyle(fontWeight: FontWeight.w700),
                   ),
                 );
               }
@@ -56,9 +54,7 @@ class GoalPicker extends StatelessWidget {
                             width: (constraints.maxWidth - 22.w) / 2,
                             selected: selectedGoalId == goal?.id,
                             onTap: () {
-                              if (goal?.id == null || onChanged == null) {
-                                return;
-                              }
+                              if (goal?.id == null || onChanged == null) return;
 
                               onChanged!(goal!.id);
                             },

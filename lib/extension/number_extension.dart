@@ -27,9 +27,7 @@ extension NumberExtension on num {
       affix++;
     }
 
-    String result =
-        (runningPreviousDivider == 0 ? size : size / runningPreviousDivider)
-            .toStringAsFixed(round);
+    String result = (runningPreviousDivider == 0 ? size : size / runningPreviousDivider).toStringAsFixed(round);
 
     if (result.endsWith('0' * round)) {
       result = result.substring(0, result.length - round - 1);

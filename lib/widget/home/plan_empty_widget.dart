@@ -28,7 +28,7 @@ class PlanEmptyWidget extends StatelessWidget {
           if (plan?.goalId == null || plan?.id == null) return;
 
           context.push(
-            '/sheet/plan/create/$mode/${plan!.goalId}/${plan!.id}',
+            '/template/goal/${plan!.goalId}/plan/${plan!.id}',
           );
         },
         child: Container(

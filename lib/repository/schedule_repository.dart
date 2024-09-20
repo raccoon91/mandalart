@@ -10,11 +10,11 @@ import 'package:mandalart/schema/schedule_schema.dart';
 class ScheduleRepository extends Repository<Schedule> {
   ScheduleRepository() : super(db: IsarDB.isar.schedules);
 
-  Future<ScheduleModel?> getSchedule(int? scheduleId) async {
+  Future<ScheduleModel?> getSchedule({int? scheduleId}) async {
     try {
       if (scheduleId == null) return null;
 
-      final scheduleSchema = await findOne((query) {
+      final scheduleSchema = await findOne(builder: (query) {
         return query.idEqualTo(scheduleId).isDeleteEqualTo(false);
       });
 
@@ -31,12 +31,12 @@ class ScheduleRepository extends Repository<Schedule> {
     }
   }
 
-  Future<List<ScheduleModel>> getThisWeek(DateTime start) async {
+  Future<List<ScheduleModel>> getThisWeek({required DateTime start}) async {
     try {
       var startDay = start.day;
       var endDay = startDay + 6;
 
-      final scheduleSchemaList = await findAll((query) {
+      final scheduleSchemaList = await findAll(builder: (query) {
         return query
             .repeatIsNull()
             .dayGreaterThan(startDay, include: true)
@@ -52,9 +52,9 @@ class ScheduleRepository extends Repository<Schedule> {
     }
   }
 
-  Future<List<ScheduleModel>?> getWeekDay(DateTime start) async {
+  Future<List<ScheduleModel>?> getWeekDay({required DateTime start}) async {
     try {
-      final scheduleSchemaList = await findAll((query) {
+      final scheduleSchemaList = await findAll(builder: (query) {
         return query.repeatEqualTo('weekdays').isDeleteEqualTo(false);
       });
 
@@ -66,9 +66,9 @@ class ScheduleRepository extends Repository<Schedule> {
     }
   }
 
-  Future<List<ScheduleModel>?> getWeekend(DateTime start) async {
+  Future<List<ScheduleModel>?> getWeekend({required DateTime start}) async {
     try {
-      final scheduleSchemaList = await findAll((query) {
+      final scheduleSchemaList = await findAll(builder: (query) {
         return query.repeatEqualTo('weekend').isDeleteEqualTo(false);
       });
 
@@ -80,9 +80,9 @@ class ScheduleRepository extends Repository<Schedule> {
     }
   }
 
-  Future<List<ScheduleModel>?> getEveryDay(DateTime start) async {
+  Future<List<ScheduleModel>?> getEveryDay({required DateTime start}) async {
     try {
-      final scheduleSchemaList = await findAll((query) {
+      final scheduleSchemaList = await findAll(builder: (query) {
         return query.repeatEqualTo('day').isDeleteEqualTo(false);
       });
 
@@ -94,9 +94,9 @@ class ScheduleRepository extends Repository<Schedule> {
     }
   }
 
-  Future<List<ScheduleModel>?> getEveryWeek(DateTime start) async {
+  Future<List<ScheduleModel>?> getEveryWeek({required DateTime start}) async {
     try {
-      final scheduleSchemaList = await findAll((query) {
+      final scheduleSchemaList = await findAll(builder: (query) {
         return query.repeatEqualTo('week').isDeleteEqualTo(false);
       });
 
@@ -108,12 +108,12 @@ class ScheduleRepository extends Repository<Schedule> {
     }
   }
 
-  Future<List<ScheduleModel>?> getEveryMonth(DateTime start) async {
+  Future<List<ScheduleModel>?> getEveryMonth({required DateTime start}) async {
     try {
       var startDay = start.day;
       var endDay = startDay + 6;
 
-      final scheduleSchemaList = await findAll((query) {
+      final scheduleSchemaList = await findAll(builder: (query) {
         return query
             .repeatEqualTo('month')
             .dayGreaterThan(startDay, include: true)
@@ -129,13 +129,13 @@ class ScheduleRepository extends Repository<Schedule> {
     }
   }
 
-  Future<bool> createSchedule(
+  Future<bool> createSchedule({
     Plan? plan,
-    DateTime from,
-    DateTime to,
+    required DateTime from,
+    required DateTime to,
     bool? isAllDay,
     String? repeat,
-  ) async {
+  }) async {
     try {
       if (plan == null) return false;
 
@@ -153,7 +153,7 @@ class ScheduleRepository extends Repository<Schedule> {
         ..repeat = repeat;
 
       await IsarDB.isar.writeTxn(() async {
-        await putOne(scheduleSchema);
+        await putOne(schema: scheduleSchema);
 
         await scheduleSchema.plan.save();
       });
@@ -164,10 +164,10 @@ class ScheduleRepository extends Repository<Schedule> {
     }
   }
 
-  Future<bool> deleteSchedule(int scheduleId) async {
+  Future<bool> deleteSchedule({required int scheduleId}) async {
     try {
       await IsarDB.isar.writeTxn(() async {
-        await deleteOne(scheduleId);
+        await deleteOne(id: scheduleId);
       });
 
       return true;
@@ -176,9 +176,9 @@ class ScheduleRepository extends Repository<Schedule> {
     }
   }
 
-  Future<bool> stopSchedule(int scheduleId, DateTime terminated) async {
+  Future<bool> stopSchedule({required int scheduleId, required DateTime terminated}) async {
     try {
-      var schema = await findOne((query) {
+      var schema = await findOne(builder: (query) {
         return query.idEqualTo(scheduleId).isDeleteEqualTo(false);
       });
 
@@ -187,7 +187,7 @@ class ScheduleRepository extends Repository<Schedule> {
       schema.terminated = terminated;
 
       await IsarDB.isar.writeTxn(() async {
-        await putOne(schema);
+        await putOne(schema: schema);
       });
 
       return true;
@@ -196,18 +196,18 @@ class ScheduleRepository extends Repository<Schedule> {
     }
   }
 
-  Future<bool> deleteAllSchedule(int? visionId) async {
+  Future<bool> deleteAllSchedule({int? visionId}) async {
     try {
       if (visionId == null) return false;
 
-      var scheduleSchemaList = await findAll((query) {
+      var scheduleSchemaList = await findAll(builder: (query) {
         return query.visionIdEqualTo(visionId);
       });
 
       var scheduleIds = scheduleSchemaList.map((schema) => schema.id).toList();
 
       await IsarDB.isar.writeTxn(() async {
-        await deleteAll(scheduleIds);
+        await deleteAll(ids: scheduleIds);
       });
 
       return true;

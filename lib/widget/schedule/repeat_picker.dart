@@ -21,11 +21,7 @@ class RepeatPicker extends StatelessWidget {
       child: Column(
         children: [
           Row(
-            children: [
-              const Icon(Icons.repeat),
-              SizedBox(width: 10.w),
-              Text('반복', style: TextStyle(fontSize: 20.sp))
-            ],
+            children: [const Icon(Icons.repeat), SizedBox(width: 10.w), Text('반복', style: TextStyle(fontSize: 20.sp))],
           ),
           SizedBox(height: 10.h),
           Row(
@@ -35,9 +31,7 @@ class RepeatPicker extends StatelessWidget {
                 value: 'weekdays',
                 name: '주중',
                 selected: value == 'weekdays',
-                disabled: date == null
-                    ? false
-                    : date?.weekday == 6 || date?.weekday == 7,
+                disabled: date == null ? false : date?.weekday == 6 || date?.weekday == 7,
                 onChanged: onChanged,
               ),
               SizedBox(width: 10.w),
@@ -45,9 +39,7 @@ class RepeatPicker extends StatelessWidget {
                 value: 'weekend',
                 name: '주말',
                 selected: value == 'weekend',
-                disabled: date == null
-                    ? false
-                    : date?.weekday != 6 && date?.weekday != 7,
+                disabled: date == null ? false : date?.weekday != 6 && date?.weekday != 7,
                 onChanged: onChanged,
               ),
               SizedBox(width: 10.w),

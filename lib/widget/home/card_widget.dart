@@ -33,9 +33,7 @@ class CardWidget extends StatelessWidget {
           child: Center(
             child: Text(
               name ?? '',
-              style: const TextStyle(
-                fontWeight: FontWeight.w700,
-              ),
+              style: const TextStyle(fontWeight: FontWeight.w700),
             ),
           ),
         ),

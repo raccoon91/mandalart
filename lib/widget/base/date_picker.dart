@@ -33,9 +33,7 @@ class DatePicker extends StatelessWidget {
                 onSurface: ColorClass.black,
               ),
               textButtonTheme: TextButtonThemeData(
-                style: TextButton.styleFrom(
-                  foregroundColor: ColorClass.black,
-                ),
+                style: TextButton.styleFrom(foregroundColor: ColorClass.black),
               ),
             ),
             child: child!,

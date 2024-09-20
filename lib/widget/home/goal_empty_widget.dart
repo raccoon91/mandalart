@@ -22,7 +22,7 @@ class GoalEmptyWidget extends StatelessWidget {
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {
-          context.push('/sheet/goal/create/$goalId');
+          context.push('/template/goal/$goalId');
         },
         child: Container(
           width: size ?? double.infinity,

@@ -22,7 +22,11 @@ class ScreenLayout extends StatelessWidget {
     return Scaffold(
       appBar: title != null
           ? AppBar(
-              title: Text(title!),
+              title: Text(
+                title!,
+                style: const TextStyle(fontWeight: FontWeight.w700),
+              ),
+              centerTitle: true,
               backgroundColor: ColorClass.under,
             )
           : null,

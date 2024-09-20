@@ -9,19 +9,13 @@ class StatisticsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenLayout(
-      padding: EdgeInsets.symmetric(
-        vertical: 10.h,
-        horizontal: 20.w,
-      ),
+      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
       body: Column(
         children: [
           const BannerAD(),
           Text(
             '통계',
-            style: TextStyle(
-              fontSize: 24.sp,
-              fontWeight: FontWeight.w700,
-            ),
+            style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w700),
           ),
         ],
       ),

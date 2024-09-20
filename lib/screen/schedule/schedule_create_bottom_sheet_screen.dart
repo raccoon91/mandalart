@@ -14,12 +14,10 @@ class ScheduleCreateBottomSheetScreen extends StatefulWidget {
   });
 
   @override
-  State<ScheduleCreateBottomSheetScreen> createState() =>
-      _ScheduleCreateBottomSheetScreenState();
+  State<ScheduleCreateBottomSheetScreen> createState() => _ScheduleCreateBottomSheetScreenState();
 }
 
-class _ScheduleCreateBottomSheetScreenState
-    extends State<ScheduleCreateBottomSheetScreen> {
+class _ScheduleCreateBottomSheetScreenState extends State<ScheduleCreateBottomSheetScreen> {
   late DateTime from;
   late DateTime to;
 
@@ -31,34 +29,22 @@ class _ScheduleCreateBottomSheetScreenState
     to = from.add(const Duration(hours: 1));
   }
 
-  Future<void> createTask(
-    int planId,
-    DateTime from,
-    DateTime to,
-    bool? allDay,
-    String? repeat,
-  ) async {
-    bool success = await Provider.of<ScheduleProvider>(context, listen: false)
-        .createSchedule(
-      planId,
-      from,
-      to,
-      allDay,
-      repeat,
+  Future<void> createTask(int planId, DateTime from, DateTime to, bool? allDay, String? repeat) async {
+    bool success = await Provider.of<ScheduleProvider>(context, listen: false).createSchedule(
+      planId: planId,
+      from: from,
+      to: to,
+      isAllDay: allDay,
+      repeat: repeat,
     );
 
     if (!mounted || success == false) return;
 
-    await Provider.of<ScheduleProvider>(context, listen: false).getSchedules(
-      null,
-      null,
-    );
+    await Provider.of<ScheduleProvider>(context, listen: false).getSchedules();
 
     if (!mounted) return;
 
-    await Provider.of<TaskProvider>(context, listen: false).getTasks(
-      DateTime.now(),
-    );
+    await Provider.of<TaskProvider>(context, listen: false).getTasks(date: DateTime.now());
 
     if (!mounted) return;
 

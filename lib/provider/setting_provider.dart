@@ -38,11 +38,11 @@ class SettingProvider with ChangeNotifier {
 
       if (vision == null) return false;
 
-      await CompleteRepository().deleteAllComplete(vision.id);
-      await ScheduleRepository().deleteAllSchedule(vision.id);
-      await PlanRepository().deleteAllPlan(vision.id);
-      await GoalRepository().deleteAllGoal(vision.id);
-      await VisionRepository().deleteVision(vision.id);
+      await CompleteRepository().deleteAllComplete(visionId: vision.id);
+      await ScheduleRepository().deleteAllSchedule(visionId: vision.id);
+      await PlanRepository().deleteAllPlan(visionId: vision.id);
+      await GoalRepository().deleteAllGoal(visionId: vision.id);
+      await VisionRepository().deleteVision(visionId: vision.id);
 
       return true;
     } catch (error) {

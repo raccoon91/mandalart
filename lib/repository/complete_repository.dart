@@ -5,11 +5,11 @@ import 'package:mandalart/schema/complete_schema.dart';
 class CompleteRepository extends Repository<Complete> {
   CompleteRepository() : super(db: IsarDB.isar.completes);
 
-  Future<Complete?> getComplete(int? scheduleId, DateTime? date) async {
+  Future<Complete?> getComplete({int? scheduleId, DateTime? date}) async {
     try {
       if (scheduleId == null || date == null) return null;
 
-      var completeSchema = await findOne((query) {
+      var completeSchema = await findOne(builder: (query) {
         return query.scheduleIdEqualTo(scheduleId).completedEqualTo(date);
       });
 
@@ -19,11 +19,7 @@ class CompleteRepository extends Repository<Complete> {
     }
   }
 
-  Future<bool> createComplete(
-    int? visionId,
-    int? scheduleId,
-    DateTime? date,
-  ) async {
+  Future<bool> createComplete({int? visionId, int? scheduleId, DateTime? date}) async {
     try {
       if (visionId == null || scheduleId == null || date == null) return false;
 
@@ -33,7 +29,7 @@ class CompleteRepository extends Repository<Complete> {
         ..completed = date;
 
       await IsarDB.isar.writeTxn(() async {
-        await putOne(completeSchema);
+        await putOne(schema: completeSchema);
       });
 
       return true;
@@ -42,12 +38,12 @@ class CompleteRepository extends Repository<Complete> {
     }
   }
 
-  Future<bool> deleteComplete(int? completeId) async {
+  Future<bool> deleteComplete({int? completeId}) async {
     try {
       if (completeId == null) return false;
 
       await IsarDB.isar.writeTxn(() async {
-        await deleteOne(completeId);
+        await deleteOne(id: completeId);
       });
 
       return true;
@@ -56,18 +52,18 @@ class CompleteRepository extends Repository<Complete> {
     }
   }
 
-  Future<bool> deleteAllComplete(int? visionId) async {
+  Future<bool> deleteAllComplete({int? visionId}) async {
     try {
       if (visionId == null) return false;
 
-      var completeSchemaList = await findAll((query) {
+      var completeSchemaList = await findAll(builder: (query) {
         return query.visionIdEqualTo(visionId);
       });
 
       var completeIds = completeSchemaList.map((schema) => schema.id).toList();
 
       await IsarDB.isar.writeTxn(() async {
-        await deleteAll(completeIds);
+        await deleteAll(ids: completeIds);
       });
 
       return true;

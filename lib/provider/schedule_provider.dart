@@ -43,7 +43,7 @@ class ScheduleProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
-  Future<void> getPlans(int? goalId) async {
+  Future<void> getPlans({int? goalId}) async {
     try {
       if (_goals == null || goalId == null) {
         _plans = null;
@@ -73,9 +73,9 @@ class ScheduleProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
-  Future<void> getSchedule(int scheduleId) async {
+  Future<void> getSchedule({required int scheduleId}) async {
     try {
-      var schedule = await ScheduleRepository().getSchedule(scheduleId);
+      var schedule = await ScheduleRepository().getSchedule(scheduleId: scheduleId);
 
       var goalId = schedule?.plan?.goalId;
 
@@ -97,7 +97,7 @@ class ScheduleProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
-  Future<void> getSchedules(DateTime? from, DateTime? to) async {
+  Future<void> getSchedules({DateTime? from, DateTime? to}) async {
     try {
       if (from != null) _start = from;
       if (to != null) _end = to;
@@ -106,13 +106,12 @@ class ScheduleProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
       List<Appointment> appointments = [];
 
-      var weekSchedules = await ScheduleRepository().getThisWeek(_start!);
-      var weekDaySchedules = await ScheduleRepository().getWeekDay(_start!);
-      var weekendSchedules = await ScheduleRepository().getWeekend(_start!);
-      var everyDaySchedules = await ScheduleRepository().getEveryDay(_start!);
-      var everyWeekSchedules = await ScheduleRepository().getEveryWeek(_start!);
-      var everyMonthSchedules =
-          await ScheduleRepository().getEveryMonth(_start!);
+      var weekSchedules = await ScheduleRepository().getThisWeek(start: _start!);
+      var weekDaySchedules = await ScheduleRepository().getWeekDay(start: _start!);
+      var weekendSchedules = await ScheduleRepository().getWeekend(start: _start!);
+      var everyDaySchedules = await ScheduleRepository().getEveryDay(start: _start!);
+      var everyWeekSchedules = await ScheduleRepository().getEveryWeek(start: _start!);
+      var everyMonthSchedules = await ScheduleRepository().getEveryMonth(start: _start!);
 
       List<ScheduleModel> schedules = [
         ...(weekSchedules),
@@ -136,27 +135,21 @@ class ScheduleProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
-  Future<bool> createSchedule(
-    int planId,
-    DateTime from,
-    DateTime to,
+  Future<bool> createSchedule({
+    required int planId,
+    required DateTime from,
+    required DateTime to,
     bool? isAllDay,
     String? repeat,
-  ) async {
+  }) async {
     try {
       var vision = await VisionRepository().getVision();
 
       if (vision == null) return false;
 
-      var plan = await PlanRepository().getPlanSchema(planId);
+      var plan = await PlanRepository().getPlanSchema(planId: planId);
 
-      await ScheduleRepository().createSchedule(
-        plan,
-        from,
-        to,
-        isAllDay,
-        repeat,
-      );
+      await ScheduleRepository().createSchedule(plan: plan, from: from, to: to, isAllDay: isAllDay, repeat: repeat);
 
       return true;
     } catch (error) {
@@ -166,9 +159,9 @@ class ScheduleProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
-  Future<void> deleteSchedule(int scheduleId) async {
+  Future<void> deleteSchedule({required int scheduleId}) async {
     try {
-      var success = await ScheduleRepository().deleteSchedule(scheduleId);
+      var success = await ScheduleRepository().deleteSchedule(scheduleId: scheduleId);
 
       if (!success) return;
 
@@ -180,12 +173,9 @@ class ScheduleProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
-  Future<void> stopSchedule(int scheduleId, DateTime terminated) async {
+  Future<void> stopSchedule({required int scheduleId, required DateTime terminated}) async {
     try {
-      var success = await ScheduleRepository().stopSchedule(
-        scheduleId,
-        terminated,
-      );
+      var success = await ScheduleRepository().stopSchedule(scheduleId: scheduleId, terminated: terminated);
 
       if (!success) return;
 
@@ -208,14 +198,8 @@ class ScheduleProvider with ChangeNotifier, DiagnosticableTreeMixin {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<List<GoalModel?>>('goals', _goals));
     properties.add(DiagnosticsProperty<List<PlanModel?>>('plans', _plans));
-    properties.add(
-      DiagnosticsProperty<ScheduleModel>('schedule', _schedule),
-    );
-    properties.add(
-      DiagnosticsProperty<List<ScheduleModel>>('schedules', _schedules),
-    );
-    properties.add(
-      DiagnosticsProperty<List<Appointment>>('appointments', _appointments),
-    );
+    properties.add(DiagnosticsProperty<ScheduleModel>('schedule', _schedule));
+    properties.add(DiagnosticsProperty<List<ScheduleModel>>('schedules', _schedules));
+    properties.add(DiagnosticsProperty<List<Appointment>>('appointments', _appointments));
   }
 }

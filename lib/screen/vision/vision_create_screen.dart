@@ -39,10 +39,7 @@ class _VisionCreateScreenState extends State<VisionCreateScreen> {
   createTapped() async {
     if (visionController.text.isEmpty) return;
 
-    await Provider.of<HomeProvider>(context, listen: false).createVision(
-      visionController.text,
-      color,
-    );
+    await Provider.of<HomeProvider>(context, listen: false).createVision(name: visionController.text, color: color);
 
     if (!mounted) return;
 
@@ -52,10 +49,7 @@ class _VisionCreateScreenState extends State<VisionCreateScreen> {
   submitted(String name) async {
     if (name.isEmpty) return;
 
-    await Provider.of<HomeProvider>(context, listen: false).createVision(
-      name,
-      color,
-    );
+    await Provider.of<HomeProvider>(context, listen: false).createVision(name: name, color: color);
 
     if (!mounted) return;
 
@@ -81,21 +75,12 @@ class _VisionCreateScreenState extends State<VisionCreateScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Flexible(
-                        flex: 1,
-                        child: SizedBox(),
-                      ),
+                      const Flexible(flex: 1, child: SizedBox()),
                       Flexible(
                         flex: 1,
-                        child: CardWidget(
-                          name: visionController.text,
-                          color: color,
-                        ),
+                        child: CardWidget(name: visionController.text, color: color),
                       ),
-                      const Flexible(
-                        flex: 1,
-                        child: SizedBox(),
-                      ),
+                      const Flexible(flex: 1, child: SizedBox()),
                     ],
                   ),
                   SizedBox(height: 40.h),

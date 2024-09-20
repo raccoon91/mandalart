@@ -26,10 +26,7 @@ class _BottomNavigationLayoutState extends State<BottomNavigationLayout> {
   bottomItemTapped(index) {
     if (index == 3) return;
 
-    widget.child.goBranch(
-      index,
-      initialLocation: index == widget.child.currentIndex,
-    );
+    widget.child.goBranch(index, initialLocation: index == widget.child.currentIndex);
   }
 
   void onPopInvoked(bool didPop, dynamic result) {
@@ -68,9 +65,7 @@ class _BottomNavigationLayoutState extends State<BottomNavigationLayout> {
                   : const EdgeInsets.all(0),
               child: ClipRRect(
                 borderRadius: BorderRadius.all(
-                  widget.branchIndex == 0
-                      ? Radius.circular(50.r)
-                      : const Radius.circular(0),
+                  widget.branchIndex == 0 ? Radius.circular(50.r) : const Radius.circular(0),
                 ),
                 child: Theme(
                   data: Theme.of(context).copyWith(

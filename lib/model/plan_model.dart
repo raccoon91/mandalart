@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mandalart/schema/plan_schema.dart';
+import 'package:mandalart/schema/plan_template_schema.dart';
 
 class PlanModel {
   int id;
@@ -7,7 +8,7 @@ class PlanModel {
   int goalId;
   String? name;
   Color? color;
-  bool isDelete;
+  PlanTemplate? planTemplate;
 
   PlanModel({
     required this.id,
@@ -15,19 +16,20 @@ class PlanModel {
     required this.goalId,
     this.name,
     this.color,
-    required this.isDelete,
+    this.planTemplate,
   });
 
   factory PlanModel.fromSchema(Plan schema) {
-    Color? color = schema.color != null ? Color(schema.color!) : null;
+    PlanTemplate? planTemplate = schema.planTemplate.value;
+    Color? color = planTemplate?.color != null ? Color(int.parse(planTemplate!.color!.replaceAll('#', '0xff'))) : null;
 
     return PlanModel(
       id: schema.id,
       visionId: schema.visionId,
       goalId: schema.goalId,
-      name: schema.name,
+      name: planTemplate?.name,
       color: color,
-      isDelete: schema.isDelete,
+      planTemplate: planTemplate,
     );
   }
 }

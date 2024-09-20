@@ -22,13 +22,12 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      getProgressMandal();
+      getHomeScreenData();
     });
   }
 
-  Future<void> getProgressMandal() async {
-    bool isEmpty =
-        await Provider.of<HomeProvider>(context, listen: false).getVision();
+  Future<void> getHomeScreenData() async {
+    bool isEmpty = await Provider.of<HomeProvider>(context, listen: false).getVision();
 
     if (mounted && isEmpty) {
       context.go('/vision');
@@ -37,28 +36,30 @@ class _HomeScreenState extends State<HomeScreen> {
     FlutterNativeSplash.remove();
   }
 
+  void toggleMode() {
+    Provider.of<HomeProvider>(context, listen: false).changeMode();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScreenLayout(
-      body: Consumer<HomeProvider>(
-        builder: (context, state, child) => MandalLayout(
-          isEmpty: state.vision == null ||
-              state.vision?.goals == null ||
-              state.vision?.goals?.isEmpty == true,
-          emptyMessage: '목표를 설정하세요',
-          title: MandalTitle(
-            visionName: state.vision?.name,
-          ),
-          body: MandalartWidget(
-            mode: state.mode,
-            vision: state.vision,
-          ),
-        ),
-      ),
       floatingActionButton: FloatingButton(
         show: true,
-        onPressed: () {
-          Provider.of<HomeProvider>(context, listen: false).changeMode();
+        onPressed: toggleMode,
+      ),
+      body: Consumer<HomeProvider>(
+        builder: (context, state, child) {
+          return MandalLayout(
+            isEmpty: state.vision == null || state.vision?.goals == null || state.vision?.goals?.isEmpty == true,
+            emptyMessage: '목표를 설정하세요',
+            title: MandalTitle(
+              visionName: state.vision?.name,
+            ),
+            body: MandalartWidget(
+              mode: state.mode,
+              vision: state.vision,
+            ),
+          );
         },
       ),
     );

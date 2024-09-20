@@ -1,4 +1,6 @@
 import 'package:mandalart/model/schedule_model.dart';
+import 'package:mandalart/schema/plan_schema.dart';
+import 'package:mandalart/schema/plan_template_schema.dart';
 import 'package:mandalart/theme/color.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -15,9 +17,12 @@ class AppointmentModel extends Appointment {
   });
 
   factory AppointmentModel.fromSchema(ScheduleModel schedule) {
+    Plan? plan = schedule.plan;
+    PlanTemplate? planTemplate = plan?.planTemplate.value;
+
     return AppointmentModel(
       scheduleId: schedule.id,
-      subject: schedule.plan?.name ?? '',
+      subject: planTemplate?.name ?? '',
       startTime: schedule.from,
       endTime: schedule.to,
       isAllDay: schedule.isAllDay,

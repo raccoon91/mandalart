@@ -1,4 +1,5 @@
 import 'package:isar/isar.dart';
+import 'package:mandalart/schema/goal_template_schema.dart';
 import 'package:mandalart/schema/plan_schema.dart';
 
 part 'goal_schema.g.dart';
@@ -11,15 +12,7 @@ class Goal {
 
   late int order;
 
-  String? name;
-
-  String? description;
-
-  int? color;
-
-  String? style;
-
-  bool isDelete = false;
+  final goalTemplate = IsarLink<GoalTemplate>();
 
   final plans = IsarLinks<Plan>();
 }

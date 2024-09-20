@@ -20,7 +20,7 @@ class _TaskScreenState extends State<TaskScreen> {
   late DateTime weekTo;
 
   Future<void> getTasks(DateTime? date) async {
-    await Provider.of<TaskProvider>(context, listen: false).getTasks(date);
+    await Provider.of<TaskProvider>(context, listen: false).getTasks(date: date);
   }
 
   onTapCell(CalendarTapDetails? calendar) async {
@@ -30,7 +30,7 @@ class _TaskScreenState extends State<TaskScreen> {
 
     if (task == null || calendar?.date == null) return;
 
-    await Provider.of<TaskProvider>(context, listen: false).toggleTask(task);
+    await Provider.of<TaskProvider>(context, listen: false).toggleTask(task: task);
 
     if (!mounted) return;
 

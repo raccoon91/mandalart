@@ -4,7 +4,9 @@ import 'package:mandalart/model/goal_model.dart';
 import 'package:mandalart/model/plan_model.dart';
 import 'package:mandalart/model/vision_model.dart';
 import 'package:mandalart/repository/goal_repository.dart';
+import 'package:mandalart/repository/goal_template_repository.dart';
 import 'package:mandalart/repository/plan_repository.dart';
+import 'package:mandalart/repository/plan_template_repository.dart';
 import 'package:mandalart/repository/vision_repository.dart';
 
 class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
@@ -38,11 +40,11 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
-  Future<GoalModel?> getGoal(int? goalId) async {
+  Future<GoalModel?> getGoal({int? goalId}) async {
     try {
       if (goalId == null) return null;
 
-      var goal = await GoalRepository().getGoal(goalId);
+      var goal = await GoalRepository().getGoal(goalId: goalId);
 
       _goal = goal;
       _plans = goal?.plans;
@@ -55,11 +57,11 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
-  Future<PlanModel?> getPlan(int? planId) async {
+  Future<PlanModel?> getPlan({int? planId}) async {
     try {
       if (planId == null) return null;
 
-      var plan = await PlanRepository().getPlan(planId);
+      var plan = await PlanRepository().getPlan(planId: planId);
 
       _plan = plan;
 
@@ -71,11 +73,11 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
-  Future<bool> createVision(String name, Color color) async {
+  Future<bool> createVision({required String name, required Color color}) async {
     try {
-      var visionSchema = await VisionRepository().createVision(name, color);
-      var goalSchemaList = await GoalRepository().createGoals(visionSchema);
-      await PlanRepository().createPlans(visionSchema, goalSchemaList);
+      var visionSchema = await VisionRepository().createVision(name: name, color: color);
+      var goalSchemaList = await GoalRepository().createGoals(visionSchema: visionSchema);
+      await PlanRepository().createPlans(visionSchema: visionSchema, goalSchemaList: goalSchemaList);
 
       var vision = await VisionRepository().getVision();
 
@@ -90,11 +92,12 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
-  Future<void> updateGoal(int? goalId, String? name, Color? color) async {
+  Future<void> updateGoal({int? goalId, int? goalTemplateId}) async {
     try {
       if (_vision == null || goalId == null) return;
 
-      var success = await GoalRepository().updateGoal(goalId, name, color);
+      var goalTemplate = await GoalTemplateRepository().getGoalTemplate(goalTemplateId: goalTemplateId);
+      var success = await GoalRepository().updateGoal(goalId: goalId, goalTemplate: goalTemplate);
 
       if (!success) return;
 
@@ -109,21 +112,36 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
-  Future<void> updatePlan(
-    int? goalId,
-    int? planId,
-    String? name,
-    Color? color,
-  ) async {
+  Future<void> removeGoal({int? goalId}) async {
     try {
-      if (_vision == null || planId == null) return;
+      if (_vision == null) return;
 
-      var success = await PlanRepository().updatePlan(planId, name, color);
+      var success = await GoalRepository().removeGoal(goalId: goalId);
 
       if (!success) return;
 
       var vision = await VisionRepository().getVision();
-      var goal = await GoalRepository().getGoal(goalId);
+
+      _vision = vision;
+      _goals = vision?.goals;
+    } catch (error) {
+      rethrow;
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  Future<void> updatePlan({int? goalId, int? planId, int? planTemplateId}) async {
+    try {
+      if (_vision == null || goalId == null || planId == null) return;
+
+      var planTemplate = await PlanTemplateRepository().getPlanTemplate(planTemplateId: planTemplateId);
+      var success = await PlanRepository().updatePlan(planId: planId, planTemplate: planTemplate);
+
+      if (!success) return;
+
+      var vision = await VisionRepository().getVision();
+      var goal = await GoalRepository().getGoal(goalId: goalId);
 
       _vision = vision;
       _goals = vision?.goals;

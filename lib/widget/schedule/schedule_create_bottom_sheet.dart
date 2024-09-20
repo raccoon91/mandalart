@@ -28,8 +28,7 @@ class ScheduleCreateBottomSheet extends StatefulWidget {
   });
 
   @override
-  State<ScheduleCreateBottomSheet> createState() =>
-      _ScheduleCreateBottomSheetState();
+  State<ScheduleCreateBottomSheet> createState() => _ScheduleCreateBottomSheetState();
 }
 
 class _ScheduleCreateBottomSheetState extends State<ScheduleCreateBottomSheet> {
@@ -55,11 +54,7 @@ class _ScheduleCreateBottomSheetState extends State<ScheduleCreateBottomSheet> {
 
   fromDateChanged(DateTime date) {
     fromDate = date;
-    toDate = toDate.copyWith(
-      year: fromDate.year,
-      month: fromDate.month,
-      day: fromDate.day,
-    );
+    toDate = toDate.copyWith(year: fromDate.year, month: fromDate.month, day: fromDate.day);
 
     checkEnabled();
 
@@ -67,11 +62,7 @@ class _ScheduleCreateBottomSheetState extends State<ScheduleCreateBottomSheet> {
   }
 
   toDateChanged(DateTime date) {
-    toDate = date.copyWith(
-      year: fromDate.year,
-      month: fromDate.month,
-      day: fromDate.day,
-    );
+    toDate = date.copyWith(year: fromDate.year, month: fromDate.month, day: fromDate.day);
 
     checkEnabled();
 
@@ -105,9 +96,7 @@ class _ScheduleCreateBottomSheetState extends State<ScheduleCreateBottomSheet> {
 
     selectedPlanId = null;
 
-    Provider.of<ScheduleProvider>(context, listen: false).getPlans(
-      selectedGoalId,
-    );
+    Provider.of<ScheduleProvider>(context, listen: false).getPlans(goalId: selectedGoalId);
 
     checkEnabled();
 
@@ -191,8 +180,7 @@ class _ScheduleCreateBottomSheetState extends State<ScheduleCreateBottomSheet> {
               height: 60.h,
               child: Button(
                 text: '시작하기',
-                onPressed:
-                    enabled && widget.onCreate != null ? createTapped : null,
+                onPressed: enabled && widget.onCreate != null ? createTapped : null,
               ),
             ),
           ),

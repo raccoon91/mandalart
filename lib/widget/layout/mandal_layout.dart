@@ -5,14 +5,14 @@ import 'package:mandalart/widget/base/banner_ad.dart';
 class MandalLayout extends StatelessWidget {
   final bool? isEmpty;
   final String? emptyMessage;
-  final Widget? title;
+  final Widget title;
   final Widget body;
 
   const MandalLayout({
     super.key,
     this.isEmpty,
     this.emptyMessage,
-    this.title,
+    required this.title,
     required this.body,
   });
 
@@ -37,19 +37,12 @@ class MandalLayout extends StatelessWidget {
           SizedBox(height: 20.h),
           Expanded(
             child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(height: 10.h),
-                  ...(title != null
-                      ? [
-                          title!,
-                          SizedBox(height: 20.h),
-                        ]
-                      : []),
-                  body,
-                  SizedBox(height: 10.h),
-                ],
-              ),
+              child: Column(children: [
+                SizedBox(height: 10.h),
+                title,
+                SizedBox(height: 20.h),
+                body,
+              ]),
             ),
           )
         ],

@@ -28,12 +28,7 @@ class ColorWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(30.r),
       ),
       child: Center(
-        child: selected == true
-            ? Icon(
-                size: 30.sp,
-                Icons.check,
-              )
-            : null,
+        child: selected == true ? Icon(size: 30.sp, Icons.check) : null,
       ),
     );
   }

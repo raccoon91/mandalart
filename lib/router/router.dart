@@ -3,12 +3,12 @@ import 'package:go_router/go_router.dart';
 import 'package:mandalart/router/bottom_sheet_page.dart';
 import 'package:mandalart/router/get_page.dart';
 import 'package:mandalart/router/slide_transition_page.dart';
-import 'package:mandalart/screen/home/goal_create_bottom_sheet_screen.dart';
 import 'package:mandalart/screen/home/goal_screen.dart';
-import 'package:mandalart/screen/home/goal_update_bottom_sheet_screen.dart';
+import 'package:mandalart/screen/home/goal_template_create_screen.dart';
+import 'package:mandalart/screen/home/goal_template_select_screen.dart';
 import 'package:mandalart/screen/home/home_screen.dart';
-import 'package:mandalart/screen/home/plan_create_bottom_sheet_screen.dart';
-import 'package:mandalart/screen/home/plan_update_bottom_sheet_screen.dart';
+import 'package:mandalart/screen/home/plan_template_create_screen.dart';
+import 'package:mandalart/screen/home/plan_template_select_screen.dart';
 import 'package:mandalart/screen/schedule/schedule_bottom_sheet_screen.dart';
 import 'package:mandalart/screen/schedule/schedule_create_bottom_sheet_screen.dart';
 import 'package:mandalart/screen/schedule/schedule_screen.dart';
@@ -24,6 +24,7 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _homeNavigatorKey = GlobalKey<NavigatorState>();
 final _scheduleNavigatorKey = GlobalKey<NavigatorState>();
 final _taskNavigatorKey = GlobalKey<NavigatorState>();
+final _statisticsNavigatorKey = GlobalKey<NavigatorState>();
 final _settingNavigatorKey = GlobalKey<NavigatorState>();
 
 final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
@@ -87,7 +88,7 @@ final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
       ],
     ),
     StatefulShellBranch(
-      navigatorKey: _settingNavigatorKey,
+      navigatorKey: _statisticsNavigatorKey,
       routes: [
         GoRoute(
           path: '/statistics',
@@ -101,6 +102,7 @@ final bottomNavigationRoutes = StatefulShellRoute.indexedStack(
       ],
     ),
     StatefulShellBranch(
+      navigatorKey: _settingNavigatorKey,
       routes: [
         GoRoute(
           path: '/setting',
@@ -157,10 +159,21 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       parentNavigatorKey: _rootNavigatorKey,
-      path: '/sheet/goal/create/:goalId',
+      path: '/template/goal/create',
       pageBuilder: (BuildContext context, GoRouterState state) {
-        return BottomSheetPage(
-          child: GoalCreateBottomSheetScreen(
+        return slideTransitionPage(
+          state: state,
+          child: const GoalTemplateCreateScreen(),
+        );
+      },
+    ),
+    GoRoute(
+      parentNavigatorKey: _rootNavigatorKey,
+      path: '/template/goal/:goalId',
+      pageBuilder: (BuildContext context, GoRouterState state) {
+        return slideTransitionPage(
+          state: state,
+          child: GoalTemplateSelectScreen(
             goalId: state.pathParameters['goalId'],
           ),
         );
@@ -168,10 +181,11 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       parentNavigatorKey: _rootNavigatorKey,
-      path: '/sheet/goal/update/:goalId',
+      path: '/template/goal/:goalId/plan/create',
       pageBuilder: (BuildContext context, GoRouterState state) {
-        return BottomSheetPage(
-          child: GoalUpdateBottomSheetScreen(
+        return slideTransitionPage(
+          state: state,
+          child: PlanTemplateCreateScreen(
             goalId: state.pathParameters['goalId'],
           ),
         );
@@ -179,23 +193,11 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       parentNavigatorKey: _rootNavigatorKey,
-      path: '/sheet/plan/create/:mode/:goalId/:planId',
+      path: '/template/goal/:goalId/plan/:planId',
       pageBuilder: (BuildContext context, GoRouterState state) {
-        return BottomSheetPage(
-          child: PlanCreateBottomSheetScreen(
-            mode: state.pathParameters['mode'],
-            goalId: state.pathParameters['goalId'],
-            planId: state.pathParameters['planId'],
-          ),
-        );
-      },
-    ),
-    GoRoute(
-      parentNavigatorKey: _rootNavigatorKey,
-      path: '/sheet/plan/update/:goalId/:planId',
-      pageBuilder: (BuildContext context, GoRouterState state) {
-        return BottomSheetPage(
-          child: PlanUpdateBottomSheetScreen(
+        return slideTransitionPage(
+          state: state,
+          child: PlanTemplateSelectScreen(
             goalId: state.pathParameters['goalId'],
             planId: state.pathParameters['planId'],
           ),

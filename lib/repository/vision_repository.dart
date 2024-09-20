@@ -9,7 +9,7 @@ class VisionRepository extends Repository<Vision> {
 
   Future<VisionModel?> getVision() async {
     try {
-      final visionSchema = await findOne((query) {
+      final visionSchema = await findOne(builder: (query) {
         return query.inProgressEqualTo(true).isDeleteEqualTo(false);
       });
 
@@ -23,7 +23,7 @@ class VisionRepository extends Repository<Vision> {
     }
   }
 
-  Future<Vision> createVision(String name, Color color) async {
+  Future<Vision> createVision({required String name, required Color color}) async {
     try {
       int colorValue = color.value;
 
@@ -33,7 +33,7 @@ class VisionRepository extends Repository<Vision> {
         ..inProgress = true;
 
       await IsarDB.isar.writeTxn(() async {
-        await putOne(visionSchema);
+        await putOne(schema: visionSchema);
       });
 
       return visionSchema;
@@ -42,12 +42,12 @@ class VisionRepository extends Repository<Vision> {
     }
   }
 
-  Future<bool> deleteVision(int? visionId) async {
+  Future<bool> deleteVision({int? visionId}) async {
     try {
       if (visionId == null) return false;
 
       await IsarDB.isar.writeTxn(() async {
-        await deleteOne(visionId);
+        await deleteOne(id: visionId);
       });
 
       return true;

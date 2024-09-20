@@ -17,26 +17,23 @@ class TaskProvider with ChangeNotifier, DiagnosticableTreeMixin {
   List<ScheduleModel> get schedules => _schedules;
   CalendarData get tasks => CalendarData(_tasks);
 
-  Future<void> getTasks(DateTime? date) async {
+  Future<void> getTasks({DateTime? date}) async {
     try {
       if (date != null) {
         _target = date;
-        _start = date.subtract(Duration(
-          days: date.weekday == 7 ? 0 : date.weekday,
-        ));
+        _start = date.subtract(Duration(days: date.weekday == 7 ? 0 : date.weekday));
       }
 
       if (_start == null) return;
 
       List<TaskModel> tasks = [];
 
-      var weekSchedules = await ScheduleRepository().getThisWeek(_start!);
-      var weekDaySchedules = await ScheduleRepository().getWeekDay(_start!);
-      var weekendSchedules = await ScheduleRepository().getWeekend(_start!);
-      var everyDaySchedules = await ScheduleRepository().getEveryDay(_start!);
-      var everyWeekSchedules = await ScheduleRepository().getEveryWeek(_start!);
-      var everyMonthSchedules =
-          await ScheduleRepository().getEveryMonth(_start!);
+      var weekSchedules = await ScheduleRepository().getThisWeek(start: _start!);
+      var weekDaySchedules = await ScheduleRepository().getWeekDay(start: _start!);
+      var weekendSchedules = await ScheduleRepository().getWeekend(start: _start!);
+      var everyDaySchedules = await ScheduleRepository().getEveryDay(start: _start!);
+      var everyWeekSchedules = await ScheduleRepository().getEveryWeek(start: _start!);
+      var everyMonthSchedules = await ScheduleRepository().getEveryMonth(start: _start!);
 
       List<ScheduleModel> schedules = [
         ...(weekSchedules),
@@ -50,10 +47,7 @@ class TaskProvider with ChangeNotifier, DiagnosticableTreeMixin {
       for (ScheduleModel schedule in schedules) {
         if (schedule.from.day != _target.day) continue;
 
-        var complete = await CompleteRepository().getComplete(
-          schedule.id,
-          schedule.to,
-        );
+        var complete = await CompleteRepository().getComplete(scheduleId: schedule.id, date: schedule.to);
 
         var task = TaskModel.fromSchema(schedule, complete);
 
@@ -69,17 +63,14 @@ class TaskProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
-  Future<void> updateTask(int? scheduleId, DateTime date) async {
+  Future<void> updateTask({int? scheduleId, required DateTime date}) async {
     try {
       List<TaskModel> tasks = [];
 
       for (var schedule in _schedules) {
         if (schedule.from.day != date.day) continue;
 
-        var complete = await CompleteRepository().getComplete(
-          schedule.id,
-          schedule.from,
-        );
+        var complete = await CompleteRepository().getComplete(scheduleId: schedule.id, date: schedule.from);
 
         var task = TaskModel.fromSchema(schedule, complete);
 
@@ -94,16 +85,16 @@ class TaskProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
-  Future<void> toggleTask(TaskModel task) async {
+  Future<void> toggleTask({required TaskModel task}) async {
     try {
       if (task.completeId == null) {
         await CompleteRepository().createComplete(
-          task.visionId,
-          task.scheduleId,
-          task.endTime,
+          visionId: task.visionId,
+          scheduleId: task.scheduleId,
+          date: task.endTime,
         );
       } else {
-        await CompleteRepository().deleteComplete(task.completeId);
+        await CompleteRepository().deleteComplete(completeId: task.completeId);
       }
     } catch (error) {
       rethrow;
@@ -113,14 +104,8 @@ class TaskProvider with ChangeNotifier, DiagnosticableTreeMixin {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(
-      DiagnosticsProperty<ScheduleModel>('schedule', _schedule),
-    );
-    properties.add(
-      DiagnosticsProperty<List<ScheduleModel>>('schedules', _schedules),
-    );
-    properties.add(
-      DiagnosticsProperty<List<TaskModel>>('tasks', _tasks),
-    );
+    properties.add(DiagnosticsProperty<ScheduleModel>('schedule', _schedule));
+    properties.add(DiagnosticsProperty<List<ScheduleModel>>('schedules', _schedules));
+    properties.add(DiagnosticsProperty<List<TaskModel>>('tasks', _tasks));
   }
 }

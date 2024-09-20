@@ -24,21 +24,18 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ScheduleProvider>(context, listen: false).getGoals();
-    });
+    getScheduleScreenData();
+  }
+
+  void getScheduleScreenData() {
+    Provider.of<ScheduleProvider>(context, listen: false).getGoals();
   }
 
   void getSchedules(DateTime from, DateTime to) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ScheduleProvider>(context, listen: false).getSchedules(
-        from,
-        to,
-      );
-    });
+    Provider.of<ScheduleProvider>(context, listen: false).getSchedules(from: from, to: to);
   }
 
-  onTapCell(CalendarTapDetails? calendar) {
+  clickCell(CalendarTapDetails? calendar) {
     if (calendar?.appointments == null) {
       if (calendar?.date == null) return;
 
@@ -94,7 +91,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   fontSize: 14.sp,
                 ),
                 dataSource: state.appointments,
-                onTap: onTapCell,
+                onTap: clickCell,
                 onViewChanged: (view) {
                   weekFrom = view.visibleDates.first;
                   weekTo = view.visibleDates.last;

@@ -34,9 +34,7 @@ class PlanPicker extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: 10.h),
                 child: const Text(
                   '상세 계획을 설정하세요',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.w700),
                 ),
               );
             }
@@ -55,9 +53,7 @@ class PlanPicker extends StatelessWidget {
                           width: (constraints.maxWidth - 22.w) / 2,
                           selected: selectedPlanId == plan?.id,
                           onTap: () {
-                            if (plan?.id == null || onChanged == null) {
-                              return;
-                            }
+                            if (plan?.id == null || onChanged == null) return;
 
                             onChanged!(plan!.id);
                           },

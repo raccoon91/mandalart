@@ -31,8 +31,7 @@ class SchedulePickerWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: selected == true ? color : ColorClass.white,
           border: Border.all(
-            color:
-                selected == true ? color ?? ColorClass.gray : ColorClass.gray,
+            color: selected == true ? color ?? ColorClass.gray : ColorClass.gray,
           ),
           borderRadius: BorderRadius.all(Radius.circular(4.r)),
         ),
