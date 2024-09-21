@@ -75,15 +75,9 @@ class _GoalTemplateCreateScreenState extends State<GoalTemplateCreateScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Expanded(
-                        child: Container(),
-                      ),
-                      Expanded(
-                        child: CardWidget(name: nameController.text, color: color),
-                      ),
-                      Expanded(
-                        child: Container(),
-                      ),
+                      Expanded(child: Container()),
+                      Expanded(child: CardWidget(name: nameController.text, color: color)),
+                      Expanded(child: Container()),
                     ],
                   ),
                   SizedBox(height: 30.h),
@@ -107,12 +101,7 @@ class _GoalTemplateCreateScreenState extends State<GoalTemplateCreateScreen> {
           SizedBox(height: 20.h),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              foregroundColor: ColorClass.black,
-              backgroundColor: ColorClass.skyBlue,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(0),
-              ),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
               padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 24.w),
             ),
             onPressed: enabled ? clickSubmitGoalTemplate : null,

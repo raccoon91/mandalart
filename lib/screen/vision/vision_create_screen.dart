@@ -60,12 +60,10 @@ class _VisionCreateScreenState extends State<VisionCreateScreen> {
   Widget build(BuildContext context) {
     return ScreenLayout(
       title: '목표',
-      padding: EdgeInsets.symmetric(
-        vertical: 20.h,
-        horizontal: 20.w,
-      ),
+      padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
             child: SingleChildScrollView(
@@ -102,13 +100,9 @@ class _VisionCreateScreenState extends State<VisionCreateScreen> {
             ),
           ),
           SizedBox(height: 20.h),
-          SizedBox(
-            width: double.infinity,
-            height: 60.h,
-            child: Button(
-              text: '시작하기',
-              onPressed: enabled ? createTapped : null,
-            ),
+          Button(
+            text: '시작하기',
+            onPressed: enabled ? createTapped : null,
           ),
         ],
       ),

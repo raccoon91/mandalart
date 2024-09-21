@@ -154,6 +154,28 @@ class HomeProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
+  Future<void> removePlan({int? goalId, int? planId}) async {
+    try {
+      if (_vision == null) return;
+
+      var success = await PlanRepository().removePlan(planId: planId);
+
+      if (!success) return;
+
+      var vision = await VisionRepository().getVision();
+      var goal = await GoalRepository().getGoal(goalId: goalId);
+
+      _vision = vision;
+      _goals = vision?.goals;
+      _goal = goal;
+      _plans = goal?.plans;
+    } catch (error) {
+      rethrow;
+    } finally {
+      notifyListeners();
+    }
+  }
+
   void changeMode() {
     _mode = _mode == 'minimize' ? 'maximize' : 'minimize';
 

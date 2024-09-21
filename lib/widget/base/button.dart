@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mandalart/theme/color.dart';
 
 class Button extends StatelessWidget {
   final String text;
@@ -16,10 +15,7 @@ class Button extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        foregroundColor: ColorClass.black,
-        backgroundColor: ColorClass.skyBlue,
-        disabledForegroundColor: ColorClass.black,
-        disabledBackgroundColor: ColorClass.under,
+        padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 28.w),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.r),
         ),

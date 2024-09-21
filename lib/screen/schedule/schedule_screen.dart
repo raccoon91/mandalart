@@ -58,7 +58,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
       body: Column(
         children: [
           const BannerAD(),
-          SizedBox(height: 10.h),
           Expanded(
             child: Consumer<ScheduleProvider>(
               builder: (context, state, child) => SfCalendar(
@@ -71,8 +70,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 headerDateFormat: 'yyyy년 MM월',
                 headerStyle: const CalendarHeaderStyle(
                   textAlign: TextAlign.center,
-                  textStyle: TextStyle(fontWeight: FontWeight.w700),
-                  backgroundColor: ColorClass.under,
+                  textStyle: TextStyle(color: ColorClass.white, fontWeight: FontWeight.w700),
+                  backgroundColor: ColorClass.primary,
                 ),
                 weekNumberStyle: const WeekNumberStyle(
                   backgroundColor: ColorClass.under,

@@ -39,6 +39,19 @@ class _GoalTemplateSelectScreenState extends State<GoalTemplateSelectScreen> {
     Provider.of<TemplateProvider>(context, listen: false).selectGoalTemplate(goalTemplate: goalTemplate);
   }
 
+  Future<void> removeGoal() async {
+    var goalId = widget.goalId == null ? null : int.parse(widget.goalId!);
+    var selectedGoalTemplate = Provider.of<TemplateProvider>(context, listen: false).selectedGoalTemplate;
+
+    if (goalId == null || selectedGoalTemplate == null) return;
+
+    await Provider.of<HomeProvider>(context, listen: false).removeGoal(goalId: goalId);
+
+    if (!mounted) return;
+
+    GoRouter.of(context).go('/home');
+  }
+
   Future<void> submitGoal() async {
     var goalId = widget.goalId == null ? null : int.parse(widget.goalId!);
     var selectedGoalTemplate = Provider.of<TemplateProvider>(context, listen: false).selectedGoalTemplate;
@@ -52,8 +65,6 @@ class _GoalTemplateSelectScreenState extends State<GoalTemplateSelectScreen> {
 
     if (!mounted) return;
 
-    Provider.of<HomeProvider>(context, listen: false).getVision();
-
     GoRouter.of(context).pop();
   }
 
@@ -65,7 +76,7 @@ class _GoalTemplateSelectScreenState extends State<GoalTemplateSelectScreen> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-            padding: EdgeInsets.only(top: 20.h, right: 30.w, bottom: 10.h, left: 30.w),
+            padding: EdgeInsets.only(top: 20.h, right: 20.w, bottom: 10.h, left: 20.w),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -74,9 +85,7 @@ class _GoalTemplateSelectScreenState extends State<GoalTemplateSelectScreen> {
                   style: OutlinedButton.styleFrom(
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     foregroundColor: ColorClass.black,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4.r),
-                    ),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.r)),
                     padding: EdgeInsets.symmetric(vertical: 0, horizontal: 16.w),
                     side: BorderSide.none,
                   ),
@@ -90,47 +99,82 @@ class _GoalTemplateSelectScreenState extends State<GoalTemplateSelectScreen> {
             ),
           ),
           Expanded(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 30.w),
-              child: Consumer<TemplateProvider>(
-                builder: (context, state, child) {
-                  return Wrap(
-                    spacing: 12.w,
-                    runSpacing: 12.h,
-                    children: state.goalTemplates.map((goalTemplate) {
-                      return ToggleButton(
-                        text: goalTemplate.name ?? '',
-                        color: goalTemplate.color,
-                        selected: Provider.of<TemplateProvider>(context).selectedGoalTemplate?.id == goalTemplate.id,
-                        onPressed: () {
-                          changeGoalTemplate(goalTemplate);
-                        },
-                      );
-                    }).toList(),
-                  );
-                },
-              ),
+            child: Consumer<TemplateProvider>(
+              builder: (context, state, child) {
+                return ListView.separated(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  itemCount: state.goalTemplates.length,
+                  itemBuilder: (context, index) {
+                    var goalTemplate = state.goalTemplates[index];
+
+                    return ToggleButton(
+                      text: goalTemplate.name ?? '',
+                      color: goalTemplate.color,
+                      selected: Provider.of<TemplateProvider>(context).selectedGoalTemplate?.id == goalTemplate.id,
+                      onPressed: () {
+                        changeGoalTemplate(goalTemplate);
+                      },
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return SizedBox(height: 6.h);
+                  },
+                );
+              },
             ),
           ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              foregroundColor: ColorClass.black,
-              backgroundColor: ColorClass.skyBlue,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(0),
-              ),
-              padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 24.w),
-            ),
-            onPressed: Provider.of<TemplateProvider>(context).selectedGoalTemplate != null ? submitGoal : null,
-            child: Text(
-              '목표 선택완료',
-              style: TextStyle(
-                fontSize: 20.sp,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
+          widget.goalId == null
+              ? ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+                    padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 24.w),
+                  ),
+                  onPressed: Provider.of<TemplateProvider>(context).selectedGoalTemplate != null ? submitGoal : null,
+                  child: Text(
+                    '목표 선택완료',
+                    style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w700),
+                  ),
+                )
+              : Container(
+                  padding: EdgeInsets.symmetric(vertical: 10.h),
+                  decoration: BoxDecoration(border: Border(top: BorderSide(color: ColorClass.border, width: 1.h))),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: removeGoal,
+                          child: Column(
+                            children: [
+                              const Icon(Icons.remove_circle_outline_rounded),
+                              SizedBox(height: 8.w),
+                              Text(
+                                '목표 제거',
+                                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: submitGoal,
+                          child: Column(
+                            children: [
+                              const Icon(Icons.check_circle_outline_rounded),
+                              SizedBox(height: 8.w),
+                              Text(
+                                '선택완료',
+                                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
         ],
       ),
     );

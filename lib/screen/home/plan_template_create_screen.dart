@@ -84,10 +84,7 @@ class _PlanTemplateCreateScreenState extends State<PlanTemplateCreateScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Expanded(child: Container()),
-                      Expanded(
-                        flex: 1,
-                        child: CardWidget(name: nameController.text, color: color),
-                      ),
+                      Expanded(child: CardWidget(name: nameController.text, color: color)),
                       Expanded(child: Container()),
                     ],
                   ),
@@ -112,12 +109,7 @@ class _PlanTemplateCreateScreenState extends State<PlanTemplateCreateScreen> {
           SizedBox(height: 20.h),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              foregroundColor: ColorClass.black,
-              backgroundColor: ColorClass.skyBlue,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(0),
-              ),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
               padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 24.w),
             ),
             onPressed: enabled ? clickSubmitPlanTemplate : null,

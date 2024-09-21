@@ -28,13 +28,16 @@ class ScheduleBottomSheet extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(top: 30.h, bottom: 10.h),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Container(
-            width: 80.w,
-            height: 4.h,
-            decoration: BoxDecoration(
-              color: ColorClass.gray,
-              borderRadius: BorderRadius.all(Radius.circular(4.r)),
+          Center(
+            child: Container(
+              width: 80.w,
+              height: 4.h,
+              decoration: BoxDecoration(
+                color: ColorClass.gray,
+                borderRadius: BorderRadius.all(Radius.circular(4.r)),
+              ),
             ),
           ),
           SizedBox(height: 30.h),

@@ -20,13 +20,10 @@ class ToggleButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         padding: EdgeInsetsDirectional.symmetric(vertical: 12.h, horizontal: 24.w),
         foregroundColor: ColorClass.black,
         backgroundColor: selected ? color ?? ColorClass.border : ColorClass.under,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(4),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.r)),
       ),
       onPressed: onPressed,
       child: Text(

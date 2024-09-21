@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mandalart/theme/color.dart';
 
 class ScreenLayout extends StatelessWidget {
   final String? title;
@@ -20,17 +19,7 @@ class ScreenLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: title != null
-          ? AppBar(
-              title: Text(
-                title!,
-                style: const TextStyle(fontWeight: FontWeight.w700),
-              ),
-              centerTitle: true,
-              backgroundColor: ColorClass.under,
-            )
-          : null,
-      backgroundColor: ColorClass.white,
+      appBar: title != null ? AppBar(title: Text(title!)) : null,
       bottomNavigationBar: bottomNavigationBar,
       floatingActionButton: floatingActionButton,
       body: Container(

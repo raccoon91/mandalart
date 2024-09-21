@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mandalart/provider/home_provider.dart';
-import 'package:mandalart/theme/color.dart';
 import 'package:provider/provider.dart';
 
 class FloatingButton extends StatelessWidget {
@@ -24,8 +23,6 @@ class FloatingButton extends StatelessWidget {
         opacity: show ? 1 : 0,
         child: FloatingActionButton(
           mini: true,
-          shape: const CircleBorder(),
-          backgroundColor: ColorClass.blue,
           onPressed: onPressed,
           child: Consumer<HomeProvider>(
             builder: (context, state, child) {

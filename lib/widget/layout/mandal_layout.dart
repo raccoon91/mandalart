@@ -22,9 +22,7 @@ class MandalLayout extends StatelessWidget {
       return Center(
         child: Text(
           emptyMessage ?? '',
-          style: TextStyle(
-            fontSize: 24.sp,
-          ),
+          style: TextStyle(fontSize: 24.sp),
         ),
       );
     }

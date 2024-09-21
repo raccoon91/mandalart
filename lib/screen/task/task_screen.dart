@@ -19,7 +19,7 @@ class _TaskScreenState extends State<TaskScreen> {
   late DateTime weekFrom;
   late DateTime weekTo;
 
-  Future<void> getTasks(DateTime? date) async {
+  Future<void> getTasks({DateTime? date}) async {
     await Provider.of<TaskProvider>(context, listen: false).getTasks(date: date);
   }
 
@@ -34,7 +34,7 @@ class _TaskScreenState extends State<TaskScreen> {
 
     if (!mounted) return;
 
-    await getTasks(null);
+    await getTasks();
   }
 
   @override
@@ -44,7 +44,6 @@ class _TaskScreenState extends State<TaskScreen> {
       body: Column(
         children: [
           const BannerAD(),
-          SizedBox(height: 10.h),
           Expanded(
             child: Consumer<TaskProvider>(
               builder: (context, state, child) => SfCalendar(
@@ -56,8 +55,8 @@ class _TaskScreenState extends State<TaskScreen> {
                 headerDateFormat: 'yyyy년 MM월',
                 headerStyle: const CalendarHeaderStyle(
                   textAlign: TextAlign.center,
-                  textStyle: TextStyle(fontWeight: FontWeight.w700),
-                  backgroundColor: ColorClass.under,
+                  textStyle: TextStyle(color: ColorClass.white, fontWeight: FontWeight.w700),
+                  backgroundColor: ColorClass.primary,
                 ),
                 todayHighlightColor: ColorClass.blue,
                 todayTextStyle: const TextStyle(
@@ -99,7 +98,7 @@ class _TaskScreenState extends State<TaskScreen> {
                 onViewChanged: (view) {
                   DateTime date = view.visibleDates.first;
 
-                  getTasks(date);
+                  getTasks(date: date);
                 },
                 onTap: onTapCell,
               ),

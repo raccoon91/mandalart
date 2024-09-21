@@ -26,10 +26,7 @@ class TaskModel extends Appointment {
     required this.borderColor,
   });
 
-  factory TaskModel.fromSchema(
-    ScheduleModel schedule,
-    Complete? completeSchema,
-  ) {
+  factory TaskModel.fromSchema(ScheduleModel schedule, Complete? completeSchema) {
     Plan? plan = schedule.plan;
     PlanTemplate? planTemplate = plan?.planTemplate.value;
 
