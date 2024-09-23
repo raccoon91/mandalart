@@ -9,14 +9,21 @@ import 'package:mandalart/widget/home/card_widget.dart';
 import 'package:mandalart/widget/layout/screen_layout.dart';
 import 'package:provider/provider.dart';
 
-class GoalTemplateCreateScreen extends StatefulWidget {
-  const GoalTemplateCreateScreen({super.key});
+class PlanTemplateDetailScreen extends StatefulWidget {
+  final String? goalId;
+  final String? planTemplateId;
+
+  const PlanTemplateDetailScreen({
+    super.key,
+    this.goalId,
+    this.planTemplateId,
+  });
 
   @override
-  State<GoalTemplateCreateScreen> createState() => _GoalTemplateCreateScreenState();
+  State<PlanTemplateDetailScreen> createState() => _PlanTemplateDetailScreenState();
 }
 
-class _GoalTemplateCreateScreenState extends State<GoalTemplateCreateScreen> {
+class _PlanTemplateDetailScreenState extends State<PlanTemplateDetailScreen> {
   final nameController = TextEditingController();
   Color color = ColorClass.blue;
   bool enabled = false;
@@ -24,45 +31,75 @@ class _GoalTemplateCreateScreenState extends State<GoalTemplateCreateScreen> {
   @override
   void initState() {
     super.initState();
+
+    getPlanTemplateDetailScreenData();
+  }
+
+  Future<void> getPlanTemplateDetailScreenData() async {
+    if (widget.planTemplateId == null || widget.planTemplateId == 'create') return;
+
+    var planTemplate = await Provider.of<TemplateProvider>(context, listen: false).getPlanTemplate(
+      planTemplateId: int.parse(widget.planTemplateId!),
+    );
+
+    if (planTemplate == null) return;
+
+    nameController.text = planTemplate.name ?? '';
+    color = planTemplate.color ?? ColorClass.blue;
+
+    setState(() {});
   }
 
   changeColor(Color color) {
     this.color = color;
+
+    if (nameController.text.isEmpty) {
+      enabled = false;
+    } else {
+      enabled = true;
+    }
+
     setState(() {});
   }
 
-  changeGoalTemplateName(String data) {
+  changePlanTemplateName(String data) {
     if (data.isEmpty) {
       enabled = false;
     } else {
       enabled = true;
     }
+
     setState(() {});
   }
 
-  submitGoalTemplate(String name) async {
+  submitPlanTemplate(String name) async {
     if (name.isEmpty) return;
 
-    await Provider.of<TemplateProvider>(context, listen: false).createGoalTemplate(
+    var goalId = widget.goalId == null ? null : int.parse(widget.goalId!);
+    var planTemplateId = widget.planTemplateId == 'create' ? null : int.parse(widget.planTemplateId!);
+
+    await Provider.of<TemplateProvider>(context, listen: false).upsertPlanTemplate(
+      goalId: goalId,
+      planTemplateId: planTemplateId,
       name: name,
       color: color,
     );
 
     if (!mounted) return;
 
-    Provider.of<TemplateProvider>(context, listen: false).getGoalTemplates();
+    Provider.of<TemplateProvider>(context, listen: false).getPlanTemplates(goalId: goalId);
 
     GoRouter.of(context).pop();
   }
 
-  void clickSubmitGoalTemplate() {
-    submitGoalTemplate(nameController.text);
+  void clickSubmitPlanTemplate() {
+    submitPlanTemplate(nameController.text);
   }
 
   @override
   Widget build(BuildContext context) {
     return ScreenLayout(
-      title: '목표 추가',
+      title: '계획 추가',
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -90,8 +127,8 @@ class _GoalTemplateCreateScreenState extends State<GoalTemplateCreateScreen> {
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
                     textInputAction: TextInputAction.done,
-                    onChanged: changeGoalTemplateName,
-                    onSubmitted: enabled ? submitGoalTemplate : null,
+                    onChanged: changePlanTemplateName,
+                    onSubmitted: enabled ? submitPlanTemplate : null,
                   ),
                   SizedBox(height: 10.h),
                 ],
@@ -104,9 +141,9 @@ class _GoalTemplateCreateScreenState extends State<GoalTemplateCreateScreen> {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
               padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 24.w),
             ),
-            onPressed: enabled ? clickSubmitGoalTemplate : null,
+            onPressed: enabled ? clickSubmitPlanTemplate : null,
             child: Text(
-              '목표 추가하기',
+              widget.planTemplateId == 'create' ? '계획 추가하기' : '계획 수정하기',
               style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w700),
             ),
           ),

@@ -133,6 +133,13 @@ class _PlanTemplateSelectScreenState extends State<PlanTemplateSelectScreen> {
                       text: planTemplate.name ?? '',
                       color: planTemplate.color,
                       selected: Provider.of<TemplateProvider>(context).selectedPlanTemplate?.id == planTemplate.id,
+                      right: GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () {
+                          GoRouter.of(context).push('/template/goal/${widget.goalId}/plan/${planTemplate.id}');
+                        },
+                        child: Icon(Icons.edit_rounded, size: 24.w),
+                      ),
                       onPressed: () {
                         changePlanTemplate(planTemplate);
                       },

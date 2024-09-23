@@ -28,7 +28,7 @@ class PlanEmptyWidget extends StatelessWidget {
           if (plan?.goalId == null || plan?.id == null) return;
 
           context.push(
-            '/template/goal/${plan!.goalId}/plan/${plan!.id}',
+            '/template/goal/${plan!.goalId}/plan/select/${plan!.id}',
           );
         },
         child: Container(

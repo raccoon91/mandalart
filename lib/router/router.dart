@@ -4,10 +4,10 @@ import 'package:mandalart/router/bottom_sheet_page.dart';
 import 'package:mandalart/router/get_page.dart';
 import 'package:mandalart/router/slide_transition_page.dart';
 import 'package:mandalart/screen/home/goal_screen.dart';
-import 'package:mandalart/screen/home/goal_template_create_screen.dart';
+import 'package:mandalart/screen/home/goal_template_detail_screen.dart';
 import 'package:mandalart/screen/home/goal_template_select_screen.dart';
 import 'package:mandalart/screen/home/home_screen.dart';
-import 'package:mandalart/screen/home/plan_template_create_screen.dart';
+import 'package:mandalart/screen/home/plan_template_detail_screen.dart';
 import 'package:mandalart/screen/home/plan_template_select_screen.dart';
 import 'package:mandalart/screen/schedule/schedule_bottom_sheet_screen.dart';
 import 'package:mandalart/screen/schedule/schedule_create_bottom_sheet_screen.dart';
@@ -159,17 +159,19 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       parentNavigatorKey: _rootNavigatorKey,
-      path: '/template/goal/create',
+      path: '/template/goal/:goalTemplateId',
       pageBuilder: (BuildContext context, GoRouterState state) {
         return slideTransitionPage(
           state: state,
-          child: const GoalTemplateCreateScreen(),
+          child: GoalTemplateDetailScreen(
+            goalTemplateId: state.pathParameters['goalTemplateId'],
+          ),
         );
       },
     ),
     GoRoute(
       parentNavigatorKey: _rootNavigatorKey,
-      path: '/template/goal/:goalId',
+      path: '/template/goal/select/:goalId',
       pageBuilder: (BuildContext context, GoRouterState state) {
         return slideTransitionPage(
           state: state,
@@ -181,19 +183,20 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       parentNavigatorKey: _rootNavigatorKey,
-      path: '/template/goal/:goalId/plan/create',
+      path: '/template/goal/:goalId/plan/:planTemplateId',
       pageBuilder: (BuildContext context, GoRouterState state) {
         return slideTransitionPage(
           state: state,
-          child: PlanTemplateCreateScreen(
+          child: PlanTemplateDetailScreen(
             goalId: state.pathParameters['goalId'],
+            planTemplateId: state.pathParameters['planTemplateId'],
           ),
         );
       },
     ),
     GoRoute(
       parentNavigatorKey: _rootNavigatorKey,
-      path: '/template/goal/:goalId/plan/:planId',
+      path: '/template/goal/:goalId/plan/select/:planId',
       pageBuilder: (BuildContext context, GoRouterState state) {
         return slideTransitionPage(
           state: state,

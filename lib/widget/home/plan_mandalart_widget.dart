@@ -49,7 +49,7 @@ class PlanMandalartWidget extends StatelessWidget {
                         if (goal?.id == null) return;
 
                         if ((mode == 'maximize' && route == 'home') || route == 'goal') {
-                          context.push('/template/goal/${goal?.id}');
+                          context.push('/template/goal/select/${goal?.id}');
                         } else {
                           context.push('/home/goal/${goal?.id}');
                         }

@@ -34,6 +34,20 @@ class TemplateProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
+  Future<GoalTemplateModel?> getGoalTemplate({int? goalTemplateId}) async {
+    try {
+      if (goalTemplateId == null) return null;
+
+      var goalTemplate = await GoalTemplateRepository().getGoalTemplate(goalTemplateId: goalTemplateId);
+
+      if (goalTemplate == null) return null;
+
+      return GoalTemplateModel.fromSchema(goalTemplate);
+    } catch (error) {
+      rethrow;
+    }
+  }
+
   Future<void> getPlanTemplates({int? goalId, int? planId}) async {
     try {
       if (goalId == null) return;
@@ -57,9 +71,27 @@ class TemplateProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
-  Future<void> createGoalTemplate({required String name, Color? color}) async {
+  Future<PlanTemplateModel?> getPlanTemplate({int? planTemplateId}) async {
     try {
-      await GoalTemplateRepository().createGoalTemplate(name: name, color: color);
+      if (planTemplateId == null) return null;
+
+      var planTemplate = await PlanTemplateRepository().getPlanTemplate(planTemplateId: planTemplateId);
+
+      if (planTemplate == null) return null;
+
+      return PlanTemplateModel.fromSchema(planTemplate);
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  Future<void> upsertGoalTemplate({int? goalTemplateId, required String name, Color? color}) async {
+    try {
+      if (goalTemplateId == null) {
+        await GoalTemplateRepository().createGoalTemplate(name: name, color: color);
+      } else {
+        await GoalTemplateRepository().updateGoalTemplate(goalTemplateId: goalTemplateId, name: name, color: color);
+      }
     } catch (error) {
       rethrow;
     } finally {
@@ -67,13 +99,17 @@ class TemplateProvider with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
-  Future<void> createPlanTemplate({int? goalId, required String name, Color? color}) async {
+  Future<void> upsertPlanTemplate({int? goalId, int? planTemplateId, required String name, Color? color}) async {
     try {
       if (goalId == null) return;
 
       var goal = await GoalRepository().getGoal(goalId: goalId);
 
-      await PlanTemplateRepository().createPlanTemplate(goalTemplate: goal?.goalTemplate, name: name, color: color);
+      if (planTemplateId == null) {
+        await PlanTemplateRepository().createPlanTemplate(goalTemplate: goal?.goalTemplate, name: name, color: color);
+      } else {
+        await PlanTemplateRepository().updatePlanTemplate(planTemplateId: planTemplateId, name: name, color: color);
+      }
     } catch (error) {
       rethrow;
     } finally {

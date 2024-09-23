@@ -38,7 +38,7 @@ class PlanWidget extends StatelessWidget {
           if (plan?.id == null) return;
 
           if (((mode == 'maximize' && route == 'home')) || route == 'goal') {
-            context.push('/template/goal/$goalId/plan/${plan?.id}');
+            context.push('/template/goal/$goalId/plan/select/${plan?.id}');
           }
         },
       ),

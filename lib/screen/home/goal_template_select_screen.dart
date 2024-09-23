@@ -111,6 +111,13 @@ class _GoalTemplateSelectScreenState extends State<GoalTemplateSelectScreen> {
                       text: goalTemplate.name ?? '',
                       color: goalTemplate.color,
                       selected: Provider.of<TemplateProvider>(context).selectedGoalTemplate?.id == goalTemplate.id,
+                      right: GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () {
+                          GoRouter.of(context).push('/template/goal/${goalTemplate.id}');
+                        },
+                        child: Icon(Icons.edit_rounded, size: 24.w),
+                      ),
                       onPressed: () {
                         changeGoalTemplate(goalTemplate);
                       },
