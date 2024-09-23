@@ -18,15 +18,6 @@ List<dynamic> goals = [
     ]
   },
   {
-    'name': '재테크',
-    'color': '#C2E0FF',
-    'items': [
-      {'name': '저축', 'color': '#FFB3BA'},
-      {'name': '투자', 'color': '#FFDFBA'},
-      {'name': '지출 관리', 'color': '#FFFFBA'}
-    ]
-  },
-  {
     'name': '돈 벌기',
     'color': '#BAFFC9',
     'items': [
@@ -36,15 +27,16 @@ List<dynamic> goals = [
     ]
   },
   {
-    'name': '건강',
-    'color': '#C2FFDF',
+    'name': '재테크',
+    'color': '#C2E0FF',
     'items': [
-      {'name': '규칙적인 식사', 'color': '#C2E0FF'},
-      {'name': '충분한 수면', 'color': '#FFB3BA'}
+      {'name': '저축', 'color': '#FFB3BA'},
+      {'name': '투자', 'color': '#FFDFBA'},
+      {'name': '지출 관리', 'color': '#FFFFBA'}
     ]
   },
   {
-    'name': '자기 계발',
+    'name': '자기 개발',
     'color': '#FFFFBA',
     'items': [
       {'name': '책 읽기', 'color': '#BAFFC9'},
@@ -53,12 +45,11 @@ List<dynamic> goals = [
     ]
   },
   {
-    'name': '업무',
-    'color': '#FFC2E2',
+    'name': '건강',
+    'color': '#C2FFDF',
     'items': [
-      {'name': '우선순위 정하기', 'color': '#C2FFDF'},
-      {'name': '업무 시간 관리', 'color': '#C2E0FF'},
-      {'name': '목표 설정', 'color': '#FFB3BA'}
+      {'name': '규칙적인 식사', 'color': '#C2E0FF'},
+      {'name': '충분한 수면', 'color': '#FFB3BA'}
     ]
   }
 ];
