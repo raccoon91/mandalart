@@ -77,6 +77,8 @@ class _PlanTemplateSelectScreenState extends State<PlanTemplateSelectScreen> {
 
     if (!mounted) return;
 
+    Provider.of<HomeProvider>(context, listen: false).getGoal(goalId: goalId);
+
     GoRouter.of(context).pop();
   }
 

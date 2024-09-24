@@ -71,6 +71,8 @@ class _GoalTemplateSelectScreenState extends State<GoalTemplateSelectScreen> {
 
     if (!mounted) return;
 
+    Provider.of<HomeProvider>(context, listen: false).getGoal(goalId: goalId);
+
     GoRouter.of(context).pop();
   }
 
