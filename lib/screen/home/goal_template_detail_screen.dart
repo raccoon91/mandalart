@@ -95,7 +95,7 @@ class _GoalTemplateDetailScreenState extends State<GoalTemplateDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return ScreenLayout(
-      title: '목표 추가',
+      title: widget.goalTemplateId == 'create' ? '목표 추가' : '목표 수정',
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

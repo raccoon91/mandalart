@@ -99,7 +99,7 @@ class _PlanTemplateDetailScreenState extends State<PlanTemplateDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return ScreenLayout(
-      title: '계획 추가',
+      title: widget.planTemplateId == 'create' ? '계획 추가' : '계획 수정',
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

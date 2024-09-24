@@ -22,6 +22,8 @@ class GoalTemplateSelectScreen extends StatefulWidget {
 }
 
 class _GoalTemplateSelectScreenState extends State<GoalTemplateSelectScreen> {
+  GoalTemplateModel? defaultGoalTemplate;
+
   @override
   void initState() {
     super.initState();
@@ -32,7 +34,11 @@ class _GoalTemplateSelectScreenState extends State<GoalTemplateSelectScreen> {
   void getGoalTemplateSelectScreenData() async {
     var goalId = widget.goalId == null ? null : int.parse(widget.goalId!);
 
-    Provider.of<TemplateProvider>(context, listen: false).getGoalTemplates(goalId: goalId);
+    await Provider.of<TemplateProvider>(context, listen: false).getGoalTemplates(goalId: goalId);
+
+    if (!mounted) return;
+
+    defaultGoalTemplate = Provider.of<TemplateProvider>(context, listen: false).selectedGoalTemplate;
   }
 
   void changeGoalTemplate(GoalTemplateModel goalTemplate) {
@@ -80,7 +86,7 @@ class _GoalTemplateSelectScreenState extends State<GoalTemplateSelectScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('목표', style: TextStyle(fontSize: 20.sp)),
+                Text('목표', style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold)),
                 OutlinedButton.icon(
                   style: OutlinedButton.styleFrom(
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -93,7 +99,7 @@ class _GoalTemplateSelectScreenState extends State<GoalTemplateSelectScreen> {
                     GoRouter.of(context).push('/template/goal/create');
                   },
                   icon: const Icon(Icons.add_rounded),
-                  label: const Text('목표 추가'),
+                  label: const Text('목표 추가', style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
               ],
             ),
@@ -130,7 +136,7 @@ class _GoalTemplateSelectScreenState extends State<GoalTemplateSelectScreen> {
               },
             ),
           ),
-          widget.goalId == null
+          defaultGoalTemplate == null
               ? ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
@@ -156,7 +162,7 @@ class _GoalTemplateSelectScreenState extends State<GoalTemplateSelectScreen> {
                               const Icon(Icons.remove_circle_outline_rounded),
                               SizedBox(height: 8.w),
                               Text(
-                                '목표 제거',
+                                '사용 안 함',
                                 style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700),
                               )
                             ],
@@ -172,7 +178,7 @@ class _GoalTemplateSelectScreenState extends State<GoalTemplateSelectScreen> {
                               const Icon(Icons.check_circle_outline_rounded),
                               SizedBox(height: 8.w),
                               Text(
-                                '선택완료',
+                                '선택 완료',
                                 style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700),
                               )
                             ],

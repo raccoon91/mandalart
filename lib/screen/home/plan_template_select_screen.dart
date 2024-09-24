@@ -24,6 +24,8 @@ class PlanTemplateSelectScreen extends StatefulWidget {
 }
 
 class _PlanTemplateSelectScreenState extends State<PlanTemplateSelectScreen> {
+  PlanTemplateModel? defaultPlanTemplate;
+
   @override
   void initState() {
     super.initState();
@@ -35,7 +37,11 @@ class _PlanTemplateSelectScreenState extends State<PlanTemplateSelectScreen> {
     var goalId = widget.goalId == null ? null : int.parse(widget.goalId!);
     var planId = widget.planId == null ? null : int.parse(widget.planId!);
 
-    Provider.of<TemplateProvider>(context, listen: false).getPlanTemplates(goalId: goalId, planId: planId);
+    await Provider.of<TemplateProvider>(context, listen: false).getPlanTemplates(goalId: goalId, planId: planId);
+
+    if (!mounted) return;
+
+    defaultPlanTemplate = Provider.of<TemplateProvider>(context, listen: false).selectedPlanTemplate;
   }
 
   void changePlanTemplate(PlanTemplateModel planTemplate) {
@@ -82,11 +88,11 @@ class _PlanTemplateSelectScreenState extends State<PlanTemplateSelectScreen> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-            padding: EdgeInsets.only(top: 30.h, right: 30.w, bottom: 10.h, left: 30.w),
+            padding: EdgeInsets.only(top: 20.h, right: 20.w, bottom: 20.h, left: 20.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text('목표', style: TextStyle(fontSize: 20.sp)),
+                Text('목표', style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold)),
                 SizedBox(height: 20.h),
                 ToggleButton(
                   selected: true,
@@ -98,11 +104,11 @@ class _PlanTemplateSelectScreenState extends State<PlanTemplateSelectScreen> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 20.h, right: 20.w, bottom: 20.h, left: 20.w),
+            padding: EdgeInsets.only(right: 20.w, bottom: 10.h, left: 20.w),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('계획', style: TextStyle(fontSize: 20.sp)),
+                Text('계획', style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold)),
                 OutlinedButton.icon(
                   style: OutlinedButton.styleFrom(
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -115,7 +121,7 @@ class _PlanTemplateSelectScreenState extends State<PlanTemplateSelectScreen> {
                     GoRouter.of(context).push('/template/goal/${widget.goalId}/plan/create');
                   },
                   icon: const Icon(Icons.add_rounded),
-                  label: const Text('계획 추가'),
+                  label: const Text('계획 추가', style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
               ],
             ),
@@ -124,7 +130,7 @@ class _PlanTemplateSelectScreenState extends State<PlanTemplateSelectScreen> {
             child: Consumer<TemplateProvider>(
               builder: (context, state, child) {
                 return ListView.separated(
-                  padding: EdgeInsets.symmetric(horizontal: 30.w),
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
                   itemCount: state.planTemplates.length,
                   itemBuilder: (context, index) {
                     var planTemplate = state.planTemplates[index];
@@ -152,7 +158,7 @@ class _PlanTemplateSelectScreenState extends State<PlanTemplateSelectScreen> {
               },
             ),
           ),
-          (widget.goalId == null || widget.planId == null)
+          defaultPlanTemplate == null
               ? ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
@@ -178,7 +184,7 @@ class _PlanTemplateSelectScreenState extends State<PlanTemplateSelectScreen> {
                               const Icon(Icons.remove_circle_outline_rounded),
                               SizedBox(height: 8.w),
                               Text(
-                                '계획 제거',
+                                '사용 안 함',
                                 style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700),
                               )
                             ],
@@ -194,7 +200,7 @@ class _PlanTemplateSelectScreenState extends State<PlanTemplateSelectScreen> {
                               const Icon(Icons.check_circle_outline_rounded),
                               SizedBox(height: 8.w),
                               Text(
-                                '선택완료',
+                                '선택 완료',
                                 style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700),
                               )
                             ],
